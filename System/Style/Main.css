@@ -1,0 +1,74 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto);
+
+body{
+    background-image: url("../Assets/Background.png");
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+}
+
+.Taskbar{
+    background-color: #212125;
+    display: inline-block;
+    position: absolute;
+    height: 63px;
+    width: 100%;
+    bottom: 0px;
+}
+
+.StartButton{
+    border-radius: 9px;
+    position: absolute;
+    padding: 5px;
+    left: 5px;
+    top: 9px;
+}
+
+.StartButton:hover{
+    background-color: #0e0e13;
+}
+
+#StartMenu{
+    background-color: #212125;
+    border-radius: 13px;
+    visibility: hidden;
+    position: absolute;
+    height: 805px;
+    width: 503px;
+    bottom: 71px;
+    left: 9px;
+}
+
+#Grab{
+    background: #39364B;
+    border-radius: 3px;
+    position: absolute;
+    height: 41px;
+    bottom: 10.9px;
+    width: 5px;
+    right: 9px;
+}
+
+.winbox{
+    background-color: #212125;
+}
+.wb-min {
+    background-image: url(../Assets/Window/Minimize.svg);
+    background-size: 15px center;
+}
+
+.wb-max {
+    background-image: url(../Assets/Window/Maximize.svg);
+}
+
+.wb-close {
+    background-image: url(../Assets/Window/Close.svg);
+}
+
+.wb-full {
+    display: none;
+}
+
+*{
+    cursor: url("../Assets/Cursor.svg") , default;
+}

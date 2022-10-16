@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Selaria !</title>
+    <style>
+        html{
+            cursor: none;
+        }
+        body{
+            background-color: black;
+            overflow: hidden;
+            padding: 0px;
+            height: 100%;
+            margin: 0px;
+        }
+        video{
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <video id="StartingAnimation" onended="document.location.href='System/Desktop.html'">
+        <source src="System/Assets/StartingAnimation.mp4" type="video/mp4">
+    </video>
+</body>
+</html>
+<script>
+    var Video = document.getElementById("StartingAnimation");
+    Video.addEventListener("click", function(){
+        Video.play();
+    })
+</script>
