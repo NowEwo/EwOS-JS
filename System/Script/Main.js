@@ -20,19 +20,46 @@ function GenerateUniqueId(){
     return ID;
 }
 
-var Windows = {}
-function open_app(path){
-    var app = new WinBox({
-        class: ["win"],
-        border: "0.15em",
-        url: path,
-        title: path,
+function CreateWindow(Data){
+    var App = new WinBox({
+        border: "0px",
+        url: Data.URL,
+        title: Data.Title,
         background: "#212125",
         x: "center",
         y: "center",
         bottom: "63px",
-        root: document.body
+        root: document.body,
+        icon: Data.Icon
     });
 }
 
-open_app("../Index.html");
+localforage.setDriver(localforage.INDEXEDDB);
+
+var Softwares = localforage.createInstance({
+    name: "Softwares"
+});
+
+function InstallSoftware(Data){
+    Softwares[Data.ID] = Data
+}
+
+for( Item in Softwares.keys()){
+    document.getElementById("StartMenu").innerHTML = document.getElementById("StartMenu").innerHTML + `
+    <div class="Tile" onclick="CreateWindow({'Title':${Item.Title},'URL':${Item.URL},'Icon':${Item.Icon}})">
+        <p class="Title">${Item.Start.Title}</p>
+        <p class="Subtitle">${Item.Start.Author}'s Software</p>
+    </div>
+    `
+}
+
+/*{
+    'ID' : Identifiant ,
+    'Title' : Software title ,
+    'URL' : Software URL ( path ) ,
+    'Icon' : Software icon ,
+    'Start' : {
+        'Title' : Start menu entry title ,
+        'Author' : Software author
+    }
+}*/
