@@ -21,20 +21,18 @@ function GenerateUniqueId(){
 }
 
 var Windows = {}
-function CreateWindow(Data){
-    WindowsUniqueId = GenerateUniqueId();
-    Windows[WindowsUniqueId] = new WinBox({
-        url: Data.URL,
-        title: Data.Title,
+function open_app(path){
+    var app = new WinBox({
+        class: ["win"],
+        border: "0.15em",
+        url: path,
+        title: path,
+        background: "#212125",
         x: "center",
         y: "center",
         bottom: "63px",
-        id: WindowsUniqueId
+        root: document.body
     });
 }
 
-CreateWindow({
-    "Title": "Hey !!!",
-    "URL": "../Index.html",
-    "Icon": "Assets/Cursor.png"
-});
+open_app("../Index.html");
