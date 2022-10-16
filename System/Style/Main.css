@@ -1,6 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto);
 
-html , body{
+body{
     background-image: url("../Assets/Background.png");
     overflow: hidden;
     padding: 0px;
@@ -69,14 +69,6 @@ html , body{
     display: none;
 }
 
-video{
-    position: absolute;
-    cursor: none;
-    height: 100%;
-    width: 100%;
-    top: 0px;
-}
-
-html{
+*{
     cursor: url("../Assets/Cursor.svg") , default;
 }
