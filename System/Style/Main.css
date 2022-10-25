@@ -55,7 +55,8 @@ body{
 }
 
 .winbox {
-    background-color: #212125;
+    background-color: #2121257e;
+    backdrop-filter: blur(19.5px);
     border-radius: 9px;
 }
 
@@ -78,6 +79,11 @@ body{
 
 .wb-full {
     display: none;
+}
+
+.winbox.min {
+    border-radius: 0;
+    top: 0px;
 }
 
 .Tile{

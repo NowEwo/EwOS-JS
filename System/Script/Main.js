@@ -25,7 +25,6 @@ function CreateWindow(Data){
         border: "0px",
         url: Data.URL,
         title: Data.Title,
-        background: "#212125",
         x: "center",
         y: "center",
         bottom: "63px",
@@ -33,6 +32,14 @@ function CreateWindow(Data){
         icon: Data.Icon
     });
 }
+
+/*{
+"URL" : ... ,
+"Title" : ... ,
+"Icon" : ...
+}*/
+
+//FIX ME !
 
 localforage.setDriver(localforage.INDEXEDDB);
 
