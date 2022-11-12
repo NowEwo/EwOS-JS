@@ -16,21 +16,70 @@
             height: 100%;
             margin: 0px;
         }
+        #VideoContainer{
+            background-color: black;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0px;
+            top: 0px;
+        }
         video{
             height: 100%;
             width: 100%;
         }
+        iframe{
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            z-index: -3;
+            left: 0px;
+            top: 0px;
+        }
     </style>
 </head>
 <body>
-    <video id="StartingAnimation" onended="document.location.href='System/Desktop.html'">
-        <source src="System/Assets/StartingAnimation.mp4" type="video/mp4">
-    </video>
+    <iframe src="" frameborder="0" id="DE"></iframe>
+    <div id="VideoContainer">
+        <video id="StartingAnimation">
+            <source src="System/Assets/StartingAnimation.mp4" type="video/mp4">
+        </video>
+    </div>
 </body>
 </html>
 <script>
+    var InBIOS = false ;
+    if(localStorage["BootArguments"] == undefined){
+        localStorage["BootArguments"] = JSON.stringify({
+            "Shell": "MountainDesktop"
+        })
+    }
+    var BootArguments = JSON.parse(localStorage["BootArguments"]);
     var Video = document.getElementById("StartingAnimation");
     Video.addEventListener("click", function(){
         Video.play();
     })
+    Video.addEventListener("ended" , function(){
+        if(!InBIOS){
+            document.getElementById("DE").src = "System/Programs/"+BootArguments["Shell"]+"/Shell.html";
+            document.getElementById('VideoContainer').style.display = 'none';
+        }
+    })
+    Video.addEventListener("contextmenu" , (event) => {
+        event.preventDefault()
+        document.getElementById("DE").src = "System/BIOS.html";
+        document.getElementById("VideoContainer").style.display = "none" ;
+        InBIOS = true;
+    })
+    function SetShell(Path){
+        document.getElementById("DE").src = "System/Programs/"+Path+"/Shell.html"
+        console.warn("New shell : " + Path);
+    }
+    function CreateMainApp(ApplicationName){
+        Iframe = document.createElement("iframe");
+        Iframe.style.display = "none";
+        Iframe.src = "System/Programs/"+ApplicationName;
+    }
+    var ShellElement = document.getElementById("DE");
+    var Shell = document.getElementById("DE").contentWindow;
 </script>
