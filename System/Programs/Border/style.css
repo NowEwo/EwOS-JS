@@ -112,7 +112,7 @@ body {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    color: var(--Text);
+    color: var(--border-secondary);
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
@@ -140,7 +140,7 @@ body {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    color: var(--Text);
+    color: var(--border-secondary);
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
@@ -169,7 +169,7 @@ body {
     padding: 10px;
     width: 100%;
     border-radius: 999px;
-    color: var(--Text);
+    color: var(--border-secondary);
     background: var(--border-secondary);
 }
 
@@ -201,7 +201,7 @@ body {
 }
 
 path[class *="border-svg-icon"] {
-    fill: var(--Text);
+    fill: var(--border-secondary);
 }
 
 path.border-svg-icon-close,

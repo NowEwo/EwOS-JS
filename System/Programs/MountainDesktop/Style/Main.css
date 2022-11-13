@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto);
+@import url("https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/metropolis.min.css");
 
 body{
     background-image: url("/System/Assets/Background.png");
@@ -37,10 +37,10 @@ body{
     border-radius: 13px;
     visibility: hidden;
     position: absolute;
-    z-index: 51391;
     height: 805px;
     width: 503px;
     bottom: 71px;
+    z-index: 9;
     left: 9px;
 }
 
@@ -58,6 +58,16 @@ body{
     background-color: #2121257e;
     backdrop-filter: blur(19.5px);
     border-radius: 9px;
+}
+
+.winbox.min {
+    background-color: #212125;
+    backdrop-filter: blur(0px);
+    border-radius: 0px;
+    position: absolute;
+    box-shadow: none;
+    height: 61px;
+    left: 0px;
 }
 
 .wb-body {
@@ -79,11 +89,6 @@ body{
 
 .wb-full {
     display: none;
-}
-
-.winbox.min {
-    border-radius: 0;
-    top: 0px;
 }
 
 .Tile{
@@ -114,7 +119,43 @@ body{
     color: white;
 }
 
+#ContextMenu{
+    background-color: #212125;
+    position: absolute;
+    border-radius: 5px;
+    display: none;
+    padding: 5px;
+    width: 141px;
+    z-index: 13;
+}
+.CtxMenuElement{
+    background-color: #212125;
+    border-radius: 3px;
+    color: white;
+    border: none;
+    padding: 9px;
+    width: 139px;
+}
+.CtxMenuElement:hover{
+    background-color: #0E0E13;
+}
+#Notification{
+    background-color: #212125;
+    visibility: hidden;
+    position: absolute;
+    color: white;
+    padding: 13px 25px 13px 25px;
+    bottom: 71px;
+    height: auto;
+    border: none;
+    z-index: 953;
+    resize: none;
+    right: 5px;
+}
+#PreIFRAME{
+    display: none;
+}
 *{
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: "metropolis" , sans-serif;
     cursor: url("/System/Assets/Cursor.png") , default;
 }

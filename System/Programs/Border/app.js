@@ -7,9 +7,9 @@ class Border {
             this.#Files.config = {
                 theme: {
                     currentTheme: "default",
-                    primary: "#ffffff24",
-                    secondary: "#ffffff30",
-                    Text: "#fffff",
+                    primary: "#00000020",
+                    secondary: "#aaaaaa20",
+                    Text: "#ffffff",
                 },
                 window: {
                     customTitlebar: true,
@@ -35,7 +35,7 @@ class Border {
     #tabId = [];
     #browserBody;
 
-    version = "1.10";
+    version = "1.10 Selaria MountainChain";
 
     keybinds = [
         {

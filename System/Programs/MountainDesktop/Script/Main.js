@@ -1,3 +1,5 @@
+var ContextMenu = document.getElementById("ContextMenu");
+
 function ToggleStartMenu(){
     var StartMenu = document.getElementById("StartMenu");
         if(StartMenu.style.visibility=="hidden")
@@ -23,7 +25,7 @@ function GenerateUniqueId(){
 function CreateWindow(Data){
     var App = new WinBox({
         border: "0px",
-        url: Data.URL,
+        url: "/System/Programs/" + Data.Name + "/App.html",
         title: Data.Title,
         x: "center",
         y: "center",
@@ -34,10 +36,48 @@ function CreateWindow(Data){
 }
 
 /*{
-"URL" : ... ,
+"Name" : ... ,
 "Title" : ... ,
 "Icon" : ...
 }*/
+
+function SetContextMenuContent(Content){
+    ContextMenu.innerHTML = "" ;
+    for(ContextButton in Content){
+        var Element = document.createElement("button");
+        Element.className = "CtxMenuElement";
+        Element.innerHTML = ContextButton.Text;
+        Element.addEventListener("click" , eval(ContextButton.Event));
+        ContextMenu.appendChild(Element);
+    }
+}
+
+/*
+[
+    {
+        "Text" : "Example element !",
+        "Event" : "parent.SetShell('SelariaDesktop');"
+    },
+    {
+        "Text" : "Other element !",
+        "Event" : "parent.document.location.href='/';"
+    }
+]
+*/
+
+document.addEventListener("contextmenu" , (event) => {
+    event.preventDefault();
+    var ContextMenu = document.getElementById("ContextMenu");
+    ContextMenu.style.left = event.clientX+"px";
+    ContextMenu.style.top = event.clientY+"px";
+    ContextMenu.style.display = "block";
+});
+
+document.addEventListener("click" , function(){
+    if(document.getElementById("ContextMenu").style.display == "block"){
+        ContextMenu.style.display = "none";
+    }
+})
 
 //FIX ME !
 
@@ -59,6 +99,28 @@ for( Item in Softwares.keys()){
     </div>
     `
 }
+
+function ShowNotification(Data){
+    notification_to_execute = Data.Event;
+    document.getElementById("Notification").style.textAlign = "center";
+    document.getElementById("NotificationTitle").style.fontWeight = "bold";
+    document.getElementById("NotificationTitle").innerHTML = Data.Title;
+    document.getElementById("Notification").style.visibility = "visible";
+    document.getElementById("NotificationMessage").style.fontWeight = "normal";
+    document.getElementById("NotificationMessage").innerHTML = Data.Text;
+    setTimeout(function(){
+        document.getElementById("Notification").style.visibility = "hidden";
+        document.getElementById("Notification").style.textAlign = "left";
+    }, 5000);
+}
+
+function Reload(){
+    document.location.href = document.location.href ;
+}
+
+// Have to add a security when called !
+var Kernel = parent;
+var Shell = this;
 
 /*{
     'ID' : Identifiant ,
