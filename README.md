@@ -1,5 +1,5 @@
 # SelariaMountainChain
 
-**This is a closed beta , don't puslish any images or code part of Selaria Mountain Range !**
+**This is a public beta , things can be instable !**
 
-![image](https://user-images.githubusercontent.com/77587065/196040880-7931f632-3dfa-42f2-96a8-7a35a18a49b8.png)
+![image](https://user-images.githubusercontent.com/77587065/201537243-ebae18c9-9196-4e8d-9c1a-66cc88221721.png)
