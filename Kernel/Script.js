@@ -33,6 +33,9 @@ function CreateMainApp(ApplicationName){
 function ReloadShell(){
     document.getElementById("DE").src = document.getElementById("DE").src;
 }
+function Reload(){
+    document.location.href = "/" ;
+}
 var ShellElement = document.getElementById("DE");
 var Shell = document.getElementById("DE").contentWindow;
 var Kernel = this;
