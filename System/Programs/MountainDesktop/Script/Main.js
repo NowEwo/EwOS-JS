@@ -1,4 +1,5 @@
 var ContextMenu = document.getElementById("ContextMenu");
+var Software = {};
 
 function ToggleStartMenu(){
     var StartMenu = document.getElementById("StartMenu");
@@ -23,22 +24,33 @@ function GenerateUniqueId(){
 }
 
 function CreateWindow(Data){
+    var UID = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    if(Data.Name == undefined){
+        var URL = Data.URL + "?ID=" + UID;
+    }else{
+        var URL = "/System/Programs/" + Data.Name + "/App.html?ID=" + UID;
+    }
     var App = new WinBox({
         border: "0px",
-        url: "/System/Programs/" + Data.Name + "/App.html",
+        url: "/System/Programs/" + Data.Name + "/App.html?ID=" + UID + "&" + Data.Arguments,
         title: Data.Title,
         x: "center",
         y: "center",
         bottom: "63px",
         root: document.body,
-        icon: Data.Icon
+        icon: Data.Icon,
+        id: UID
     });
+    Software[UID] = document.getElementById(UID).querySelectorAll("iframe")[0].contentWindow;
+    ToggleStartMenu();
+    console.warn("New window : " + Data.Name + " as " + Data.Title + " ... Attributed Uid : " + UID);
 }
 
 /*{
-"Name" : ... ,
+"Name/URL" : ... ,
 "Title" : ... ,
-"Icon" : ...
+"Icon" : ... ,
+"Arguments" : ...
 }*/
 
 function SetContextMenuContent(Content){
@@ -77,7 +89,7 @@ document.addEventListener("click" , function(){
     if(document.getElementById("ContextMenu").style.display == "block"){
         ContextMenu.style.display = "none";
     }
-})
+});
 
 //FIX ME !
 
@@ -112,6 +124,14 @@ function ShowNotification(Data){
         document.getElementById("Notification").style.visibility = "hidden";
         document.getElementById("Notification").style.textAlign = "left";
     }, 5000);
+}
+
+function DropEvent(Data){
+    CreateWindow({
+        "URL" : Data,
+        "Title" : "",
+        "Icon" : "",
+    })
 }
 
 function Reload(){

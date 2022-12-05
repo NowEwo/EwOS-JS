@@ -1,0 +1,35 @@
+html , body{
+    overflow: hidden;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+#ContextMenu{
+    background-color: #212125;
+    position: absolute;
+    border-radius: 5px;
+    display: none;
+    padding: 5px;
+    width: 141px;
+    z-index: 13;
+}
+.CtxMenuElement{
+    background-color: #212125;
+    border-radius: 3px;
+    color: white;
+    border: none;
+    padding: 9px;
+    width: 139px;
+}
+.CtxMenuElement:hover{
+    background-color: #0E0E13;
+}
+textarea{
+    background-color: transparent;
+    font-size: large;
+    color: white;
+    border: none;
+}
+textarea:focus-visible{
+    inline-size: 0px;
+}
