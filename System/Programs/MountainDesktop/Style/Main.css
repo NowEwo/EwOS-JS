@@ -70,6 +70,10 @@ body{
     right: 9px;
 }
 
+#Grab:hover{
+    background: #56526d;
+}
+
 .winbox {
     background-color: #2121257e;
     backdrop-filter: blur(19.5px);

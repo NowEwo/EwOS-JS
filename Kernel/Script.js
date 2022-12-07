@@ -4,6 +4,10 @@ if(localStorage["BootArguments"] == undefined){
         "Shell": "MountainDesktop"
     })
 }
+<<<<<<< Updated upstream
+=======
+var FSHandler = new FFS("SelariaHD");
+>>>>>>> Stashed changes
 var BootArguments = JSON.parse(localStorage["BootArguments"]);
 var Video = document.getElementById("StartingAnimation");
 Video.addEventListener("click", function(){

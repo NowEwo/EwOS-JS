@@ -23,7 +23,17 @@ function GenerateUniqueId(){
 }
 
 function CreateWindow(Data){
+<<<<<<< Updated upstream
     var App = new WinBox({
+=======
+    var UID = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    if(Data.Name == undefined){
+        var URL = Data.URL + "?ID=" + UID;
+    }else{
+        var URL = "/System/Programs/" + Data.Name + "/App.html?ID=" + UID;
+    }
+    Software[UID] = new WinBox({
+>>>>>>> Stashed changes
         border: "0px",
         url: "/System/Programs/" + Data.Name + "/App.html",
         title: Data.Title,
@@ -31,14 +41,40 @@ function CreateWindow(Data){
         y: "center",
         bottom: "63px",
         root: document.body,
+<<<<<<< Updated upstream
         icon: Data.Icon
     });
+=======
+        icon: Data.Icon,
+        id: UID,
+        onclose: function(){
+            delete Software[this.id];
+        }
+    });
+    Software[UID].Inside = document.getElementById(UID).querySelectorAll("iframe")[0].contentWindow ;
+    Shell.Software[UID].Hide = () => {
+        Shell.Software[UID].Window.style.visibility = "hidden" ;
+    } ;
+    Shell.Software[UID].Show = () => {
+        Shell.Software[UID].Window.style.visibility = "visible" ;
+    } ;
+    console.warn("New window : " + Data.Name + " as " + Data.Title + " ... Attributed Uid : " + UID);
+    if(Data.NoMenu == undefined){
+        ToggleStartMenu();
+    }
+>>>>>>> Stashed changes
 }
 
 /*{
 "Name" : ... ,
 "Title" : ... ,
+<<<<<<< Updated upstream
 "Icon" : ...
+=======
+"Icon" : ... ,
+"Arguments" : ... ,
+"NoMenu" : ...
+>>>>>>> Stashed changes
 }*/
 
 function SetContextMenuContent(Content){
@@ -46,8 +82,8 @@ function SetContextMenuContent(Content){
     for(ContextButton in Content){
         var Element = document.createElement("button");
         Element.className = "CtxMenuElement";
-        Element.innerHTML = ContextButton.Text;
-        Element.addEventListener("click" , eval(ContextButton.Event));
+        Element.innerHTML = Content[ContextButton].Text;
+        Element.addEventListener("click" , eval(Content[ContextButton].Event));
         ContextMenu.appendChild(Element);
     }
 }
@@ -116,6 +152,15 @@ function ShowNotification(Data){
 
 function Reload(){
     document.location.href = document.location.href ;
+}
+
+var ToggleDesktopMinimizeState = true ;
+
+function ToggleDesktop(){
+    for(WindowElement in Software){
+        Software[WindowElement].minimize(ToggleDesktopMinimizeState);
+    }
+    ToggleDesktopMinimizeState = !ToggleDesktopMinimizeState ;
 }
 
 // Have to add a security when called !
