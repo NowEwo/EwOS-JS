@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/Kernel/FileSystem.js"></script>
+    <script src="/Kernel/Connector.js"></script>
+    <link rel="stylesheet" href="Style.css">
+    <title>File manager</title>
+</head>
+<body>
+    <div id="NavBar">
+        <input type="text" name="" id="PathInput" placeholder="Enter the path to your folder !">
+        <div class="Right">
+            <button onclick="FileSystem.changeDir('..');ViewFile(FileSystem.CWD());">Back</button>
+            <button onclick="FileSystem.changeDir(document.getElementById('PathInput').value);ViewFile(document.getElementById('PathInput').value);">Go</button>
+        </div>
+    </div>
+    <div id="ManagerView" onload="ViewFile('/');">
+    </div>
+    <div id="ContextMenuGlobal">
+        <button class="CtxMenuElement" onclick="FileSystem.createDir(FileSystem.CWD() , prompt('Directory name ?'));ViewFile(FileSystem.CWD());">Create a directory</button>
+        <button class="CtxMenuElement" onclick="FileSystem.createFile(FileSystem.CWD() , prompt('File name ?'));ViewFile(FileSystem.CWD());">Create a file</button>
+    </div>
+    <div id="ContextMenuObject">
+        <button class="CtxMenuElement" id="DeleteButton">Delete</button>
+        <button class="CtxMenuElement" id="RenameButton">Rename</button>
+    </div>
+</body>
+<script src="Script.js"></script>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../apps UI/ui.css">
+    <title>Document</title>
+    <style>
+        h1, h2, h3, h4, h5, h6, p, a{
+            font-style: normal;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        * {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <img src="../ressources/logo/logo.png" width="135px" height="135px">
+    <h1>à propos</h1>
+    <p><strong>made by :</strong> Yannou</p>
+    <p><strong>year :</strong> 2022</p>
+    <p><strong>language : </strong><span id="LANGUAGE"></span></p>
+    <p><strong>online : </strong><span id="ONLINE"></span></p>
+    <p><strong>Windows manager : </strong>Winbox.JS</p>
+    <p><strong>Web browser : </strong>Border (Onofficiel) !</p>
+</body>
+<script>
+    document.getElementById("LANGUAGE").innerHTML = navigator.language;
+    document.getElementById("ONLINE").innerHTML = navigator.onLine;
+</script>
+</html>

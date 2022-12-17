@@ -1,0 +1,161 @@
+@import url("https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/metropolis.min.css");
+
+body{
+    background-image: url("/System/Assets/Background.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+}
+
+.Taskbar{
+    background-color: #212125;
+    display: inline-block;
+    position: absolute;
+    height: 63px;
+    width: 100%;
+    bottom: 0px;
+}
+
+.StartButton{
+    border-radius: 9px;
+    position: absolute;
+    padding: 5px;
+    left: 5px;
+    top: 9px;
+}
+
+.StartButton:hover{
+    background-color: #0e0e13;
+}
+
+#StartMenu{
+    background-color: #212125;
+    border-radius: 13px;
+    visibility: hidden;
+    position: absolute;
+    height: 805px;
+    width: 503px;
+    bottom: 71px;
+    z-index: 9;
+    left: 9px;
+}
+
+#Grab{
+    background: #39364B;
+    border-radius: 3px;
+    position: absolute;
+    height: 41px;
+    bottom: 10.9px;
+    width: 5px;
+    right: 9px;
+}
+
+.winbox {
+    background-color: #2121257e;
+    backdrop-filter: blur(19.5px);
+    border-radius: 9px;
+}
+
+.winbox.min {
+    background-color: #212125;
+    backdrop-filter: blur(0px);
+    border-radius: 0px;
+    position: absolute;
+    box-shadow: none;
+    height: 61px;
+    left: 0px;
+}
+
+.wb-body {
+    border-radius: 0px 0px 9px 9px;
+    background-color: transparent;
+}
+
+.wb-min {
+    background-image: url("/System/Assets/Window/Minimize.svg");
+}
+
+.wb-max {
+    background-image: url("/System/Assets/Window/Maximize.svg");
+}
+
+.wb-close {
+    background-image: url("/System/Assets/Window/Close.svg");
+}
+
+.wb-full {
+    display: none;
+}
+
+.Tile{
+    border-radius: 13px;
+    padding: 9px;
+    margin: 29px;
+}
+
+.Tile:hover{
+    background-color: #2E2E38;
+}
+
+.Tile .Title{
+    font-weight: lighter;
+    font-size: xx-large;
+    color: white;
+    margin: 0px;
+}
+
+.Tile .Subtitle{
+    font-weight: lighter;
+    color: white;
+}
+
+#Username{
+    font-weight: lighter;
+    font-size: large;
+    color: white;
+}
+
+#ContextMenu{
+    background-color: #212125;
+    position: absolute;
+    border-radius: 5px;
+    display: none;
+    padding: 5px;
+    width: 141px;
+    z-index: 13;
+}
+.CtxMenuElement{
+    background-color: #212125;
+    border-radius: 3px;
+    color: white;
+    border: none;
+    padding: 9px;
+    width: 139px;
+}
+.CtxMenuElement:hover{
+    background-color: #0E0E13;
+}
+#Notification{
+    background-color: #212125;
+    visibility: hidden;
+    position: absolute;
+    color: white;
+    padding: 13px 25px 13px 25px;
+    bottom: 71px;
+    height: auto;
+    border: none;
+    z-index: 953;
+    resize: none;
+    right: 5px;
+}
+#PreIFRAME{
+    display: none;
+}
+*{
+    font-family: "metropolis" , sans-serif;
+    cursor: url("/System/Assets/Cursor.png") , default;
+}
