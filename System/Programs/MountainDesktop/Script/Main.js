@@ -147,6 +147,7 @@ document.getElementById("Grab").addEventListener("contextmenu" , (Event) => {
     for(ID in Software){
         Software[ID].close();
     }
+    ContextMenu.style.display = "none";
 });
 
 // Have to add a security when called !
