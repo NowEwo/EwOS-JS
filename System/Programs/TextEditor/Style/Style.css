@@ -4,16 +4,7 @@ html , body{
     padding: 0px;
     margin: 0px;
 }
-#ContextMenu{
-    background-color: #212125;
-    position: absolute;
-    border-radius: 5px;
-    display: none;
-    padding: 5px;
-    width: 141px;
-    z-index: 13;
-}
-.CtxMenuElement{
+.MenuElement{
     background-color: #212125;
     border-radius: 3px;
     color: white;
@@ -21,15 +12,17 @@ html , body{
     padding: 9px;
     width: 139px;
 }
-.CtxMenuElement:hover{
+.MenuElement:hover{
     background-color: #0E0E13;
 }
 textarea{
     background-color: transparent;
-    font-size: large;
+    height: calc(100%-35px);
+    position: absolute;
+    font-size: larger;
     color: white;
+    width : 100%;
     border: none;
-}
-textarea:focus-visible{
-    inline-size: 0px;
+    bottom: 0px;
+    top: 35px;
 }

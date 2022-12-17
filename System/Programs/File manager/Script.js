@@ -20,7 +20,8 @@ function ViewFile(Path){
                     "Name" : "TextEditor" ,
                     "Title" : "Text Editor : "+FileSystem.CWD()+event.target.innerHTML ,
                     "Icon" : "" ,
-                    "Arguments" : "FileURL="+FFS.getFullPath(event.target.innerHTML)
+                    "Arguments" : "FileURL="+FileSystem.CWD()+event.target.innerHTML ,
+                    "NoMenu" : ""
                 });
             }
         })
@@ -42,6 +43,11 @@ document.addEventListener("contextmenu" , (event) => {
     ContextMenu.style.display = "block";
     document.getElementById("DeleteButton").addEventListener("click" , () => {
         FileSystem.delete(event.target.innerHTML);
+        ViewFile(FileSystem.CWD());
+    });
+    document.getElementById("RenameButton").addEventListener("click" , () => {
+        var NewName = prompt("New name ?");
+        FileSystem.move(event.target.innerHTML , NewName);
         ViewFile(FileSystem.CWD());
     });
 });

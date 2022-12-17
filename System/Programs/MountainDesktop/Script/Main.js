@@ -30,7 +30,7 @@ function CreateWindow(Data){
     }else{
         var URL = "/System/Programs/" + Data.Name + "/App.html?ID=" + UID;
     }
-    var App = new WinBox({
+    Software[UID] = new WinBox({
         border: "0px",
         url: "/System/Programs/" + Data.Name + "/App.html?ID=" + UID + "&" + Data.Arguments,
         title: Data.Title,
@@ -39,10 +39,15 @@ function CreateWindow(Data){
         bottom: "63px",
         root: document.body,
         icon: Data.Icon,
-        id: UID
+        id: UID,
+        onclose: function(){
+            delete Software[UID];
+        }
     });
-    Software[UID] = document.getElementById(UID).querySelectorAll("iframe")[0].contentWindow;
-    ToggleStartMenu();
+    Software[UID].Software = document.getElementById(UID).querySelectorAll("iframe")[0].contentWindow;
+    if(Data.NoMenu == undefined){
+        ToggleStartMenu();
+    }
     console.warn("New window : " + Data.Name + " as " + Data.Title + " ... Attributed Uid : " + UID);
 }
 
