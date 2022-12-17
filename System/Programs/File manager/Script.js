@@ -18,9 +18,9 @@ function ViewFile(Path){
             if(FileSystem.isRegularFile(event.target.innerHTML)){
                 parent.CreateWindow({
                     "Name" : "TextEditor" ,
-                    "Title" : "Text Editor : "+FileSystem.CWD()+event.target.innerHTML ,
+                    "Title" : "Text Editor : "+FileSystem.CWD()+"/"+event.target.innerHTML ,
                     "Icon" : "" ,
-                    "Arguments" : "FileURL="+FileSystem.CWD()+event.target.innerHTML ,
+                    "Arguments" : "FileURL="+FileSystem.CWD()+"/"+event.target.innerHTML ,
                     "NoMenu" : ""
                 });
             }

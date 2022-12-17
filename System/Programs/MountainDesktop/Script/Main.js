@@ -44,7 +44,7 @@ function CreateWindow(Data){
             delete Software[UID];
         }
     });
-    Software[UID].Software = document.getElementById(UID).querySelectorAll("iframe")[0].contentWindow;
+    Software[UID].Controller = document.getElementById(UID).querySelectorAll("iframe")[0].contentWindow;
     if(Data.NoMenu == undefined){
         ToggleStartMenu();
     }
@@ -96,18 +96,7 @@ document.addEventListener("click" , function(){
     }
 });
 
-//FIX ME !
-
-localforage.setDriver(localforage.INDEXEDDB);
-
-var Softwares = localforage.createInstance({
-    name: "Softwares"
-});
-
-function InstallSoftware(Data){
-    Softwares[Data.ID] = Data
-}
-
+/*
 for( Item in Softwares.keys()){
     document.getElementById("StartMenu").innerHTML = document.getElementById("StartMenu").innerHTML + `
     <div class="Tile" onclick="CreateWindow({'Title':${Item.Title},'URL':${Item.URL},'Icon':${Item.Icon}})">
@@ -116,6 +105,7 @@ for( Item in Softwares.keys()){
     </div>
     `
 }
+*/
 
 function ShowNotification(Data){
     notification_to_execute = Data.Event;
@@ -142,6 +132,22 @@ function DropEvent(Data){
 function Reload(){
     document.location.href = document.location.href ;
 }
+
+var HideState = true ;
+
+document.getElementById("Grab").addEventListener("click" , function(){
+    for(ID in Software){
+        Software[ID].minimize(HideState);
+    }
+    HideState = !HideState ;
+});
+
+document.getElementById("Grab").addEventListener("contextmenu" , (Event) => {
+    Event.preventDefault();
+    for(ID in Software){
+        Software[ID].close();
+    }
+});
 
 // Have to add a security when called !
 var Kernel = parent;
