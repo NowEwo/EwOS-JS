@@ -26,13 +26,13 @@ function GenerateUniqueId(){
 function CreateWindow(Data){
     var UID = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
     if(Data.Name == undefined){
-        var URL = Data.URL + "?ID=" + UID;
+        var URL = Data.URL + "?ID=" + UID + "?" + Data.Arguments;
     }else{
-        var URL = "/System/Programs/" + Data.Name + "/App.html?ID=" + UID;
+        var URL = "/System/Programs/" + Data.Name + "/App.html?ID=" + UID + "?" + Data.Arguments;
     }
     Software[UID] = new WinBox({
         border: "0px",
-        url: "/System/Programs/" + Data.Name + "/App.html?ID=" + UID + "&" + Data.Arguments,
+        url: URL,
         title: Data.Title,
         x: "center",
         y: "center",
