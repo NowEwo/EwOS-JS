@@ -44,11 +44,26 @@ function CreateWindow(Data){
             delete Software[UID];
         }
     });
-    Software[UID].Controller = document.getElementById(UID).querySelectorAll("iframe")[0].contentWindow;
+    Software[UID].UID = UID ;
+    Software[UID].Controller = document.getElementById(UID).querySelectorAll("iframe")[0].contentWindow ;
+    Software[UID].SetBlank = () => {
+        Software[UID].Controller.document.location.href = "about:blank" ;
+    }
+    Software[UID].Controller.ContextWindow = Shell.Software[UID] ;
+    Software[UID].Controller.Kernel = Kernel ;
+    Software[UID].Controller.Shell = Shell ;
+    Software[UID].onhide = () => {
+        Shell.ShowNotification({
+            "Title" : Software[UID].title+" ("+UID+") information !" ,
+            "Text" : "The software "+Software[UID].title+" run in background ! Click to show it !" ,
+            "Event" : "Software['"+UID+"'].show(true);"
+        });
+    }
     if(Data.NoMenu == undefined){
         ToggleStartMenu();
     }
     console.warn("New window : " + Data.Name + " as " + Data.Title + " ... Attributed Uid : " + UID);
+    return Software[UID];
 }
 
 /*{
