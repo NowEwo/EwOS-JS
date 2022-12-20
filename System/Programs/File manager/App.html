@@ -21,6 +21,7 @@
     <div id="ContextMenuGlobal">
         <button class="CtxMenuElement" onclick="FileSystem.createDir(FileSystem.CWD() , prompt('Directory name ?'));ViewFile(FileSystem.CWD());">Create a directory</button>
         <button class="CtxMenuElement" onclick="FileSystem.createFile(FileSystem.CWD() , prompt('File name ?'));ViewFile(FileSystem.CWD());">Create a file</button>
+        <button class="CtxMenuElement" onclick="ShowHiddenFiles()">Show hidden files</button>
         <button class="CtxMenuElement" onclick="ViewFile(FileSystem.CWD());">Reload</button>
     </div>
     <div id="ContextMenuObject">

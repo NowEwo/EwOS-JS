@@ -40,7 +40,6 @@ body{
     height: 805px;
     width: 503px;
     bottom: 71px;
-    z-index: 9;
     left: 9px;
 }
 
@@ -72,6 +71,10 @@ body{
     box-shadow: none;
     height: 61px;
     left: 0px;
+}
+
+.wb-title {
+    font-family: "Metropolis" , sans-serif;
 }
 
 .wb-body {

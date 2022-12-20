@@ -6,13 +6,27 @@ function ViewFile(Path){
     document.getElementById("PathInput").value = FileSystem.CWD();
     document.getElementById("ManagerView").innerText = "" ;
     for(File in FileSystem.getDirContent(Path).result){
+        if(FileSystem.isRegularFile(FileSystem.getDirContent(Path).result[File].name)){
+            var Type = "File" ;
+        }else{
+            var Type = "Folder" ;
+        }
+        var Color = "white" ;
         Buttons[File] = document.createElement("button");
-        Buttons[File].innerHTML = FileSystem.getDirContent(Path).result[File].name;
+        if(FileSystem.getDirContent(Path).result[File].name.slice(0 , 1) == "#"){
+            Buttons[File].style.display = "none" ;
+            var Color = "grey" ;
+        }
+        Buttons[File].innerHTML = `
+<p style="color:${Color}">${FileSystem.getDirContent(Path).result[File].name}</p>
+<p style="color:grey">${Type}</p>
+        ` ;
         Buttons[File].addEventListener("click" , (event) => {
             FileSystem.changeDir(event.target.innerHTML);
             Buttons = [];
             ViewFile(FileSystem.CWD());
-        })
+        });
+        Buttons[File].FileName = FileSystem.getDirContent(Path).result[File].name ;
         Buttons[File].className = "ObjectButton";
         Buttons[File].addEventListener("click" , (event) => {
             if(FileSystem.isRegularFile(event.target.innerHTML)){
@@ -29,6 +43,14 @@ function ViewFile(Path){
     }
 }
 
+function ShowHiddenFiles(){
+    for(Element in Buttons){
+        if(Buttons[Element].style.display = "none"){
+            Buttons[Element].style.display = "inline" ;
+        }
+    }
+}
+
 document.addEventListener("contextmenu" , (event) => {
     event.preventDefault();
     if(event.target.className == "ObjectButton"){
@@ -42,13 +64,23 @@ document.addEventListener("contextmenu" , (event) => {
     ContextMenu.style.top = event.clientY+"px";
     ContextMenu.style.display = "block";
     document.getElementById("DeleteButton").addEventListener("click" , () => {
-        FileSystem.delete(event.target.innerHTML);
-        ViewFile(FileSystem.CWD());
+        try{
+            var FileName = event.target.FileName ;
+            FileSystem.delete(FileName);
+            ViewFile(FileSystem.CWD());
+        }catch(Errors){
+            
+        }
     });
     document.getElementById("RenameButton").addEventListener("click" , () => {
-        var NewName = prompt("New name ?");
-        FileSystem.move(event.target.innerHTML , NewName);
-        ViewFile(FileSystem.CWD());
+        try{
+            var FileName = event.target.FileName ;
+            var NewName = prompt("New name ?");
+            FileSystem.move(FileName , NewName);
+            ViewFile(FileSystem.CWD());
+        }catch(Errors){
+
+        }
     });
 });
 

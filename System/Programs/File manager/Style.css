@@ -23,7 +23,7 @@ button:hover , input:hover{
     top: 39px;
 }
 #ManagerView button{
-    height: 51px;
+    padding: 9px 39px 9px 39px;
 }
 #PathInput{
     position: absolute;
