@@ -14,16 +14,15 @@
     
 </body>
 <script>
+    var FileSystem = new FFS("SelariaHD");
     jQuery(function($, undefined) {
-     var Terminal = $('body').terminal(function(command) {
-      if (command !== '') {
-        try {
-          var result = eval(command);
-          if (result !== undefined) {
-            this.echo(new String(result));
-          }
-        } catch(e) {
-          this.error(new String(e));
+     var Terminal = $('body').terminal(function(Command) {
+      if (Command !== '') {
+        if(FileSystem.isRegularFile("/System/Commands/"+Command.split(" ")[0]+".cmd")){
+          var Result = eval(FileSystem.getFileContent("/System/Commands/"+Command.split(" ")[0]+".cmd").result) ;
+          this.echo(Result);
+        }else{
+          this.echo(new String(eval(Command)));
         }
       }
     }, {

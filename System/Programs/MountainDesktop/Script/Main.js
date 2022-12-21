@@ -82,8 +82,8 @@ function SetContextMenuContent(Content){
     for(ContextButton in Content){
         var Element = document.createElement("button");
         Element.className = "CtxMenuElement";
-        Element.innerHTML = ContextButton.Text;
-        Element.addEventListener("click" , eval(ContextButton.Event));
+        Element.innerHTML = Content[ContextButton].Text;
+        Element.addEventListener("click" , new Function(Content[ContextButton].Event));
         ContextMenu.appendChild(Element);
     }    
 }    
