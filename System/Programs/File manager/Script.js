@@ -43,6 +43,12 @@ function ViewFile(Path){
     }
 }
 
+function LoadPartition(){
+    var PartitionName = prompt("Partition name ?");
+    FileSystem = new FFS(PartitionName);
+    ViewFile("/");
+}
+
 function ShowHiddenFiles(){
     for(Element in Buttons){
         if(Buttons[Element].style.display = "none"){

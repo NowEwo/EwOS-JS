@@ -226,17 +226,36 @@ document.getElementById("Grab").addEventListener("contextmenu", (Event) => {
   ContextMenu.style.display = "none";
 });
 
-if (FileSystem.fileExists("/System/OnBoot.json")) {
-  var OnBoot = JSON.parse(
-    FileSystem.getFileContent("/System/OnBoot.json").result
-  );
-  for (Script in OnBoot.Scripts) {
-    Kernel.eval(FileSystem.getFileContent(OnBoot.Scripts[Script]).result);
-    console.warn(
-      "The script on the path " + OnBoot.Scripts[Script] + " is executed !"
+function BootScripts(){
+  if (FileSystem.fileExists("/System/OnBoot.json")) {
+    var OnBoot = JSON.parse(
+      FileSystem.getFileContent("/System/OnBoot.json").result
     );
+    for (Script in OnBoot.Scripts) {
+      Kernel.eval(FileSystem.getFileContent(OnBoot.Scripts[Script]).result);
+      console.warn(
+        "The script on the path " + OnBoot.Scripts[Script] + " is executed !"
+      );
+    }
   }
 }
+
+function ReloadConfig(){
+  if (FileSystem.fileExists("/System/Config.json")) {
+    var Config = JSON.parse(
+      FileSystem.getFileContent("/System/Config.json").result
+    );
+    for(Value in Config.Kernel){
+      Kernel.eval(Value+" = `"+Config.Kernel[Value]+"` ;");
+    };
+    for(Value in Config.Shell){
+      Shell.eval(Value+" = `"+Config.Shell[Value]+"` ;");
+    };
+  }
+}
+
+BootScripts();
+ReloadConfig();
 
 Shell.document.title = Shell.document.location.href;
 

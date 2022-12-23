@@ -21,35 +21,30 @@
     var FileSystem = parent.FileSystem;
     var Shell = this;
     var Kernel = parent;
-    jQuery(function ($, undefined) {
-      var Terminal = $("body").terminal(
-        function (Command) {
-          if (Command !== "") {
-            try {
-              var Result = eval(
-                FileSystem.getFileContent(
-                  "/System/Commands/" + Command + ".cmd"
-                ).result
-              );
-            } catch (Errors) {
-              this.echo(
-                "Can't find command " + Command + " , executing JavaScript !"
-              );
-              try {
-                var Result = eval(Command);
-              } catch (JavascriptErrors) {
-                this.error(new String(JavascriptErrors));
-              }
-            }
-            this.echo(new String(Result));
-          }
-        },
-        {
-          greetings: "Selaria MountainRange terminal",
-          prompt: "MountainRange> ",
-          color: "White",
+    if(ContextWindow.Prompt == undefined){
+      ContextWindow.Prompt = "MountainRange> " ;
+    }
+    if(ContextWindow.Greetings == undefined){
+      if(ContextWindow.Controlled != undefined){
+        ContextWindow.Greetings = "Selaria MountainRange terminal ( Controlled by software ! )" ;
+      }else{
+        ContextWindow.Greetings = "Selaria MountainRange terminal" ;
+      }
+    }
+    var Terminal = $('body').terminal(function(Command) {
+      if (Command !== '') {
+        if(FileSystem.isRegularFile("/System/Commands/"+Command.split(" ")[0]+".cmd")){
+          var Result = eval(FileSystem.getFileContent("/System/Commands/"+Command.split(" ")[0]+".cmd").result) ;
+          this.echo(Result);
+        }else{
+          this.echo(new String(eval(Command)));
         }
-      );
-    });
+      }
+    }, {
+     greetings: 'Selaria MountainRange terminal',
+     prompt: ContextWindow.Prompt,
+     completion: true,
+     color: 'White'
+     });
   </script>
 </html>

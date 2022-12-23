@@ -19,6 +19,7 @@
     <div id="ManagerView" onload="ViewFile('/');">
     </div>
     <div id="ContextMenuGlobal">
+        <button class="CtxMenuElement" onclick="LoadPartition();">Load another partition</button>
         <button class="CtxMenuElement" onclick="FileSystem.createDir(FileSystem.CWD() , prompt('Directory name ?'));ViewFile(FileSystem.CWD());">Create a directory</button>
         <button class="CtxMenuElement" onclick="FileSystem.createFile(FileSystem.CWD() , prompt('File name ?'));ViewFile(FileSystem.CWD());">Create a file</button>
         <button class="CtxMenuElement" onclick="ShowHiddenFiles()">Show hidden files</button>
