@@ -33,7 +33,7 @@ function ViewFile(Path){
                 parent.CreateWindow({
                     "Name" : "TextEditor" ,
                     "Title" : "Text Editor : "+FileSystem.CWD()+"/"+event.target.innerHTML ,
-                    "Icon" : "" ,
+                    "Icon" : "/System/Assets/Softwares/TextEditor/Icon.svg" ,
                     "Arguments" : "FileURL="+FileSystem.CWD()+"/"+event.target.innerHTML ,
                     "NoMenu" : ""
                 });

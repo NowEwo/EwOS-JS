@@ -24,6 +24,7 @@ body{
     border-radius: 9px;
     position: absolute;
     padding: 5px;
+    z-index: 3;
     left: 5px;
     top: 9px;
 }
@@ -37,18 +38,50 @@ body{
     border-radius: 13px;
     visibility: hidden;
     position: absolute;
-    height: 805px;
+    max-height: 801px;
     width: 503px;
     bottom: 71px;
     left: 9px;
+}
+
+#TaskbarSoftwares{
+    display: inline-block;
+    text-align: center;
+    position: absolute;
+    height: 63px;
+    width: 100%;
+    z-index: 1;
+}
+
+#TaskbarSoftwares button{
+    background-color: transparent;
+    display: inline-block;
+    position: relative;
+    height: 63px;
+    border: none;
+    width: 63px;
+    top: 0px;
+}
+
+#TaskbarSoftwares button[Minimized = "true"]{
+    opacity: 0.51;
+}
+
+#TaskbarSoftwares button[Focused = "true"]{
+    background-color: #252531;
+}
+
+#TaskbarSoftwares button:hover{
+    background-color: #0e0e13;
 }
 
 #Grab{
     background: #39364B;
     border-radius: 3px;
     position: absolute;
-    height: 41px;
     bottom: 10.9px;
+    height: 41px;
+    z-index: 3;
     width: 5px;
     right: 9px;
 }
