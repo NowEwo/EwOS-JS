@@ -40,7 +40,7 @@ function CreateWindow(Data) {
     y: "center",
     bottom: "63px",
     root: document.body,
-    icon: Data.Icon,
+    icon: "/System/Assets/Softwares/"+Data.Name+"/Icon.svg",
     id: UID,
     onclose: function(){
       delete Software[UID];
@@ -58,8 +58,13 @@ function CreateWindow(Data) {
       ReloadTaskbar();
     }
   });
+  if(Data.Icon != undefined){
+    Software[UID].setIcon(Data.Icon);
+    Software[UID].Icon = Data.Icon;
+  }else{
+    Software[UID].Icon = "/System/Assets/Softwares/"+Data.Name+"/Icon.svg" ;
+  }
   Software[UID].UID = UID;
-  Software[UID].Icon = Data.Icon ;
   Software[UID].Controller = document
     .getElementById(UID)
     .querySelectorAll("iframe")[0].contentWindow;
