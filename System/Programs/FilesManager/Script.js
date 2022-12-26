@@ -30,13 +30,14 @@ function ViewFile(Path){
         Buttons[File].className = "ObjectButton";
         Buttons[File].addEventListener("click" , (event) => {
             if(FileSystem.isRegularFile(event.target.innerHTML)){
-                parent.CreateWindow({
+                var TextEditor = parent.CreateWindow({
                     "Name" : "TextEditor" ,
                     "Title" : "Text Editor : "+FileSystem.CWD()+"/"+event.target.innerHTML ,
                     "Icon" : "/System/Assets/Softwares/TextEditor/Icon.svg" ,
                     "Arguments" : "FileURL="+FileSystem.CWD()+"/"+event.target.innerHTML ,
                     "NoMenu" : ""
                 });
+                TextEditor.Controller.FileSystem = new FFS(FileSystem.Partition);
             }
         })
         document.getElementById("ManagerView").appendChild(Buttons[File]);

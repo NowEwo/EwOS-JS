@@ -1,77 +1,76 @@
 class Border {
+  #Files = {};
 
-    #Files = {}
-
-    constructor() {
-        const sync = async () => {
-            this.#Files.config = {
-                theme: {
-                    currentTheme: "default",
-                    primary: "#00000020",
-                    secondary: "#aaaaaa20",
-                    Text: "#ffffff",
-                },
-                window: {
-                    customTitlebar: true,
-                    height: 550,
-                    width: 650,
-                },
-                browser: {
-                    defaultPage: "border://newtab",
-                    enableShortcuts: true,
-                },
-            };
-            this.#Files.bookmarks = [];
-            this.#Files.whitelist = [];
-
-            await this.#main();
-
-        }
-        sync();
-    }
-
-    // Variable declaration
-    #tabNb = 0;
-    #tabId = [];
-    #browserBody;
-
-    version = "1.10 Selaria MountainChain";
-
-    keybinds = [
-        {
-            keys: ["Alt", "l"],
-            description: "Focus the searchbar",
-            exec: () => {
-                this.#browserBody.querySelector("#border-searchbar").focus();
-            },
+  constructor() {
+    const sync = async () => {
+      this.#Files.config = {
+        theme: {
+          currentTheme: "default",
+          primary: "#00000020",
+          secondary: "#aaaaaa20",
+          Text: "#ffffff",
         },
-        {
-            keys: ["Alt", "t"],
-            description: "Open a new tab",
-            exec: () => {
-                this.addTab({ current: true });
-            },
+        window: {
+          customTitlebar: true,
+          height: 550,
+          width: 650,
         },
-        {
-            keys: ["Alt", "w"],
-            description: "Close the current tab",
-            exec: () => {
-                this.removeTab(
-                    this.#browserBody.querySelector(".border-tab.border-current").dataset.id
-                );
-            },
+        browser: {
+          defaultPage: "border://newtab",
+          enableShortcuts: true,
         },
-        {
-            keys: ["Alt", "a"],
-            description: "Open an about tab",
-            exec: () => {
-                this.addTab({ current: true, url: "border://about" });
-            },
-        },
-    ];
+      };
+      this.#Files.bookmarks = [];
+      this.#Files.whitelist = [];
 
-    protocols = {
-        newtab: `
+      await this.#main();
+    };
+    sync();
+  }
+
+  // Variable declaration
+  #tabNb = 0;
+  #tabId = [];
+  #browserBody;
+
+  version = "1.10 Selaria MountainChain";
+
+  keybinds = [
+    {
+      keys: ["Alt", "l"],
+      description: "Focus the searchbar",
+      exec: () => {
+        this.#browserBody.querySelector("#border-searchbar").focus();
+      },
+    },
+    {
+      keys: ["Alt", "t"],
+      description: "Open a new tab",
+      exec: () => {
+        this.addTab({ current: true });
+      },
+    },
+    {
+      keys: ["Alt", "w"],
+      description: "Close the current tab",
+      exec: () => {
+        this.removeTab(
+          this.#browserBody.querySelector(".border-tab.border-current").dataset
+            .id
+        );
+      },
+    },
+    {
+      keys: ["Alt", "a"],
+      description: "Open an about tab",
+      exec: () => {
+        this.addTab({ current: true, url: "border://about" });
+      },
+    },
+  ];
+
+  protocols = {
+    newtab: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,7 +100,7 @@ location.href = handledValue;
 </body>
 </html>
 `,
-        changelog: `
+    changelog: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,7 +133,7 @@ location.href = handledValue;
 </body>
 </html>
 `,
-        about: `
+    about: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -159,7 +158,7 @@ Because of the iframe system some website won't work in this browser (like youtu
 </body>
 </html>
 `,
-        shortcuts: `
+    shortcuts: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -176,13 +175,17 @@ Because of the iframe system some website won't work in this browser (like youtu
 <span style="display: inline-block; font-size: 50px;">&nbsp;shortcuts</span>
 
 <ul>
-    ${Object.entries(this.keybinds).map(([_key, value]) => `<li>${value.description}: ${value.keys.join("+")}</li>`).join("<br>")
-            }
+    ${Object.entries(this.keybinds)
+      .map(
+        ([_key, value]) =>
+          `<li>${value.description}: ${value.keys.join("+")}</li>`
+      )
+      .join("<br>")}
 </ul>
 </body>
 </html>
 `,
-        offline: `
+    offline: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -210,7 +213,7 @@ Because of the iframe system some website won't work in this browser (like youtu
 </body> 
 </html>
 `,
-        woozy: `
+    woozy: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -229,7 +232,7 @@ Because of the iframe system some website won't work in this browser (like youtu
 </body>
 </html>
 `,
-        themes: `
+    themes: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -243,49 +246,59 @@ Because of the iframe system some website won't work in this browser (like youtu
 </body>
 </html>
 `,
-    };
+  };
 
-    #handleURI(url) {
-        if (!window.navigator.onLine && !RegExp("^border:/*").test(url)) return ["data:text/html," + encodeURI(this.protocols.offline), "Not Connected"];
-        if (url.startsWith("//")) return ["https://" + url.substring(2), false];
+  #handleURI(url) {
+    if (!window.navigator.onLine && !RegExp("^border:/*").test(url))
+      return [
+        "data:text/html," + encodeURI(this.protocols.offline),
+        "Not Connected",
+      ];
+    if (url.startsWith("//")) return ["https://" + url.substring(2), false];
 
-        if (/^\S*:/i.test(url)) {
-            for (let i = 0; i < Object.keys(this.protocols).length; i++) {
-                const protocol = Object.keys(this.protocols)[i];
+    if (/^\S*:/i.test(url)) {
+      for (let i = 0; i < Object.keys(this.protocols).length; i++) {
+        const protocol = Object.keys(this.protocols)[i];
 
-                if (RegExp("^border:/*" + protocol + "$").test(url)) {
-                    return [
-                        encodeURI("data:text/html," + this.protocols[protocol]),
-                        protocol,
-                    ];
-                }
-            }
-            return [url, false];
-        } else {
-            if (/^([-a-zA-Z0-9^\p{L}\p{C}\u00a1-\uffff@:%_\+.~#?&//=]{2,256}){1}(\.[a-z]{2,4}){1}(\:[0-9]*)?(\/[-a-zA-Z0-9\u00a1-\uffff\(\)@:%,_\+.~#?&//=]*)?([-a-zA-Z0-9\(\)@:%,_\+.~#?&//=]*)?$/i.test(url)) {
-                return ["https://" + url, false];
-            }
-            else {
-                return [encodeURI("https://google.com/search?igu=1&q=" + url.replace(" ", "+")), false];
-            }
+        if (RegExp("^border:/*" + protocol + "$").test(url)) {
+          return [
+            encodeURI("data:text/html," + this.protocols[protocol]),
+            protocol,
+          ];
         }
+      }
+      return [url, false];
+    } else {
+      if (
+        /^([-a-zA-Z0-9^\p{L}\p{C}\u00a1-\uffff@:%_\+.~#?&//=]{2,256}){1}(\.[a-z]{2,4}){1}(\:[0-9]*)?(\/[-a-zA-Z0-9\u00a1-\uffff\(\)@:%,_\+.~#?&//=]*)?([-a-zA-Z0-9\(\)@:%,_\+.~#?&//=]*)?$/i.test(
+          url
+        )
+      ) {
+        return ["https://" + url, false];
+      } else {
+        return [
+          encodeURI(
+            "https://google.com/search?igu=1&q=" + url.replace(" ", "+")
+          ),
+          false,
+        ];
+      }
     }
+  }
 
-    // BORDER API
-    addTab(tab) {
-        if (!tab)
-            throw new Error("You have to add an object for creating a tab.");
-        if (!tab.url) tab.url = this.#Files.config.browser.defaultPage;
+  // BORDER API
+  addTab(tab) {
+    if (!tab) throw new Error("You have to add an object for creating a tab.");
+    if (!tab.url) tab.url = this.#Files.config.browser.defaultPage;
 
-        // Create an html tab div
-        let tabElement = document.createElement("div");
-        tabElement.draggable = true;
-        tabElement.classList.add("border-tab");
-        tabElement.classList.add("nodrag");
-        tabElement.dataset.id = this.generateId();
-        tabElement.dataset.url = tab.url;
-        tabElement.innerHTML =
-            `
+    // Create an html tab div
+    let tabElement = document.createElement("div");
+    tabElement.draggable = true;
+    tabElement.classList.add("border-tab");
+    tabElement.classList.add("nodrag");
+    tabElement.dataset.id = this.generateId();
+    tabElement.dataset.url = tab.url;
+    tabElement.innerHTML = `
 <div class='border-title'>Name Undefined</div>
 <div class='border-close-btn'>
 <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 43 43" fill="none">
@@ -294,159 +307,166 @@ Because of the iframe system some website won't work in this browser (like youtu
 </div>
 `;
 
-        tabElement.addEventListener("click", () => {
-            this.setCurrent(tabElement.dataset.id);
-        });
+    tabElement.addEventListener("click", () => {
+      this.setCurrent(tabElement.dataset.id);
+    });
 
-        tabElement.addEventListener("contextmenu", (e) => {
-            const tabIndex = Array.prototype.indexOf.call(
-                tabElement.parentNode.children,
-                tabElement
-            );
-        });
-
+    tabElement.addEventListener("contextmenu", (e) => {
+      const tabIndex = Array.prototype.indexOf.call(
+        tabElement.parentNode.children,
         tabElement
-            .querySelector(".border-close-btn")
-            .addEventListener("click", () => {
-                this.removeTab(tabElement.dataset.id);
-            });
+      );
+    });
 
-        this.#browserBody.querySelector("#border-tab-container").appendChild(tabElement);
-        // <
+    tabElement
+      .querySelector(".border-close-btn")
+      .addEventListener("click", () => {
+        this.removeTab(tabElement.dataset.id);
+      });
 
-        // Create an html view tab
-        let viewElement = document.createElement("iframe");
-        viewElement.classList.add("border-view");
-        viewElement.dataset.id = tabElement.dataset.id;
+    this.#browserBody
+      .querySelector("#border-tab-container")
+      .appendChild(tabElement);
+    // <
 
-        this.#browserBody.querySelector("#border-view-container").appendChild(viewElement);
-        // <
+    // Create an html view tab
+    let viewElement = document.createElement("iframe");
+    viewElement.classList.add("border-view");
+    viewElement.dataset.id = tabElement.dataset.id;
 
-        // After Created Action
-        if (tab.current) this.setCurrent(tabElement.dataset.id);
-        this.reloadTab();
-        // <
+    this.#browserBody
+      .querySelector("#border-view-container")
+      .appendChild(viewElement);
+    // <
 
-        this.#tabNb++;
-        this.#tabId.push(tabElement.dataset.id);
+    // After Created Action
+    if (tab.current) this.setCurrent(tabElement.dataset.id);
+    this.reloadTab();
+    // <
+
+    this.#tabNb++;
+    this.#tabId.push(tabElement.dataset.id);
+  }
+
+  setCurrent(id) {
+    try {
+      for (let tab of this.#browserBody
+        .querySelector("#border-tab-container")
+        .querySelectorAll(".border-tab")) {
+        tab.classList.remove("border-current");
+      }
+      this.#browserBody
+        .querySelector('.border-tab[data-id~="' + id + '"]')
+        .classList.add("border-current");
+
+      for (let view of this.#browserBody
+        .querySelector("#border-view-container")
+        .querySelectorAll(".border-view")) {
+        view.classList.remove("border-current");
+      }
+      this.#browserBody
+        .querySelector('.border-view[data-id~="' + id + '"]')
+        .classList.add("border-current");
+
+      this.#browserBody.querySelector("#border-searchbar").value =
+        this.#browserBody.querySelector(
+          ".border-tab.border-current"
+        ).dataset.url;
+    } catch {}
+  }
+
+  removeTab(id) {
+    if (!id) throw new Error("Specify a correct ID");
+
+    this.#tabNb--;
+    this.#tabId.splice(this.#tabId.indexOf(id), 1);
+
+    this.#browserBody
+      .querySelector("#border-tab-container")
+      .removeChild(
+        this.#browserBody.querySelector('.border-tab[data-id~="' + id + '"]')
+      );
+    this.#browserBody
+      .querySelector("#border-view-container")
+      .removeChild(
+        this.#browserBody.querySelector('.border-view[data-id~="' + id + '"]')
+      );
+  }
+
+  reloadTab() {
+    if (
+      !this.#handleURI(
+        this.#browserBody.querySelector(".border-tab.border-current").dataset
+          .url
+      )[1]
+    ) {
+      this.#browserBody.querySelector("#border-searchbar").value =
+        this.#handleURI(
+          this.#browserBody.querySelector(".border-tab.border-current").dataset
+            .url
+        )[0];
+    } else {
+      this.#browserBody.querySelector("#border-searchbar").value =
+        this.#browserBody.querySelector(
+          ".border-tab.border-current"
+        ).dataset.url;
     }
 
-    setCurrent(id) {
-        try {
-            for (let tab of this.#browserBody
-                .querySelector("#border-tab-container")
-                .querySelectorAll(".border-tab")) {
-                tab.classList.remove("border-current");
-            }
-            this.#browserBody
-                .querySelector('.border-tab[data-id~="' + id + '"]')
-                .classList.add("border-current");
+    this.#browserBody
+      .querySelector("#border-view-container")
+      .querySelector(".border-view.border-current").src = this.#handleURI(
+      this.#browserBody
+        .querySelector("#border-tab-container")
+        .querySelector(".border-tab.border-current").dataset.url
+    )[0];
 
-            for (let view of this.#browserBody
-                .querySelector("#border-view-container")
-                .querySelectorAll(".border-view")) {
-                view.classList.remove("border-current");
-            }
-            this.#browserBody
-                .querySelector('.border-view[data-id~="' + id + '"]')
-                .classList.add("border-current");
+    this.#browserBody.querySelector("#border-searchbar").blur();
 
-            this.#browserBody.querySelector("#border-searchbar").value = this.#browserBody.querySelector(
-                ".border-tab.border-current"
-            ).dataset.url;
-        } catch { }
+    if (
+      this.#handleURI(
+        this.#browserBody.querySelector(".border-tab.border-current").dataset
+          .url
+      )[1]
+    ) {
+      this.#browserBody
+        .querySelector(".border-tab.border-current")
+        .querySelector(".border-title").innerText = this.#handleURI(
+        this.#browserBody.querySelector(".border-tab.border-current").dataset
+          .url
+      )[1];
+    } else
+      this.#browserBody
+        .querySelector(".border-tab.border-current")
+        .querySelector(".border-title").innerText = this.#handleURI(
+        this.#browserBody.querySelector(".border-tab.border-current").dataset
+          .url
+      )[0].split("/")[2];
+  }
+
+  closeWindow() {
+    return (window.location.href = window.location.href);
+  }
+
+  openWindow() {
+    return;
+  }
+
+  generateId() {
+    let id = "";
+    for (let i = 0; i < 4; i++) {
+      id += Math.floor(Math.random() * 10);
     }
 
-    removeTab(id) {
-        if (!id) throw new Error("Specify a correct ID");
-
-        this.#tabNb--;
-        this.#tabId.splice(this.#tabId.indexOf(id), 1);
-
-        this.#browserBody
-            .querySelector("#border-tab-container")
-            .removeChild(
-                this.#browserBody.querySelector('.border-tab[data-id~="' + id + '"]')
-            );
-        this.#browserBody
-            .querySelector("#border-view-container")
-            .removeChild(
-                this.#browserBody.querySelector('.border-view[data-id~="' + id + '"]')
-            );
+    if (this.#tabId.length >= 9999) throw new Error("Cannot generate ID");
+    for (const tabId in this.#tabId) {
+      if (tabId === id) return this.generateId();
     }
+    return parseInt(id);
+  }
 
-    reloadTab() {
-        if (
-            !this.#handleURI(
-                this.#browserBody.querySelector(".border-tab.border-current").dataset.url
-            )[1]
-        ) {
-            this.#browserBody.querySelector("#border-searchbar").value =
-                this.#handleURI(
-                    this.#browserBody.querySelector(".border-tab.border-current").dataset.url
-                )[0];
-        } else {
-            this.#browserBody.querySelector("#border-searchbar").value = this.#browserBody.querySelector(
-                ".border-tab.border-current"
-            ).dataset.url;
-        }
-
-        this.#browserBody
-            .querySelector("#border-view-container")
-            .querySelector(".border-view.border-current").src =
-            this.#handleURI(
-                this.#browserBody
-                    .querySelector("#border-tab-container")
-                    .querySelector(".border-tab.border-current").dataset.url
-            )[0];
-
-        this.#browserBody.querySelector("#border-searchbar").blur();
-
-        if (
-            this.#handleURI(
-                this.#browserBody.querySelector(".border-tab.border-current").dataset.url
-            )[1]
-        ) {
-            this.#browserBody
-                .querySelector(".border-tab.border-current")
-                .querySelector(".border-title").innerText =
-                this.#handleURI(
-                    this.#browserBody.querySelector(".border-tab.border-current").dataset.url
-                )[1];
-        } else
-            this.#browserBody
-                .querySelector(".border-tab.border-current")
-                .querySelector(".border-title").innerText = this.#handleURI(
-                    this.#browserBody.querySelector(".border-tab.border-current").dataset.url
-                )[0]
-                    .split("/")[2];
-    }
-
-    closeWindow() {
-        return window.location.href = window.location.href;
-    }
-
-    openWindow() {
-        return;
-    }
-
-    generateId() {
-        let id = "";
-        for (let i = 0; i < 4; i++) {
-            id += Math.floor(Math.random() * 10);
-        }
-
-        if (this.#tabId.length >= 9999)
-            throw new Error("Cannot generate ID");
-        for (const tabId in this.#tabId) {
-            if (tabId === id) return this.generateId();
-        }
-        return parseInt(id);
-    }
-
-    async #main() {
-        // Create "border://urls" protocol
-        this.protocols.urls = `
+  async #main() {
+    // Create "border://urls" protocol
+    this.protocols.urls = `
         <!DOCTYPE html>
             <html lang="en">
             <head>
@@ -463,115 +483,125 @@ Because of the iframe system some website won't work in this browser (like youtu
                 <span style="display: inline-block; font-size: 50px;">&nbsp;urls</span>
                 
                 <ul>
-                    ${Object.entries(this.protocols).map(([key, value]) => `<a style="color: rgb(255, 255, 255);" href="data:text/html,${encodeURI(value)}">border://${key}</a>`).join("<br>")
-            }
+                    ${Object.entries(this.protocols)
+                      .map(
+                        ([key, value]) =>
+                          `<a style="color: rgb(255, 255, 255);" href="data:text/html,${encodeURI(
+                            value
+                          )}">border://${key}</a>`
+                      )
+                      .join("<br>")}
                 </ul>
             </body>
         </html>
         `;
 
-        this.#browserBody = window.document.body;
+    this.#browserBody = window.document.body;
 
-        // boot
-        document
-            .querySelector(":root")
-            .style.setProperty("--border-primary", this.#Files.config.theme.primary);
-        document
-            .querySelector(":root")
-            .style.setProperty(
-                "--border-secondary",
-                this.#Files.config.theme.secondary
-            );
+    // boot
+    document
+      .querySelector(":root")
+      .style.setProperty("--border-primary", this.#Files.config.theme.primary);
+    document
+      .querySelector(":root")
+      .style.setProperty(
+        "--border-secondary",
+        this.#Files.config.theme.secondary
+      );
 
-        let h = this.#browserBody.querySelectorAll(".border-history-btn");
+    let h = this.#browserBody.querySelectorAll(".border-history-btn");
 
-        h[0].addEventListener("click", () => {
-            window.history.back();
-            this.reloadTab();
-        });
-        h[1].addEventListener("click", () => {
-            window.history.forward();
-            this.reloadTab();
-        });
-        h[2].addEventListener(
-            "click",
-            () =>
-            (this.#browserBody.querySelector(".border-view.border-current").src =
-                this.#browserBody.querySelector(".border-view.border-current").src)
-        );
+    h[0].addEventListener("click", () => {
+      window.history.back();
+      this.reloadTab();
+    });
+    h[1].addEventListener("click", () => {
+      window.history.forward();
+      this.reloadTab();
+    });
+    h[2].addEventListener(
+      "click",
+      () =>
+        (this.#browserBody.querySelector(".border-view.border-current").src =
+          this.#browserBody.querySelector(".border-view.border-current").src)
+    );
 
-        this.#browserBody
-            .querySelector("#border-add-button")
-            .addEventListener("click", () => this.addTab({ current: true }));
-        this.#browserBody
-            .querySelector("#border-search-button")
-            .addEventListener("click", () => {
-                this.#browserBody.querySelector(".border-tab.border-current").dataset.url =
-                    this.#browserBody.querySelector("#border-searchbar").value;
-                this.reloadTab();
-            });
+    this.#browserBody
+      .querySelector("#border-add-button")
+      .addEventListener("click", () => this.addTab({ current: true }));
+    this.#browserBody
+      .querySelector("#border-search-button")
+      .addEventListener("click", () => {
+        this.#browserBody.querySelector(
+          ".border-tab.border-current"
+        ).dataset.url =
+          this.#browserBody.querySelector("#border-searchbar").value;
+        this.reloadTab();
+      });
 
-        this.addTab({ current: true });
+    this.addTab({ current: true });
 
-        this.#browserBody
-            .querySelector("#border-searchbar")
-            .addEventListener("keyup", (event) => {
-                if (event.key === "Enter") {
-                    this.#browserBody.querySelector(".border-tab.border-current").dataset.url =
-                        this.#browserBody.querySelector("#border-searchbar").value;
-                    this.reloadTab();
-                }
-            });
-
-        setInterval(() => {
-            if (
-                this.#browserBody
-                    .querySelector("#border-tab-container")
-                    .querySelectorAll(".border-tab").length <= 0
-            )
-                this.closeWindow();
-
-            if (!this.#browserBody.querySelector(".border-tab.border-current")) {
-                this.setCurrent(this.#tabId[0]);
-            }
-        }, 10);
-
-        if (this.#Files.config.browser.enableShortcuts) {
-            for (const keybind in this.keybinds) {
-                if (Object.hasOwnProperty.call(this.keybinds, keybind)) {
-                    const cKeybind = this.keybinds[keybind];
-
-                    cKeybind.keys.reverse();
-
-                    let status = [];
-
-                    for (const key in cKeybind.keys) {
-                        if (Object.hasOwnProperty.call(cKeybind.keys, key)) {
-                            const cKey = cKeybind.keys[key];
-
-                            status.push(false);
-
-                            window.addEventListener("keydown", (e) => {
-                                if (e.key.toLowerCase() === cKey.toLowerCase()) {
-                                    status[key] = true;
-                                } else status[key] = false;
-
-                                let i = 0;
-                                for (let stat in status) {
-                                    if (status[stat]) i++;
-
-                                    if (i >= status.length) {
-                                        e.preventDefault();
-                                        cKeybind.exec();
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-            }
+    this.#browserBody
+      .querySelector("#border-searchbar")
+      .addEventListener("keyup", (event) => {
+        if (event.key === "Enter") {
+          this.#browserBody.querySelector(
+            ".border-tab.border-current"
+          ).dataset.url =
+            this.#browserBody.querySelector("#border-searchbar").value;
+          this.reloadTab();
         }
+      });
+
+    setInterval(() => {
+      if (
+        this.#browserBody
+          .querySelector("#border-tab-container")
+          .querySelectorAll(".border-tab").length <= 0
+      )
+        this.closeWindow();
+
+      if (!this.#browserBody.querySelector(".border-tab.border-current")) {
+        this.setCurrent(this.#tabId[0]);
+      }
+    }, 10);
+
+    if (this.#Files.config.browser.enableShortcuts) {
+      for (const keybind in this.keybinds) {
+        if (Object.hasOwnProperty.call(this.keybinds, keybind)) {
+          const cKeybind = this.keybinds[keybind];
+
+          cKeybind.keys.reverse();
+
+          let status = [];
+
+          for (const key in cKeybind.keys) {
+            if (Object.hasOwnProperty.call(cKeybind.keys, key)) {
+              const cKey = cKeybind.keys[key];
+
+              status.push(false);
+
+              window.addEventListener("keydown", (e) => {
+                if (e.key.toLowerCase() === cKey.toLowerCase()) {
+                  status[key] = true;
+                } else status[key] = false;
+
+                let i = 0;
+                for (let stat in status) {
+                  if (status[stat]) i++;
+
+                  if (i >= status.length) {
+                    e.preventDefault();
+                    cKeybind.exec();
+                  }
+                }
+              });
+            }
+          }
+        }
+      }
     }
+  }
 }
 
 let browser = new Border();
