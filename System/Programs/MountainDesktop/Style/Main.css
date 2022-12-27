@@ -57,6 +57,7 @@ body{
     background-color: transparent;
     display: inline-block;
     position: relative;
+    color: white;
     border: none;
     height: 100%;
     width: 63px;

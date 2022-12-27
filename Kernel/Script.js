@@ -30,7 +30,7 @@ function LoadBIOS() {
 }
 function SetShell(Path) {
   document.getElementById("DE").src = "System/Programs/" + Path + "/Shell.html";
-  console.warn("New shell : " + Path);
+  console.info("New shell : " + Path);
 }
 function CreateMainApp(ApplicationName) {
   Iframe = document.createElement("iframe");

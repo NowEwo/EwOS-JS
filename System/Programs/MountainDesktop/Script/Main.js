@@ -1,6 +1,7 @@
 var ContextMenu = document.getElementById("ContextMenu");
 var FileSystem = new FFS("SelariaHD");
 var Kernel = parent;
+var Workspace = 1;
 var Software = {};
 var Shell = this;
 
@@ -21,6 +22,13 @@ function GenerateUniqueId() {
       .substring(1);
   };
   return ID;
+}
+
+function ChangeWorkspace(Number){
+  console.info("Workspace Changed : "+Number+" !");
+  Shell.Workspace = Number;
+  ReloadWindows();
+  ReloadTaskbar();
 }
 
 function CreateWindow(Data) {
@@ -64,6 +72,7 @@ function CreateWindow(Data) {
   }else{
     Software[UID].Icon = "/System/Assets/Softwares/"+Data.Name+"/Icon.svg" ;
   }
+  Software[UID].Workspace = Shell.Workspace ;
   Software[UID].UID = UID;
   Software[UID].Controller = document
     .getElementById(UID)
@@ -90,7 +99,7 @@ function CreateWindow(Data) {
     ToggleStartMenu();
   }
   ReloadTaskbar();
-  console.warn(
+  console.info(
     "New window : " +
       Data.Name +
       " as " +
@@ -107,6 +116,16 @@ function CreateWindow(Data) {
   "Icon" : ... ,
   "Arguments" : ...
 }*/
+
+function ReloadWindows(){
+  for(WindowObject in Software){
+    if(Software[WindowObject].Workspace != Shell.Workspace){
+      Software[WindowObject].g.style.visibility = "hidden" ;
+    }else{
+      Software[WindowObject].g.style.visibility = "visible" ;
+    }
+  }
+}
 
 function ReloadTaskbar() {
   Button = {} ;
@@ -128,7 +147,9 @@ function ReloadTaskbar() {
         Button[this.Process].setAttribute("Focused" , new String(Shell.Software[this.Process].focused));
       }
     });
-    document.getElementById("TaskbarSoftwares").appendChild(Button[Process]);
+    if(Shell.Software[this.Process].Workspace == Shell.Workspace){
+      document.getElementById("TaskbarSoftwares").appendChild(Button[Process]);
+    }
   }
 }
 
@@ -238,7 +259,7 @@ function BootScripts(){
     );
     for (Script in OnBoot.Scripts) {
       Kernel.eval(FileSystem.getFileContent(OnBoot.Scripts[Script]).result);
-      console.warn(
+      console.info(
         "The script on the path " + OnBoot.Scripts[Script] + " is executed !"
       );
     }
@@ -263,14 +284,3 @@ BootScripts();
 ReloadConfig();
 
 Shell.document.title = Shell.document.location.href;
-
-/*{
-    'ID' : Identifiant ,
-    'Title' : Software title ,
-    'URL' : Software URL ( path ) ,
-    'Icon' : Software icon ,
-    'Start' : {
-        'Title' : Start menu entry title ,
-        'Author' : Software author
-    }
-}*/
