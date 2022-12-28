@@ -23,6 +23,18 @@ Video.addEventListener("contextmenu", (event) => {
   document.getElementById("VideoContainer").style.display = "none";
   InBIOS = true;
 });
+function KernelFetch(URL) {
+  var IFrame = document.createElement("iframe");
+  IFrame.src = URL;
+  // IFrame.style.display = "none";
+  document.body.appendChild(IFrame);
+  IFrame.onload = () => {
+    Content = IFrame.contentWindow;
+    document.body.removeChild(IFrame);
+    delete IFrame;
+    return Content;
+  }
+}
 function LoadBIOS() {
   document.getElementById("DE").src = "System/BIOS.html";
   document.getElementById("VideoContainer").style.display = "none";

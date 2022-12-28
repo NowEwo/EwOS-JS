@@ -18,17 +18,5 @@ Shell.SetContextMenuContent([
     {
         "Text" : "Reload the Kernel !",
         "Event" : "Kernel.Reload();"
-    },
-    {
-        "Text" : "<strong>Workspace utilities !</strong>",
-        "Event" : ""
-    },
-    {
-        "Text" : "Previous workspace !",
-        "Event" : "Shell.ChangeWorkspace(Shell.Workspace - 1);"
-    },
-    {
-        "Text" : "Next workspace !",
-        "Event" : "Shell.ChangeWorkspace(Shell.Workspace + 1);"
     }
 ]);

@@ -1,5 +1,6 @@
 var ContextMenu = document.getElementById("ContextMenu");
 var FileSystem = new FFS("SelariaHD");
+var WindowsManager = document.querySelector("#WindowsManager");
 var Kernel = parent;
 var Workspace = 1;
 var Software = {};
@@ -24,8 +25,8 @@ function GenerateUniqueId() {
   return ID;
 }
 
-function ChangeWorkspace(Number){
-  console.info("Workspace Changed : "+Number+" !");
+function ChangeWorkspace(Number) {
+  console.info("Workspace Changed : " + Number + " !");
   Shell.Workspace = Number;
   ReloadWindows();
   ReloadTaskbar();
@@ -47,32 +48,32 @@ function CreateWindow(Data) {
     x: "center",
     y: "center",
     bottom: "63px",
-    root: document.body,
-    icon: "/System/Assets/Softwares/"+Data.Name+"/Icon.svg",
+    root: WindowsManager,
+    icon: "/System/Assets/Softwares/" + Data.Name + "/Icon.svg",
     id: UID,
-    onclose: function(){
+    onclose: function () {
       delete Software[UID];
       ReloadTaskbar();
     },
-    onminimize: function(){
+    onminimize: function () {
       this.restore();
       this.hide();
       ReloadTaskbar();
     },
-    onfocus: function(){
+    onfocus: function () {
       ReloadTaskbar();
     },
-    onblur: function(){
+    onblur: function () {
       ReloadTaskbar();
-    }
+    },
   });
-  if(Data.Icon != undefined){
+  if (Data.Icon != undefined) {
     Software[UID].setIcon(Data.Icon);
     Software[UID].Icon = Data.Icon;
-  }else{
-    Software[UID].Icon = "/System/Assets/Softwares/"+Data.Name+"/Icon.svg" ;
+  } else {
+    Software[UID].Icon = "/System/Assets/Softwares/" + Data.Name + "/Icon.svg";
   }
-  Software[UID].Workspace = Shell.Workspace ;
+  Software[UID].Workspace = Shell.Workspace;
   Software[UID].UID = UID;
   Software[UID].Controller = document
     .getElementById(UID)
@@ -117,37 +118,53 @@ function CreateWindow(Data) {
   "Arguments" : ...
 }*/
 
-function ReloadWindows(){
-  for(WindowObject in Software){
-    if(Software[WindowObject].Workspace != Shell.Workspace){
-      Software[WindowObject].g.style.visibility = "hidden" ;
-    }else{
-      Software[WindowObject].g.style.visibility = "visible" ;
+function ReloadWindows() {
+  for (WindowObject in Software) {
+    if (Software[WindowObject].Workspace != Shell.Workspace) {
+      Software[WindowObject].g.style.visibility = "hidden";
+    } else {
+      Software[WindowObject].g.style.visibility = "visible";
     }
   }
 }
 
 function ReloadTaskbar() {
-  Button = {} ;
-  document.getElementById("TaskbarSoftwares").innerHTML = "" ;
+  Button = {};
+  document.getElementById("TaskbarSoftwares").innerHTML = "";
   for (Process in Shell.Software) {
     Button[Process] = document.createElement("button");
-    Button[Process].Process = Process ;
-    Button[Process].innerHTML = "<img src='"+Shell.Software[this.Process].Icon+"'>";
-    Button[this.Process].setAttribute("Minimized" , new String(Shell.Software[this.Process].hidden));
-    Button[this.Process].setAttribute("Focused" , new String(Shell.Software[this.Process].focused));
+    Button[Process].Process = Process;
+    Button[Process].innerHTML =
+      "<img src='" + Shell.Software[this.Process].Icon + "'>";
+    Button[this.Process].setAttribute(
+      "Minimized",
+      new String(Shell.Software[this.Process].hidden)
+    );
+    Button[this.Process].setAttribute(
+      "Focused",
+      new String(Shell.Software[this.Process].focused)
+    );
     Button[Process].addEventListener("click", function () {
-      if(Shell.Software[this.Process].focused || Shell.Software[this.Process].hidden){
+      if (
+        Shell.Software[this.Process].focused ||
+        Shell.Software[this.Process].hidden
+      ) {
         Shell.Software[this.Process].show(Shell.Software[this.Process].hidden);
-        Button[this.Process].setAttribute("Minimized" , new String(Shell.Software[this.Process].hidden));
+        Button[this.Process].setAttribute(
+          "Minimized",
+          new String(Shell.Software[this.Process].hidden)
+        );
       }
       Shell.Software[this.Process].focus();
-      if(Shell.Software[this.Process].hidden){
+      if (Shell.Software[this.Process].hidden) {
         Shell.Software[this.Process].blur();
-        Button[this.Process].setAttribute("Focused" , new String(Shell.Software[this.Process].focused));
+        Button[this.Process].setAttribute(
+          "Focused",
+          new String(Shell.Software[this.Process].focused)
+        );
       }
     });
-    if(Shell.Software[this.Process].Workspace == Shell.Workspace){
+    if (Shell.Software[this.Process].Workspace == Shell.Workspace) {
       document.getElementById("TaskbarSoftwares").appendChild(Button[Process]);
     }
   }
@@ -235,24 +252,37 @@ function Reload() {
 
 document.getElementById("StartMenu").style.zIndex = "13";
 
-var HideState = true;
-
 document.getElementById("Grab").addEventListener("click", function () {
   for (ID in Software) {
-    Software[ID].minimize(HideState);
+    if(Software[ID].Workspace == Shell.Workspace){
+      if (!Software[ID].hidden) {
+        Software[ID].hide();
+        Button[ID].setAttribute(
+          "Minimized",
+          new String(Shell.Software[ID].hidden)
+        );
+      } else {
+        Software[ID].show();
+        Button[ID].setAttribute(
+          "Minimized",
+          new String(Shell.Software[ID].hidden)
+        );
+      }
+    }
   }
-  HideState = !HideState;
 });
 
 document.getElementById("Grab").addEventListener("contextmenu", (Event) => {
   Event.preventDefault();
   for (ID in Software) {
-    Software[ID].close();
+    if (Software[ID].Workspace == Shell.Workspace) {
+      Software[ID].close();
+    }
   }
   ContextMenu.style.display = "none";
 });
 
-function BootScripts(){
+function BootScripts() {
   if (FileSystem.fileExists("/System/OnBoot.json")) {
     var OnBoot = JSON.parse(
       FileSystem.getFileContent("/System/OnBoot.json").result
@@ -266,17 +296,17 @@ function BootScripts(){
   }
 }
 
-function ReloadConfig(){
+function ReloadConfig() {
   if (FileSystem.fileExists("/System/Config.json")) {
     var Config = JSON.parse(
       FileSystem.getFileContent("/System/Config.json").result
     );
-    for(Value in Config.Kernel){
-      Kernel.eval(Value+" = `"+Config.Kernel[Value]+"` ;");
-    };
-    for(Value in Config.Shell){
-      Shell.eval(Value+" = `"+Config.Shell[Value]+"` ;");
-    };
+    for (Value in Config.Kernel) {
+      Kernel.eval(Value + " = `" + Config.Kernel[Value] + "` ;");
+    }
+    for (Value in Config.Shell) {
+      Shell.eval(Value + " = `" + Config.Shell[Value] + "` ;");
+    }
   }
 }
 

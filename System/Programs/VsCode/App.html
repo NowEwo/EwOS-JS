@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visual studio code !</title>
+    <style>
+      html,
+      body {
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        display: flex;
+        height: 100%;
+        padding: 0px;
+        margin: 0px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe
+      src="https://vscode.dev/"
+      frameborder="0"
+      style="width: 100%; height: 100%; overflow: hidden; display: none"
+    ></iframe>
+    <img
+      src="https://www.nesabamedia.com/wp-content/uploads/2019/08/Visual-Studio-Code-Logo-1.png"
+      alt=""
+      height="93px"
+      width="93px"
+      style="z-index: -1"
+    />
+  </body>
+  <script>
+    ContextWindow.g.style.backgroundColor = "#3C3C3C";
+    ContextWindow.g.style.borderRadius = "0px";
+    ContextWindow.g.querySelector(".wb-header").style.display = "none";
+    ContextWindow.resize("509px" , "273px");
+    ContextWindow.move("36.3%" , "35%");
+    document.querySelector("iframe").onload = function () {
+        ContextWindow.g.querySelector(".wb-header").style.display = "block";
+        document.querySelector("iframe").style.display = "block";
+        document.querySelector("img").style.display = "none";
+        ContextWindow.resize("75%" , "75%");
+        ContextWindow.move("10.3%" , "10.3%");
+    };
+    ContextWindow.g.querySelector(".wb-title").style.textAlign = "center";
+    ContextWindow.g.querySelector(".wb-body").style.borderRadius = "0px";
+  </script>
+</html>
