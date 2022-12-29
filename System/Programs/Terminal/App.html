@@ -1,44 +1,79 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/1.1.0/js/jquery.terminal.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/1.1.0/css/jquery.terminal.min.css" rel="stylesheet"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-2.2.4.min.js"
+      integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="XTerm/css/xterm.css" />
     <script src="/Kernel/FileSystem.js"></script>
+    <script src="XTerm/lib/xterm.js"></script>
+    <script src="SBash/SBash.js"></script>
     <title>Terminal</title>
-</head>
-<body>
-    
-</body>
-<script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fira%20Code:wght@300..700&display=swap");
+      html,
+      body {
+        overflow: hidden;
+        height: 100%;
+        padding: 0px;
+        margin: 0px;
+        width: 100%;
+      }
+      body .terminal,
+      .xterm-screen {
+        overflow: hidden;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body></body>
+  <script>
     var FileSystem = new FFS("SelariaHD");
-    if(ContextWindow.Prompt == undefined){
-      ContextWindow.Prompt = "MountainRange> " ;
-    }
-    if(ContextWindow.Greetings == undefined){
-      if(ContextWindow.Controlled != undefined){
-        ContextWindow.Greetings = "Selaria MountainRange terminal ( Controlled by software ! )" ;
-      }else{
-        ContextWindow.Greetings = "Selaria MountainRange terminal" ;
-      }
-    }
-    var Terminal = $('body').terminal(function(Command) {
-      if (Command !== '') {
-        if(FileSystem.isRegularFile("/System/Commands/"+Command.split(" ")[0]+".cmd")){
-          var Result = eval(FileSystem.getFileContent("/System/Commands/"+Command.split(" ")[0]+".cmd").result) ;
-          this.echo(Result);
-        }else{
-          this.echo(new String(eval(Command)));
+    var Term = new Terminal({
+      fontFamily:
+        '"Fira Code", courier-new, courier, monospace, "Powerline Extra Symbols"',
+    });
+    Term.open(document.querySelector("body"));
+    document.querySelector(".xterm-viewport").style.backgroundColor =
+      "#00000000";
+    document.querySelector(".xterm-viewport").style.overflow = "hidden";
+    Command = "";
+    Term.prompt = () => {
+      Term.Prompt = `\r\nRoot@SelariaMountainRange ${FileSystem.CWD()} $ `;
+      Term.write(`\r\nRoot@SelariaMountainRange ${FileSystem.CWD()} $ `);
+      Command = "";
+    };
+    Term.writeln(
+      "Selaria MountainRange Terminal !\r\nMounted FileSystem : " +
+        FileSystem.Partition +
+        " !"
+    );
+    document.oncontextmenu = (Event) => {
+      Event.preventDefault();
+    };
+    Term.prompt();
+    Term.onKey((e) => {
+      const ev = e.domEvent;
+      const printable = !ev.altKey && !ev.ctrlKey && !ev.metaKey;
+
+      if (ev.keyCode === 13) {
+        Process(Command);
+        Term.prompt();
+      } else if (ev.keyCode === 8) {
+        if (Term._core.buffer.x > 2) {
+          Command = Command.slice(0, Command.lenght - 1);
+          Term.write("\b \b");
         }
+      } else if (ev.keyCode == 38 || ev.keyCode == 40) {
+      } else if (printable) {
+        Command = Command + e.key;
+        Term.write(e.key);
       }
-    }, {
-     greetings: 'Selaria MountainRange terminal',
-     prompt: ContextWindow.Prompt,
-     completion: true,
-     color: 'White'
-     });
-</script>
+    });
+  </script>
 </html>

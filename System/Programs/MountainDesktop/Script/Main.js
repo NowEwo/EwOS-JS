@@ -82,8 +82,15 @@ function CreateWindow(Data) {
     Software[UID].Controller.document.location.href = "about:blank";
   };
   Software[UID].Controller.document.body.onload = function () {
-    Software[UID].setTitle(Software[UID].Controller.document.title);
+    if(Data.Title == undefined){
+      Software[UID].setTitle(Software[UID].Controller.document.title);
+    }
   };
+  Software[UID].SetWorkspace = (Workspace) => {
+    Software[UID].Workspace = Workspace ;
+    ReloadWindows();
+    ReloadTaskbar();
+  }
   Software[UID].Controller.ContextWindow = Shell.Software[UID];
   Software[UID].Controller.Kernel = Kernel;
   Software[UID].Controller.Shell = Shell;
@@ -283,29 +290,22 @@ document.getElementById("Grab").addEventListener("contextmenu", (Event) => {
 });
 
 function BootScripts() {
-  if (FileSystem.fileExists("/System/OnBoot.json")) {
-    var OnBoot = JSON.parse(
-      FileSystem.getFileContent("/System/OnBoot.json").result
+  var OnBoot = FileSystem.getDirContent("/boot").result ;
+  for (Script in OnBoot) {
+    Kernel.eval(FileSystem.getFileContent(OnBoot[Script].path).result);
+    console.info(
+      "The script on the path " + OnBoot[Script].path + " is executed !"
     );
-    for (Script in OnBoot.Scripts) {
-      Kernel.eval(FileSystem.getFileContent(OnBoot.Scripts[Script]).result);
-      console.info(
-        "The script on the path " + OnBoot.Scripts[Script] + " is executed !"
-      );
-    }
   }
 }
 
 function ReloadConfig() {
-  if (FileSystem.fileExists("/System/Config.json")) {
+  if (FileSystem.fileExists("/etc/jsv.conf")) {
     var Config = JSON.parse(
-      FileSystem.getFileContent("/System/Config.json").result
+      FileSystem.getFileContent("/etc/jsv.conf").result
     );
-    for (Value in Config.Kernel) {
-      Kernel.eval(Value + " = `" + Config.Kernel[Value] + "` ;");
-    }
-    for (Value in Config.Shell) {
-      Shell.eval(Value + " = `" + Config.Shell[Value] + "` ;");
+    for (Value in Config) {
+      Kernel.eval(Config + " = `" + Config[Value] + "` ;");
     }
   }
 }

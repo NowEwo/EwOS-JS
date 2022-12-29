@@ -6,6 +6,35 @@ if (localStorage["BootArguments"] == undefined) {
 }
 var FSHandler = new FFS("SelariaHD");
 
+function CreateUser(Name , Password , Config){
+  FSHandler.createDir("/etc/user" , Name);
+  FSHandler.writeFile("/etc/user"+Name+"/private/passwd" , Password);
+  FSHandler.writeFile("/etc/user"+Name+"/sul.conf" , JSON.stringify(Config));
+}
+
+function ConnectUser(Name , Password){
+  if(Password == FSHandler.getFileContent("/etc/user"+Name+"/private/passwd").result){
+    var User = {
+      "Name" : Name ,
+      "Config" : JSON.parse(FSHandler.getFileContent("/etc/user"+Name+"/sul.conf").result)
+    }
+  }
+}
+
+if(FSHandler.fileExists("/bin/#.fs") == false){
+  FSHandler.delete("/");
+  FSHandler.createDir("/" , "bin");
+  FSHandler.writeFile("/bin/#.fs" , "");
+  FSHandler.createDir("/" , "boot");
+  FSHandler.createDir("/" , "etc");
+  FSHandler.createDir("/etc" , "user")
+  FSHandler.writeFile("/etc/jsv.conf" , "Kernel.JsConfLoaded = true");
+  FSHandler.createDir("/" , "tmp");
+  FSHandler.createDir("/" , "usr");
+  CreateUser("Selaria" , "Selaria" , {"Admin" : true});
+  ConnectUser("Selaria" , "Selaria");
+}
+
 var BootArguments = JSON.parse(localStorage["BootArguments"]);
 var Video = document.getElementById("StartingAnimation");
 Video.addEventListener("click", function () {
