@@ -15,36 +15,48 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/1.1.0/css/jquery.terminal.min.css"
       rel="stylesheet"
     />
+    <script src="/Kernel/FileSystem.js"></script>
+    <script src="SBash/SBash.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fira%20Code:wght@300..700&display=swap');
+      * {
+        font-family: "Fira Code";
+      }
+    </style>
   </head>
   <body></body>
   <script>
-    var FileSystem = parent.FileSystem;
-    var Shell = this;
-    var Kernel = parent;
-    if(ContextWindow.Prompt == undefined){
-      ContextWindow.Prompt = "MountainRange> " ;
+    var FileSystem = new FFS("SelariaHD");
+    var Kernel = parent ;
+    ContextWindow = {} ;
+    var Shell = this ;
+    if (ContextWindow.Prompt == undefined) {
+      ContextWindow.Prompt =
+        "User@" +
+        Kernel.CurrentShellString +
+        " " +
+        FileSystem.CWD() +
+        " $ ";
     }
-    if(ContextWindow.Greetings == undefined){
-      if(ContextWindow.Controlled != undefined){
-        ContextWindow.Greetings = "Selaria MountainRange terminal ( Controlled by software ! )" ;
-      }else{
-        ContextWindow.Greetings = "Selaria MountainRange terminal" ;
-      }
-    }
-    var Terminal = $('body').terminal(function(Command) {
-      if (Command !== '') {
-        if(FileSystem.isRegularFile("/System/Commands/"+Command.split(" ")[0]+".cmd")){
-          var Result = eval(FileSystem.getFileContent("/System/Commands/"+Command.split(" ")[0]+".cmd").result) ;
-          this.echo(Result);
-        }else{
-          this.echo(new String(eval(Command)));
+    var Terminal = $("body").terminal(
+      function (Command) {
+        if (Command !== "") {
+          Process(Command);
         }
+        this.set_prompt(
+            "User@" +
+            Kernel.CurrentShellString +
+            " " +
+            FileSystem.CWD() +
+            " $ "
+        );
+      },
+      {
+        greetings: "Selaria MountainRange : SBash !",
+        prompt: ContextWindow.Prompt,
+        completion: true,
+        color: "White",
       }
-    }, {
-     greetings: 'Selaria MountainRange terminal',
-     prompt: ContextWindow.Prompt,
-     completion: true,
-     color: 'White'
-     });
+    );
   </script>
 </html>

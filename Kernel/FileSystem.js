@@ -178,6 +178,7 @@ class FFS {
      * FFS.fileExists("/DOES_NOT_EXIST") // false
      */
     this.fileExists = function (path) {
+      this.Sync();
       // Try to get the file
       const result = this.getPath(path);
       // Return whether the operation was successful or not
@@ -196,6 +197,7 @@ class FFS {
      * FFS.isRegularFile("/directory/test.txt") // true
      */
     this.isRegularFile = function (path) {
+      this.Sync();
       // Try to get the file
       const result = this.getPath(path);
       /*
@@ -220,6 +222,7 @@ class FFS {
      * FFS.isDir("/DOES_NOT_EXIST/") // false
      */
     this.isDir = function (path) {
+      this.Sync();
       // Try to get the file
       const result = this.getPath(path);
       /*
@@ -244,6 +247,7 @@ class FFS {
      * console.log(file.result) // the content of the file
      */
     this.getFileContent = function (path) {
+      this.Sync();
       // We return the result as a FFS.Result class
       const result = new this.Result();
       /*
@@ -280,6 +284,7 @@ class FFS {
      * console.log(directory.result) // The content of the directory as an array
      */
     this.getDirContent = function (path) {
+      this.Sync();
       // We return the result as a FFS.Result class
       const result = new this.Result();
       /*
@@ -648,6 +653,7 @@ class FFS {
      * console.log(result.result) // the parent directory {name: 'myDirectory'...}
      */
     this.getParent = function (path) {
+      this.Sync();
       // We return the result as a FFS.Result class
       const result = new this.Result();
 
@@ -694,6 +700,7 @@ class FFS {
      * FFS.getBaseName("/") -> "/"
      */
     this.basename = function (path) {
+      this.Sync();
       path = this.simplifyPath(path);
       // Check if the path is not root directory
       if (path === "/") {
@@ -712,6 +719,7 @@ class FFS {
      * FFS.getParentPath("/myDirectory/test.txt") -> "/myDirectory"
      */
     this.getParentPath = function (path) {
+      this.Sync();
       path = this.simplifyPath(path);
       // Check if the path is not root directory
       if (path === "/") {
@@ -732,6 +740,7 @@ class FFS {
      * console.log(FFS.getFullPath(file)) // the full path of the file
      */
     this.getFullPath = function (file) {
+      this.Sync();
       return this.simplifyPath(file.parent + "/" + file.name);
     };
 
@@ -747,6 +756,7 @@ class FFS {
      * FFS.isSameFile("/myDirectory../myDirectory/test.txt", "/myDirectory/test.txt") -> true
      */
     this.isSameFile = function (path1, path2) {
+      this.Sync();
       path1 = this.simplifyPath(path1);
       path2 = this.simplifyPath(path2);
 
@@ -782,6 +792,7 @@ class FFS {
      * ...
      */
     this.isValidName = function (name) {
+      this.Sync();
       name = name.trim();
       // Check if the name is at least one character long
       if (!name.length > 0) {
@@ -916,6 +927,7 @@ class FFS {
         result.result = newFile;
         return result;
       }
+      this.Save();
     };
 
     /**
@@ -1033,9 +1045,11 @@ class FFS {
       localStorage["FileSystem_" + Partition] = JSON.stringify(this.tree);
     };
 
-    this.SyncToLocalStorage = () => {
+    this.Sync = () => {
       const result = new this.Result();
-      this.tree = JSON.parse(localStorage["FileSystem_" + Partition]);
+      if(localStorage["FileSystem_"+Partition] != undefined){
+        this.tree = JSON.parse(localStorage["FileSystem_" + Partition]);
+      }
       result.success = true;
       result.result = this.tree;
       return result;

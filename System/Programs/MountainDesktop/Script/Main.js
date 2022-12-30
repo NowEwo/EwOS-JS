@@ -305,7 +305,7 @@ function ReloadConfig() {
       FileSystem.getFileContent("/etc/jsv.conf").result
     );
     for (Value in Config) {
-      Kernel.eval(Config + " = `" + Config[Value] + "` ;");
+      Kernel.eval(Value + " = `" + Config[Value] + "` ;");
     }
   }
 }

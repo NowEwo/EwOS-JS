@@ -3,6 +3,12 @@ var FileSystem = new FFS("SelariaHD");
 var Buttons = [];
 
 function ViewFile(Path){
+    if(Path.split("/").length == "2" && Path.split("/")[0] == "home"){
+        if(Path.split("/")[1] != Kernel.User.Name || Kernel.User.Config.Admin != true){
+            FileSystem.changeDir("public");
+            Path = Path + "/public" ;
+        }
+    }
     document.getElementById("PathInput").value = FileSystem.CWD();
     document.getElementById("ManagerView").innerText = "" ;
     for(File in FileSystem.getDirContent(Path).result){

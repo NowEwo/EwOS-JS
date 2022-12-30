@@ -1,38 +1,30 @@
 var InBIOS = false;
+
+console.info("Check if Boot arguments exists ...");
 if (localStorage["BootArguments"] == undefined) {
+  console.info("Not founded , creating Boot arguments !");
   localStorage["BootArguments"] = JSON.stringify({
     Shell: "MountainDesktop",
   });
 }
+
+console.info("Loading the file system : SelariaHD ...");
 var FSHandler = new FFS("SelariaHD");
 
-function CreateUser(Name , Password , Config){
-  FSHandler.createDir("/etc/user" , Name);
-  FSHandler.writeFile("/etc/user"+Name+"/private/passwd" , Password);
-  FSHandler.writeFile("/etc/user"+Name+"/sul.conf" , JSON.stringify(Config));
-}
-
-function ConnectUser(Name , Password){
-  if(Password == FSHandler.getFileContent("/etc/user"+Name+"/private/passwd").result){
-    var User = {
-      "Name" : Name ,
-      "Config" : JSON.parse(FSHandler.getFileContent("/etc/user"+Name+"/sul.conf").result)
-    }
-  }
-}
-
-if(FSHandler.fileExists("/bin/#.fs") == false){
+console.info("Checking if the file system is functionnal ...");
+if (FSHandler.fileExists("/bin/#.fs") == false) {
+  console.info("Installing a file system !");
   FSHandler.delete("/");
-  FSHandler.createDir("/" , "bin");
-  FSHandler.writeFile("/bin/#.fs" , "");
-  FSHandler.createDir("/" , "boot");
-  FSHandler.createDir("/" , "etc");
-  FSHandler.createDir("/etc" , "user")
-  FSHandler.writeFile("/etc/jsv.conf" , "Kernel.JsConfLoaded = true");
-  FSHandler.createDir("/" , "tmp");
-  FSHandler.createDir("/" , "usr");
-  CreateUser("Selaria" , "Selaria" , {"Admin" : true});
-  ConnectUser("Selaria" , "Selaria");
+  FSHandler.createDir("/", "bin");
+  FSHandler.writeFile("/bin/#.fs", "");
+  FSHandler.createDir("/", "boot");
+  FSHandler.createDir("/", "etc");
+  console.info("Writing '/etc/jsv.conf' ...");
+  FSHandler.writeFile("/etc/jsv.conf", JSON.stringify({'Config' : 'Loaded'}));
+  FSHandler.createDir("/", "home");
+  FSHandler.createDir("/", "root");
+  FSHandler.createDir("/", "tmp");
+  FSHandler.createDir("/", "usr");
 }
 
 var BootArguments = JSON.parse(localStorage["BootArguments"]);
@@ -62,24 +54,27 @@ function KernelFetch(URL) {
     document.body.removeChild(IFrame);
     delete IFrame;
     return Content;
-  }
+  };
 }
 function LoadBIOS() {
+  console.info("Loading the BIOS ...");
   document.getElementById("DE").src = "System/BIOS.html";
   document.getElementById("VideoContainer").style.display = "none";
   InBIOS = true;
 }
+
+var CurrentShellString = "" ;
+
 function SetShell(Path) {
   document.getElementById("DE").src = "System/Programs/" + Path + "/Shell.html";
   console.info("New shell : " + Path);
+  CurrentShellString = Path ;
 }
 function CreateMainApp(ApplicationName) {
-  Iframe = document.createElement("iframe");
-  Iframe.style.display = "none";
-  Iframe.src = "System/Programs/" + ApplicationName;
-}
-function ExecuteFile(Path) {
-  eval(FileSystem.getFileContent(Path).result);
+  IFrame = document.createElement("iframe");
+  IFrame.style.display = "none";
+  IFrame.src = "System/Programs/" + ApplicationName;
+  document.appendChild(IFrame);
 }
 document.addEventListener("dragover", (event) => {
   event.preventDefault();
@@ -89,11 +84,14 @@ document.addEventListener("drop", (Event) => {
   Shell.DropEvent(Event.dataTransfer.getData("text/plain"));
 });
 function ReloadShell() {
+  console.info("Reloading the shell ...");
   document.getElementById("DE").src = document.getElementById("DE").src;
 }
 function Reload() {
+  console.info("Raloading the kernel ...");
   document.location.href = "/";
 }
+
 var ShellElement = document.getElementById("DE");
 var Shell = document.getElementById("DE").contentWindow;
 var FileSystem = FSHandler;
