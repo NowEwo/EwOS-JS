@@ -94,6 +94,7 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
         break;
       case "apt":
         if(BashCommand["SubCommands"][0] == "install"){
+          var Package = new JSZip();
           for(Repository in FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")){
             if(FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository] != ""){
 
@@ -105,6 +106,7 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
                 false
                 );
                 http.send();
+                new_zip.loadAsync(http.responseText);
                 if(http.responseText != "404: Not Found"){
                   FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1] , http.responseText);
                   break;
