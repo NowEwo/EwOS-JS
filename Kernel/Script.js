@@ -5,6 +5,7 @@ if (localStorage["BootArguments"] == undefined) {
   console.info("Not founded , creating Boot arguments !");
   localStorage["BootArguments"] = JSON.stringify({
     Shell: "MountainDesktop",
+    User : "Selaria" ,
   });
 }
 
@@ -21,13 +22,33 @@ if (FSHandler.fileExists("/bin/#.fs") == false) {
   FSHandler.createDir("/", "etc");
   console.info("Writing '/etc/jsv.conf' ...");
   FSHandler.writeFile("/etc/jsv.conf", JSON.stringify({'Config' : 'Loaded'}));
+  FSHandler.writeFile("/etc/repositories.conf" , "WolfyGreyWolf/SelariaMountainRange-Repository\n")
   FSHandler.createDir("/", "home");
   FSHandler.createDir("/", "root");
   FSHandler.createDir("/", "tmp");
   FSHandler.createDir("/", "usr");
 }
 
+console.info("Removing content of the 'tmp' folder ...");
+FSHandler.delete("/tmp");
+FSHandler.createDir("/" , "tmp");
+
 var BootArguments = JSON.parse(localStorage["BootArguments"]);
+
+console.info("Loading the user name !")
+var User = {
+  Name : BootArguments["User"]
+};
+
+console.info("Checking if the '"+User["Name"]+"' home folder exist ...");
+if(!FSHandler.fileExists("/home/"+User["Name"])){
+  console.info("Creating the '/home/"+User["Name"]+"' folder ...");
+  FSHandler.createDir("/home" , User["Name"]);
+  FSHandler.createDir("/home/"+User["Name"] , "documents");
+  FSHandler.createDir("/home/"+User["Name"] , "desktop");
+  FSHandler.createDir("/home/"+User["Name"] , "public");
+}
+
 var Video = document.getElementById("StartingAnimation");
 Video.addEventListener("click", function () {
   Video.play();

@@ -1,18 +1,20 @@
 function LinkCheck(url) {
-  try{
+  try {
     http = new XMLHttpRequest();
     http.open("GET", url, false);
     http.send();
     return http.status != 404;
-  }catch(Errors){
-    console.info("File "+url+" don't exist !");
+  } catch (Errors) {
+    console.info("File " + url + " don't exist !");
   }
 }
 
+var FileToSave = "";
 var CommandsDescriptions = {};
 
 function Process(CommandStringBase) {
   for (Item in CommandStringBase.split(" && ")) {
+    FileToSave = "";
     var CommandString = CommandStringBase.split(" && ")[Item];
     // Get the base command and the arguments !
     delete BashCommand;
@@ -21,6 +23,10 @@ function Process(CommandStringBase) {
       Arguments: [],
       SubCommands: [],
     };
+    if(CommandString.indexOf(" > ") > -1){
+      FileToSave = CommandString.split(" > ")[1];
+      CommandString = CommandString.substring(0 , CommandString.indexOf(" > "));
+    }
     for (Item in CommandString.split(" ")) {
       if (Item != 0) {
         if (CommandString.split(" ")[Item].slice(0, 1) == "-") {
@@ -37,24 +43,41 @@ function Process(CommandStringBase) {
       // Bash Commands !
       default:
         if (FileSystem.fileExists("/bin/" + BashCommand["Base"])) {
-          eval(FileSystem.getFileContent("/bin/" + BashCommand["Base"]).result);
+          var CommandContent = new Function(FileSystem.getFileContent("/bin/" + BashCommand["Base"]).result);
+          Terminal.echo(CommandContent());
         } else {
           if (LinkCheck("SBash/Commands/" + BashCommand["Base"] + ".js")) {
             http = new XMLHttpRequest();
-            http.open("GET", "SBash/Commands/" + BashCommand["Base"] + ".js", false);
+            http.open(
+              "GET",
+              "SBash/Commands/" + BashCommand["Base"] + ".js",
+              false
+            );
             http.send();
-            var RequestResponse = new Function("var BashCommand = "+JSON.stringify(BashCommand)+" ; "+http.responseText);
+            var RequestResponse = new Function(
+              "var BashCommand = " +
+                JSON.stringify(BashCommand) +
+                " ; " +
+                "var CommandString = '" +
+                CommandString +
+                "' ; " +
+                http.responseText
+            );
             RequestResponse();
           } else {
-            Terminal.echo(BashCommand["Base"] + " : Commande introuvable");
+            if(LinkCheck("/System/Programs/"+BashCommand["Base"]+"/App.html")){
+              Shell.CreateWindow({Name : BashCommand["Base"] , "NoMenu" : "" , Arguments : BashCommand["SubCommands"].join("")});
+            }else{
+              return BashCommand["Base"] + " : Commande introuvable";
+            }
           }
         }
         break;
       case "help":
-        Terminal.echo(`
+        return `
 List of integrated commands !
 
-help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selaria , ssc
+help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selaria , ssc , halt , reboot
 
 (
   ssc :
@@ -65,16 +88,57 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
 (
   selaria :
    selaria test
-   selaria confs
+   selaria conf
 )
+        `;
+        break;
+      case "apt":
+        if(BashCommand["SubCommands"][0] == "install"){
+          for(Repository in FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")){
+            if(FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository] != ""){
 
-        `)
+              try{
+                http = new XMLHttpRequest();
+                http.open(
+                "GET",
+                "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1]+"/"+BashCommand["SubCommands"][1],
+                false
+                );
+                http.send();
+                if(http.responseText != "404: Not Found"){
+                  FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1] , http.responseText);
+                  break;
+                }
+              }catch(Error){
+                Terminal.echo("TEST : "+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+" , not contain the software !");
+              }
+            }
+          }
+        }else{
+          if(BashCommand["SubCommands"][0] == "remove"){
+            FileSystem.delete("/bin/"+BashCommand["SubCommands"][1]);
+          }
+        }
+        break;
+      case "add-apt-repository":
+        if(BashCommand["Arguments"].indexOf("-remove") > -1){
+          var Repositories = FileSystem.getFileContent("/etc/repositories.conf").result.split("\n");
+          for(Line in Repositories){
+            if(Repositories[Line] == BashCommand["SubCommands"][0]){
+              Repositories.splice(Line , 1);
+              FileSystem.writeFile("/etc/repositories.conf" , Repositories.join("\n"));
+              break;
+            }
+          }
+        }else{
+          FileSystem.writeFile("/etc/repositories.conf" , BashCommand["SubCommands"][0]+"\n" , true);
+        }
         break;
       case "cd":
         if (BashCommand["SubCommands"] != []) {
           FileSystem.changeDir(BashCommand["SubCommands"][0]);
         } else {
-          Terminal.echo(FileSystem.CWD());
+          return FileSystem.CWD();
         }
         break;
       case "ls":
@@ -84,11 +148,11 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
         var Content = FileSystem.getDirContent(
           BashCommand["SubCommands"][0]
         ).result;
-        ContentOfFolder = []
+        ContentOfFolder = [];
         for (FileSystemObject in Content) {
-          ContentOfFolder.push(Content[FileSystemObject].name)
+          ContentOfFolder.push(Content[FileSystemObject].name);
         }
-        Terminal.echo(ContentOfFolder.join("     "));
+        return ContentOfFolder.join("     ");
         break;
       case "nano":
         var TextEditor = parent.CreateWindow({
@@ -116,9 +180,7 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
         );
         break;
       case "cat":
-        Terminal.echo(
-          FileSystem.getFileContent(BashCommand["SubCommands"][0]).result
-        );
+        return FileSystem.getFileContent(BashCommand["SubCommands"][0]).result;
         break;
       case "rm":
         FileSystem.delete(BashCommand["SubCommands"][0]);
@@ -127,16 +189,29 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
         FileSystem.delete(BashCommand["SubCommands"][0]);
         break;
       case "echo":
-        Terminal.echo(CommandString.replace("echo ", ""));
+        return CommandString.replace("echo ", "");
         break;
       case "clear":
         Terminal.clear();
+        break;
+      case "reboot":
+        Kernel.Reload();
+        break;
+      case "wget":
+        http = new XMLHttpRequest();
+        http.open("GET",CommandString.replace("wget " , ""),false);
+        http.send();
+        return http.responseText;
+        break;
+      case "halt":
+        Kernel.document.querySelector("#DE").src = "about:blank";
+        Kernel.document.querySelector("#DE").getElementsByClassName.display = "none";
         break;
       // Selaria commands !
       case "selaria":
         switch (BashCommand["SubCommands"][0]) {
           case "test":
-            Terminal.echo("Selaria MountainRange Test !");
+            return "Selaria MountainRange Test !";
             break;
           case "conf":
             switch (BashCommand["SubCommands"][1]) {

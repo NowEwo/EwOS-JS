@@ -22,17 +22,20 @@
       * {
         font-family: "Fira Code";
       }
+      .terminal , .terminal *{
+        background-color: transparent;
+      }
     </style>
   </head>
   <body></body>
   <script>
     var FileSystem = new FFS("SelariaHD");
-    var Kernel = parent ;
-    ContextWindow = {} ;
-    var Shell = this ;
+    var ContextWindow = {};
+    var Kernel = parent;
+    var Shell = this;
     if (ContextWindow.Prompt == undefined) {
       ContextWindow.Prompt =
-        "User@" +
+        Kernel.User["Name"]+"@" +
         Kernel.CurrentShellString +
         " " +
         FileSystem.CWD() +
@@ -41,10 +44,15 @@
     var Terminal = $("body").terminal(
       function (Command) {
         if (Command !== "") {
-          Process(Command);
+          var Return = Process(Command);
+          if(FileToSave == ""){
+            Terminal.echo(Return);
+          }else{
+            FileSystem.writeFile(FileToSave , Return);
+          }
         }
         this.set_prompt(
-            "User@" +
+            Kernel.User["Name"]+"@" +
             Kernel.CurrentShellString +
             " " +
             FileSystem.CWD() +

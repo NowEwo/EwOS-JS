@@ -32,7 +32,7 @@
     var FileSystem = new FFS("SelariaHD");
     if (ContextWindow.Prompt == undefined) {
       ContextWindow.Prompt =
-        "User@" +
+        Kernel.User["Name"]+"@" +
         Kernel.CurrentShellString +
         " " +
         FileSystem.CWD() +
@@ -41,10 +41,15 @@
     var Terminal = $("body").terminal(
       function (Command) {
         if (Command !== "") {
-          Process(Command);
+          var Return = Process(Command);
+          if(FileToSave == ""){
+            Terminal.echo(Return);
+          }else{
+            FileSystem.writeFile(FileToSave , Return);
+          }
         }
         this.set_prompt(
-            "User@" +
+            Kernel.User["Name"]+"@" +
             Kernel.CurrentShellString +
             " " +
             FileSystem.CWD() +
