@@ -51,7 +51,10 @@ switch(BashCommand["SubCommands"][0]){
     case "desktop":
         switch(BashCommand["SubCommands"][1]){
             case "reload":
-                Shell.ReloadDesktop();
+                try{
+                    Shell.ReloadDesktop();
+                }catch(Error){
+                }
             case "mklink":
                 CommandString = CommandString.replace("-r" , "");
                 Shell.CreateDesktopLink(BashCommand["SubCommands"][2] , CommandString.slice(20+BashCommand["SubCommands"][2].length , CommandString.length));
