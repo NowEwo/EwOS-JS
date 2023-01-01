@@ -830,6 +830,7 @@ class FFS {
      *
      */
     this.copy = function (source, destination) {
+      this.Sync();
       // We return the result as a FFS.Result class
       const result = new this.Result();
 
@@ -925,9 +926,9 @@ class FFS {
 
         result.success = true;
         result.result = newFile;
+        this.Save();
         return result;
       }
-      this.Save();
     };
 
     /**
@@ -948,6 +949,7 @@ class FFS {
      * // ]
      */
     this.move = function (source, destination) {
+      this.Sync();
       const result = new this.Result();
       source = this.simplifyPath(source);
       destination = this.simplifyPath(destination);

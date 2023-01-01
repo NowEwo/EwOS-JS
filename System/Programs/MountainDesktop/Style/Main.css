@@ -239,6 +239,26 @@ body{
 #PreIFRAME{
     display: none;
 }
+#Desktop *{
+    text-align: center;
+}
+#Desktop img{
+    height: 31px;
+    width: 31px;
+}
+#Desktop button{
+    background-color: transparent;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    height: 103px;
+    display: flex;
+    border: none;
+    width: 103px;
+}
+#Desktop button:hover{
+    background-color: #0e0e133f;
+}
 *{
     font-family: "metropolis" , sans-serif;
     cursor: url("/System/Assets/Cursor.png") , default;

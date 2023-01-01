@@ -42,15 +42,21 @@ function Process(CommandStringBase) {
     switch (BashCommand["Base"]) {
       // Bash Commands !
       default:
-        if (FileSystem.fileExists("/bin/" + BashCommand["Base"])) {
-          var CommandContent = new Function(FileSystem.getFileContent("/bin/" + BashCommand["Base"]).result);
+        if (FileSystem.fileExists("/bin/" + BashCommand["Base"] + "/" + BashCommand["Base"])) {
+          var KeepLastDir = false;
+          var TerminalDir = FileSystem.CWD();
+          FileSystem.changeDir("/bin/" + BashCommand["Base"] + "/" + BashCommand["Base"]);
+          var CommandContent = new Function(FileSystem.getFileContent("/bin/" + BashCommand["Base"] + "/" + BashCommand["Base"]).result);
           Terminal.echo(CommandContent());
+          if(KeepLastDir == undefined || KeepLastDir == false){
+            FileSystem.changeDir(TerminalDir);
+          }
         } else {
-          if (LinkCheck("SBash/Commands/" + BashCommand["Base"] + ".js")) {
+          if (LinkCheck("/Kernel/SBash/Commands/" + BashCommand["Base"] + ".js")) {
             http = new XMLHttpRequest();
             http.open(
               "GET",
-              "SBash/Commands/" + BashCommand["Base"] + ".js",
+              "/Kernel/SBash/Commands/" + BashCommand["Base"] + ".js",
               false
             );
             http.send();
@@ -96,17 +102,24 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
         if(BashCommand["SubCommands"][0] == "install"){
           for(Repository in FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")){
             if(FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository] != ""){
-
+              var Version = ""
+              if(BashCommand["Arguments"].indexOf("v") > -1){
+                Version = "-" + BashCommand["SubCommands"][2];
+              }
               try{
                 http = new XMLHttpRequest();
                 http.open(
                 "GET",
-                "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1]+"/"+BashCommand["SubCommands"][1],
+                "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/"+BashCommand["SubCommands"][1],
                 false
                 );
                 http.send();
+                if(BashCommand["Arguments"].indexOf("p") == -1){
+                  Version = ""
+                }
                 if(http.responseText != "404: Not Found"){
-                  FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1] , http.responseText);
+                  FileSystem.createDir("/bin/" , BashCommand["SubCommands"][1]+Version);
+                  FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1]+Version+"/"+BashCommand["SubCommands"][1]+Version , http.responseText);
                   break;
                 }
               }catch(Error){
@@ -116,7 +129,11 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
           }
         }else{
           if(BashCommand["SubCommands"][0] == "remove"){
-            FileSystem.delete("/bin/"+BashCommand["SubCommands"][1]);
+            var Version = "";
+            if(BashCommand["Arguments"].indexOf("v") > -1){
+              Version = "-" + BashCommand["SubCommands"][2];
+            }
+            FileSystem.delete("/bin/"+BashCommand["SubCommands"][1]+Version);
           }
         }
         break;
@@ -155,7 +172,7 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
         return ContentOfFolder.join("     ");
         break;
       case "nano":
-        var TextEditor = parent.CreateWindow({
+        var TextEditor = Shell.CreateWindow({
           Name: "TextEditor",
           Title:
             "Text Editor : " +
@@ -178,6 +195,12 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
           BashCommand["SubCommands"][0],
           ""
         );
+        break;
+      case "cp":
+        FileSystem.copy(BashCommand["SubCommands"][0] , BashCommand["SubCommands"][1]);
+        break;
+      case "mv":
+        FileSystem.move(BashCommand["SubCommands"][0] , BashCommand["SubCommands"][1]);
         break;
       case "cat":
         return FileSystem.getFileContent(BashCommand["SubCommands"][0]).result;
