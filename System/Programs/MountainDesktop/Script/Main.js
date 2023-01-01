@@ -310,7 +310,35 @@ function ReloadConfig() {
   }
 }
 
-BootScripts();
+document.querySelector("#Desktop").style.width = "100%" ;
+
+function ReloadDesktop(){
+  document.querySelector("#Desktop").innerHTML = ""
+  for(ElementObject in FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result){
+    var Button = document.createElement("button");
+    var Name = FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject].name
+    var Content = FileSystem.getFileContent("/home/"+Kernel.BootArguments["User"]+"/desktop"+ElementObject).result;
+    Name = Name.replace(".link" , "");
+    Button.innerHTML = `
+<p>${Name}</p>
+    `
+    Button.onclick = () => {
+      if(FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject].name.indexOf(".link") > -1){
+        Kernel.Process(FileSystem.getFileContent(FileSystem.getFullPath(FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject])).result);
+      }else{
+        Kernel.Process("nano "+FileSystem.getFullPath(FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject]));
+      }
+    }
+    document.querySelector("#Desktop").appendChild(Button);
+  }
+}
+
+function CreateDesktopLink(Name , Command){
+  FileSystem.writeFile("/home/"+Kernel.BootArguments["User"]+"/desktop/"+Name+".link" , Command);
+}
+
+ReloadDesktop();
 ReloadConfig();
+BootScripts();
 
 Shell.document.title = Shell.document.location.href;
