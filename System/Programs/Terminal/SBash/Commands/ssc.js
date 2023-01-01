@@ -16,7 +16,6 @@ switch(BashCommand["SubCommands"][0]){
                 Kernel.SetShell(JsonBootArguments["Shell"]);
             }
         }else{
-            Terminal.echo("Current shell : "+Kernel.CurrentShellString);
             return "Current shell : "+Kernel.CurrentShellString;
         }
             break;
@@ -25,11 +24,9 @@ switch(BashCommand["SubCommands"][0]){
                 var BootArgumentsVariable = JSON.parse(localStorage["BootArguments"]) ;
                 if(BashCommand["Arguments"].indexOf("g") > -1){
                     if(BashCommand["SubCommands"][1] != "*"){
-                        Terminal.echo(BashCommand["SubCommands"][1]+" : "+BootArgumentsVariable[BashCommand["SubCommands"][1]]);
                         return BashCommand["SubCommands"][1]+" : "+BootArgumentsVariable[BashCommand["SubCommands"][1]];
                     }else{
                         for(Value in BootArgumentsVariable){
-                            Terminal.echo(Value+" : "+BootArgumentsVariable[Value]);
                             return Value+" : "+BootArgumentsVariable[Value];
                         }
                     }
@@ -48,23 +45,4 @@ switch(BashCommand["SubCommands"][0]){
     case "bios":
         Kernel.LoadBIOS();
         break;
-    case "desktop":
-        switch(BashCommand["SubCommands"][1]){
-            case "reload":
-                try{
-                    Shell.ReloadDesktop();
-                }catch(Error){
-                }
-            case "mklink":
-                CommandString = CommandString.replace("-r" , "");
-                Shell.CreateDesktopLink(BashCommand["SubCommands"][2] , CommandString.slice(20+BashCommand["SubCommands"][2].length , CommandString.length));
-                if(BashCommand["Arguments"].indexOf("r") > -1){
-                    Shell.ReloadDesktop();
-                }
-            case "rmlink":
-                FileSystem.delete("/home/"+Kernel.BootArguments["User"]+"/desktop/"+BashCommand["SubCommands"][2] , BashCommand["SubCommands"][3]);
-                if(BashCommand["Arguments"].indexOf("r") > -1){
-                    Shell.ReloadDesktop();
-                } 
-        }
 }

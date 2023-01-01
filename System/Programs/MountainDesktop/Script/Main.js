@@ -292,9 +292,9 @@ document.getElementById("Grab").addEventListener("contextmenu", (Event) => {
 function BootScripts() {
   var OnBoot = FileSystem.getDirContent("/boot").result ;
   for (Script in OnBoot) {
-    Kernel.eval(FileSystem.getFileContent("/boot/"+OnBoot[Script].name).result);
+    Kernel.eval(FileSystem.getFileContent(OnBoot[Script].path).result);
     console.info(
-      "The script on the path '/boot/" + OnBoot[Script].name + "' is executed !"
+      "The script on the path " + OnBoot[Script].path + " is executed !"
     );
   }
 }
@@ -310,36 +310,7 @@ function ReloadConfig() {
   }
 }
 
-document.querySelector("#Desktop").style.width = "100%" ;
-
-function ReloadDesktop(){
-  document.querySelector("#Desktop").innerHTML = ""
-  for(ElementObject in FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result){
-    var FileName = FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject];
-    var Button = document.createElement("button");
-    var Name = FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject].name;
-    var Content = FileSystem.getFileContent(FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject].parent+"/"+FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject].name).result;
-    Name = Name.replace(".link" , "");
-    Button.innerHTML = `
-<p>${Name}</p>
-    `
-    Button.onclick = () => {
-      if(FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject].name.indexOf(".link") > -1){
-        Kernel.Process(Content);
-      }else{
-        Kernel.Process("nano "+FileSystem.getFullPath(FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject]));
-      }
-    }
-    document.querySelector("#Desktop").appendChild(Button);
-  }
-}
-
-function CreateDesktopLink(Name , Command){
-  FileSystem.writeFile("/home/"+Kernel.BootArguments["User"]+"/desktop/"+Name+".link" , Command);
-}
-
-ReloadDesktop();
-ReloadConfig();
 BootScripts();
+ReloadConfig();
 
 Shell.document.title = Shell.document.location.href;

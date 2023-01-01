@@ -42,21 +42,15 @@ function Process(CommandStringBase) {
     switch (BashCommand["Base"]) {
       // Bash Commands !
       default:
-        if (FileSystem.fileExists("/bin/" + BashCommand["Base"] + "/" + BashCommand["Base"])) {
-          var KeepLastDir = false;
-          var TerminalDir = FileSystem.CWD();
-          FileSystem.changeDir("/bin/" + BashCommand["Base"] + "/" + BashCommand["Base"]);
-          var CommandContent = new Function(`var BashCommand = ${JSON.stringify(BashCommand)} ; var CommandString = ${new String(CommandString)} ;`+FileSystem.getFileContent("/bin/" + BashCommand["Base"] + "/" + BashCommand["Base"]).result);
+        if (FileSystem.fileExists("/bin/" + BashCommand["Base"])) {
+          var CommandContent = new Function(FileSystem.getFileContent("/bin/" + BashCommand["Base"]).result);
           Terminal.echo(CommandContent());
-          if(KeepLastDir == undefined || KeepLastDir == false){
-            FileSystem.changeDir(TerminalDir);
-          }
         } else {
-          if (LinkCheck("/Kernel/SBash/Commands/" + BashCommand["Base"] + ".js")) {
+          if (LinkCheck("SBash/Commands/" + BashCommand["Base"] + ".js")) {
             http = new XMLHttpRequest();
             http.open(
               "GET",
-              "/Kernel/SBash/Commands/" + BashCommand["Base"] + ".js",
+              "SBash/Commands/" + BashCommand["Base"] + ".js",
               false
             );
             http.send();
@@ -102,34 +96,18 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
         if(BashCommand["SubCommands"][0] == "install"){
           for(Repository in FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")){
             if(FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository] != ""){
-              var Version = ""
-              if(BashCommand["Arguments"].indexOf("v") > -1){
-                Version = "-" + BashCommand["SubCommands"][2];
-              }
+
               try{
                 http = new XMLHttpRequest();
-                if(BashCommand["Arguments"].indexOf("i") > -1){
-                  http.open(
-                    "GET",
-                    "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/"+"install",
-                    false
-                  );
-                  eval(http.responseText);
-                }else{
-                  http.open(
-                  "GET",
-                  "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/"+BashCommand["SubCommands"][1],
-                  false
-                  );
-                  http.send();
-                  if(BashCommand["Arguments"].indexOf("p") == -1){
-                    Version = ""
-                  }
-                  if(http.responseText != "404: Not Found"){
-                    FileSystem.createDir("/bin/" , BashCommand["SubCommands"][1]+Version);
-                    FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1]+Version+"/"+BashCommand["SubCommands"][1]+Version , http.responseText);
-                    break;
-                  }
+                http.open(
+                "GET",
+                "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1]+"/"+BashCommand["SubCommands"][1],
+                false
+                );
+                http.send();
+                if(http.responseText != "404: Not Found"){
+                  FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1] , http.responseText);
+                  break;
                 }
               }catch(Error){
                 Terminal.echo("TEST : "+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+" , not contain the software !");
@@ -138,11 +116,7 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
           }
         }else{
           if(BashCommand["SubCommands"][0] == "remove"){
-            var Version = "";
-            if(BashCommand["Arguments"].indexOf("v") > -1){
-              Version = "-" + BashCommand["SubCommands"][2];
-            }
-            FileSystem.delete("/bin/"+BashCommand["SubCommands"][1]+Version);
+            FileSystem.delete("/bin/"+BashCommand["SubCommands"][1]);
           }
         }
         break;
@@ -180,11 +154,8 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
         }
         return ContentOfFolder.join("     ");
         break;
-      case "run":
-        eval(FileSystem.getFileContent(BashCommand["SubCommands"][0]).result);
-        break;
       case "nano":
-        var TextEditor = Shell.CreateWindow({
+        var TextEditor = parent.CreateWindow({
           Name: "TextEditor",
           Title:
             "Text Editor : " +
@@ -207,12 +178,6 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
           BashCommand["SubCommands"][0],
           ""
         );
-        break;
-      case "cp":
-        FileSystem.copy(BashCommand["SubCommands"][0] , BashCommand["SubCommands"][1]);
-        break;
-      case "mv":
-        FileSystem.move(BashCommand["SubCommands"][0] , BashCommand["SubCommands"][1]);
         break;
       case "cat":
         return FileSystem.getFileContent(BashCommand["SubCommands"][0]).result;

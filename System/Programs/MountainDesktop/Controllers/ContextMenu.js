@@ -8,10 +8,6 @@ Shell.SetContextMenuContent([
         "Event" : "Shell.ReloadConfig();"
     },
     {
-        "Text" : "Reload the desktop !",
-        "Event" : "Shell.ReloadDesktop();"
-    },
-    {
         "Text" : "Reload the Shell !",
         "Event" : "Shell.Reload();"
     },
