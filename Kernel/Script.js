@@ -40,6 +40,11 @@ var User = {
   Name : BootArguments["User"]
 };
 
+function ReloadUser(){
+  BootArguments = JSON.parse(localStorage["BootArguments"]);
+  User["Name"] = BootArguments["User"];
+}
+
 console.info("Checking if the '"+User["Name"]+"' home folder exist ...");
 if(!FSHandler.fileExists("/home/"+User["Name"])){
   console.info("Creating the '/home/"+User["Name"]+"' folder ...");

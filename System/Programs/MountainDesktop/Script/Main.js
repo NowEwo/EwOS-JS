@@ -292,9 +292,9 @@ document.getElementById("Grab").addEventListener("contextmenu", (Event) => {
 function BootScripts() {
   var OnBoot = FileSystem.getDirContent("/boot").result ;
   for (Script in OnBoot) {
-    Kernel.eval(FileSystem.getFileContent(OnBoot[Script].path).result);
+    Kernel.eval(FileSystem.getFileContent("/boot/"+OnBoot[Script].name).result);
     console.info(
-      "The script on the path " + OnBoot[Script].path + " is executed !"
+      "The script on the path '/boot/" + OnBoot[Script].name + "' is executed !"
     );
   }
 }

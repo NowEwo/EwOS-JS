@@ -46,7 +46,7 @@ function Process(CommandStringBase) {
           var KeepLastDir = false;
           var TerminalDir = FileSystem.CWD();
           FileSystem.changeDir("/bin/" + BashCommand["Base"] + "/" + BashCommand["Base"]);
-          var CommandContent = new Function(FileSystem.getFileContent("/bin/" + BashCommand["Base"] + "/" + BashCommand["Base"]).result);
+          var CommandContent = new Function(`var BashCommand = ${JSON.stringify(BashCommand)} ; var CommandString = ${new String(CommandString)} ;`+FileSystem.getFileContent("/bin/" + BashCommand["Base"] + "/" + BashCommand["Base"]).result);
           Terminal.echo(CommandContent());
           if(KeepLastDir == undefined || KeepLastDir == false){
             FileSystem.changeDir(TerminalDir);
@@ -108,19 +108,28 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
               }
               try{
                 http = new XMLHttpRequest();
-                http.open(
-                "GET",
-                "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/"+BashCommand["SubCommands"][1],
-                false
-                );
-                http.send();
-                if(BashCommand["Arguments"].indexOf("p") == -1){
-                  Version = ""
-                }
-                if(http.responseText != "404: Not Found"){
-                  FileSystem.createDir("/bin/" , BashCommand["SubCommands"][1]+Version);
-                  FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1]+Version+"/"+BashCommand["SubCommands"][1]+Version , http.responseText);
-                  break;
+                if(BashCommand["Arguments"].indexOf("i") > -1){
+                  http.open(
+                    "GET",
+                    "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/"+"install",
+                    false
+                  );
+                  eval(http.responseText);
+                }else{
+                  http.open(
+                  "GET",
+                  "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/"+BashCommand["SubCommands"][1],
+                  false
+                  );
+                  http.send();
+                  if(BashCommand["Arguments"].indexOf("p") == -1){
+                    Version = ""
+                  }
+                  if(http.responseText != "404: Not Found"){
+                    FileSystem.createDir("/bin/" , BashCommand["SubCommands"][1]+Version);
+                    FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1]+Version+"/"+BashCommand["SubCommands"][1]+Version , http.responseText);
+                    break;
+                  }
                 }
               }catch(Error){
                 Terminal.echo("TEST : "+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+" , not contain the software !");
@@ -170,6 +179,9 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
           ContentOfFolder.push(Content[FileSystemObject].name);
         }
         return ContentOfFolder.join("     ");
+        break;
+      case "run":
+        eval(FileSystem.getFileContent(BashCommand["SubCommands"][0]).result);
         break;
       case "nano":
         var TextEditor = Shell.CreateWindow({
