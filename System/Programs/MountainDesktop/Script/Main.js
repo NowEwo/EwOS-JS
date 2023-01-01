@@ -315,16 +315,17 @@ document.querySelector("#Desktop").style.width = "100%" ;
 function ReloadDesktop(){
   document.querySelector("#Desktop").innerHTML = ""
   for(ElementObject in FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result){
+    var FileName = FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject];
     var Button = document.createElement("button");
-    var Name = FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject].name
-    var Content = FileSystem.getFileContent("/home/"+Kernel.BootArguments["User"]+"/desktop"+ElementObject).result;
+    var Name = FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject].name;
+    var Content = FileSystem.getFileContent(FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject].parent+"/"+FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject].name).result;
     Name = Name.replace(".link" , "");
     Button.innerHTML = `
 <p>${Name}</p>
     `
     Button.onclick = () => {
       if(FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject].name.indexOf(".link") > -1){
-        Kernel.Process(FileSystem.getFileContent(FileSystem.getFullPath(FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject])).result);
+        Kernel.Process(Content);
       }else{
         Kernel.Process("nano "+FileSystem.getFullPath(FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject]));
       }

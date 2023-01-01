@@ -53,7 +53,8 @@ switch(BashCommand["SubCommands"][0]){
             case "reload":
                 Shell.ReloadDesktop();
             case "mklink":
-                Shell.CreateDesktopLink(BashCommand["SubCommands"][2] , BashCommand["SubCommands"][3]);
+                CommandString = CommandString.replace("-r" , "");
+                Shell.CreateDesktopLink(BashCommand["SubCommands"][2] , CommandString.slice(20+BashCommand["SubCommands"][2].length , CommandString.length));
                 if(BashCommand["Arguments"].indexOf("r") > -1){
                     Shell.ReloadDesktop();
                 }
