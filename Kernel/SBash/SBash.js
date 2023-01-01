@@ -158,6 +158,18 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
           return FileSystem.CWD();
         }
         break;
+      case "run":
+        eval(FileSystem.getFileContent(CommandString.replace("run " , "")).result);
+        break;
+      case "sh":
+        var Script = FileSystem.getFileContent(CommandString.replace("sh " , "")).result.split("\n");
+        for(CommandScript in Script){
+          Terminal.echo(Process(Script[CommandScript]));
+        }
+        break;
+      case "home":
+        FileSystem.changeDir("/home/"+Kernel.BootArguments["User"]);
+        break;
       case "ls":
         if (CommandString == "ls") {
           BashCommand["SubCommands"][0] = "./";
