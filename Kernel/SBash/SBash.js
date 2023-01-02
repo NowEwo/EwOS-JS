@@ -79,25 +79,6 @@ function Process(CommandStringBase) {
           }
         }
         break;
-      case "help":
-        return `
-List of integrated commands !
-
-help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selaria , ssc , halt , reboot
-
-(
-  ssc :
-   ssc shell
-   ssc boot
-)
-
-(
-  selaria :
-   selaria test
-   selaria conf
-)
-        `;
-        break;
       case "apt":
         if(BashCommand["SubCommands"][0] == "install"){
           for(Repository in FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")){
@@ -118,7 +99,7 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
                   FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1]+".map"  , http.responseText);
                   for(Line in http.responseText.split("\n")){
                     if(http.responseText.split("\n")[Line].indexOf("-d") > -1){
-                      FileSystem.createDir(http.responseText.split("\n")[Line].replace("-d " , ""));
+                      FileSystem.createDir("/" , http.responseText.split("\n")[Line].replace("-d " , ""));
                     }else{
                       var FileContent = new XMLHttpRequest();
                       FileContent.open("GET" , "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/" + http.responseText.split("\n")[Line].split(" > ")[0] , false);
