@@ -101,10 +101,12 @@ function Process(CommandStringBase) {
                     if(http.responseText.split("\n")[Line].indexOf("DIR ") > -1){
                       FileSystem.createDir("" , http.responseText.split("\n")[Line].replace("DIR " , ""));
                     }else{
-                      var FileContent = new XMLHttpRequest();
-                      FileContent.open("GET" , "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/" + http.responseText.split("\n")[Line].split(" > ")[0] , false);
-                      FileContent.send();
-                      FileSystem.writeFile(http.responseText.split("\n")[Line].split(" > ")[1] , FileContent.responseText);
+                      if(http.responseText.split("\n")[Line].indexOf("FILE ") > -1){
+                        var FileContent = new XMLHttpRequest();
+                        FileContent.open("GET" , "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/" + http.responseText.split("\n")[Line].split(" ")[0] , false);
+                        FileContent.send();
+                        FileSystem.writeFile(http.responseText.split("\n")[Line].split(" ")[1] , FileContent.responseText);
+                      }
                     }
                   }
                 }else{
