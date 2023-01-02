@@ -141,10 +141,12 @@ function Process(CommandStringBase) {
             }else{
               if(FileSystem.fileExists("/bin/"+BashCommand["SubCommands"][1]+Version+".map")){
                 for(Line in FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][1]+Version+".map").result.split("\n")){
-                  if(FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][1]+Version+".map").result.split("\n")[Line].indexOf("-d") > -1){
-                    FileSystem.delete(FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][1]+Version+".map").result.split("\n")[Line].replace("-d " , ""));
+                  if(FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][1]+Version+".map").result.split("\n")[Line].indexOf("DIR ") > -1){
+                    FileSystem.delete(FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][1]+Version+".map").result.split("\n")[Line].replace("DIR " , ""));
                   }else{
-                    FileSystem.delete(FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][1]+Version+".map").result.split("\n")[Line].split(" > ")[1]);
+                    if(FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][1]+Version+".map").result.split("\n")[Line].indexOf("FILE ") > -1){
+                      FileSystem.delete(FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][1]+Version+".map").result.split("\n")[Line].split(" ")[1]);
+                    }
                   }
                 }
                 FileSystem.delete("/bin/"+BashCommand["SubCommands"][1]+Version+".map");
