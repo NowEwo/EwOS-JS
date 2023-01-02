@@ -29,6 +29,8 @@
   </head>
   <body></body>
   <script>
+    var Kernel = parent.parent;
+    var Shell = parent;
     var FileSystem = new FFS("SelariaHD");
     if (ContextWindow.Prompt == undefined) {
       ContextWindow.Prompt =

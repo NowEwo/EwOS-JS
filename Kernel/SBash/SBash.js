@@ -46,8 +46,8 @@ function Process(CommandStringBase) {
           var KeepLastDir = false;
           var TerminalDir = FileSystem.CWD();
           FileSystem.changeDir("/bin/" + BashCommand["Base"] + "/" + BashCommand["Base"]);
-          var CommandContent = new Function(FileSystem.getFileContent("/bin/" + BashCommand["Base"] + "/" + BashCommand["Base"]).result);
-          Terminal.echo(CommandContent());
+          var CommandContent = eval(FileSystem.getFileContent("/bin/" + BashCommand["Base"] + "/" + BashCommand["Base"]).result);
+          Terminal.echo(CommandContent);
           if(KeepLastDir == undefined || KeepLastDir == false){
             FileSystem.changeDir(TerminalDir);
           }
@@ -109,18 +109,38 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
               try{
                 http = new XMLHttpRequest();
                 http.open(
-                "GET",
-                "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/"+BashCommand["SubCommands"][1],
-                false
+                  "GET",
+                  "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/Content.map",
+                  false
                 );
                 http.send();
-                if(BashCommand["Arguments"].indexOf("p") == -1){
-                  Version = ""
-                }
                 if(http.responseText != "404: Not Found"){
-                  FileSystem.createDir("/bin/" , BashCommand["SubCommands"][1]+Version);
-                  FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1]+Version+"/"+BashCommand["SubCommands"][1]+Version , http.responseText);
-                  break;
+                  FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1]+".map"  , http.responseText);
+                  for(Line in http.responseText.split("\n")){
+                    if(http.responseText.split("\n")[Line].indexOf("-d") > -1){
+                      FileSystem.createDir(http.responseText.split("\n")[Line].replace("-d " , ""));
+                    }else{
+                      var FileContent = new XMLHttpRequest();
+                      FileContent.open("GET" , "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/" + http.responseText.split("\n")[Line].split(" > ")[0] , false);
+                      FileContent.send();
+                      FileSystem.writeFile(http.responseText.split("\n")[Line].split(" > ")[1] , FileContent.responseText);
+                    }
+                  }
+                }else{
+                  http.open(
+                  "GET",
+                  "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/"+BashCommand["SubCommands"][1],
+                  false
+                  );
+                  http.send();
+                  if(BashCommand["Arguments"].indexOf("p") == -1){
+                    Version = ""
+                  }
+                  if(http.responseText != "404: Not Found"){
+                    FileSystem.createDir("/bin/" , BashCommand["SubCommands"][1]+Version);
+                    FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1]+Version+"/"+BashCommand["SubCommands"][1]+Version , http.responseText);
+                    break;
+                  }
                 }
               }catch(Error){
                 Terminal.echo("TEST : "+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+" , not contain the software !");
@@ -133,7 +153,20 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
             if(BashCommand["Arguments"].indexOf("v") > -1){
               Version = "-" + BashCommand["SubCommands"][2];
             }
-            FileSystem.delete("/bin/"+BashCommand["SubCommands"][1]+Version);
+            if(FileSystem.fileExists("/bin/"+BashCommand["SubCommands"][1]+Version)){
+              FileSystem.delete("/bin/"+BashCommand["SubCommands"][1]+Version);
+            }else{
+              if(FileSystem.fileExists("/bin/"+BashCommand["SubCommands"][1]+Version+".map")){
+                for(Line in FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][1]+Version+".map").result.split("\n")){
+                  if(FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][1]+Version+".map").result.split("\n")[Line].indexOf("-d") > -1){
+                    FileSystem.delete(FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][1]+Version+".map").result.split("\n")[Line].replace("-d " , ""));
+                  }else{
+                    FileSystem.delete(FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][1]+Version+".map").result.split("\n")[Line].split(" > ")[1]);
+                  }
+                }
+                FileSystem.delete("/bin/"+BashCommand["SubCommands"][1]+Version+".map");
+              }
+            }
           }
         }
         break;
@@ -168,7 +201,7 @@ help , cd , ls , nano , cat , touch , mkdir , rm , rmdir , echo , clear , selari
         }
         break;
       case "home":
-        FileSystem.changeDir("/home/"+Kernel.BootArguments["User"]);
+        FileSystem.changeDir("/home/"+Kernel.User["Name"]);
         break;
       case "ls":
         if (CommandString == "ls") {

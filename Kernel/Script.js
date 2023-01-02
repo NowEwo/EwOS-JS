@@ -49,6 +49,22 @@ if(!FSHandler.fileExists("/home/"+User["Name"])){
   FSHandler.createDir("/home/"+User["Name"] , "public");
 }
 
+function ReloadUser(){
+  var BootArguments = JSON.parse(localStorage["BootArguments"]);
+  console.info("Loading the user name !")
+  User = {
+    Name : BootArguments["User"]
+  };
+  console.info("Checking if the '"+User["Name"]+"' home folder exist ...");
+  if(!FSHandler.fileExists("/home/"+User["Name"])){
+    console.info("Creating the '/home/"+User["Name"]+"' folder ...");
+    FSHandler.createDir("/home" , User["Name"]);
+    FSHandler.createDir("/home/"+User["Name"] , "documents");
+    FSHandler.createDir("/home/"+User["Name"] , "desktop");
+    FSHandler.createDir("/home/"+User["Name"] , "public");
+  }
+}
+
 var Video = document.getElementById("StartingAnimation");
 Video.addEventListener("click", function () {
   Video.play();

@@ -292,9 +292,9 @@ document.getElementById("Grab").addEventListener("contextmenu", (Event) => {
 function BootScripts() {
   var OnBoot = FileSystem.getDirContent("/boot").result ;
   for (Script in OnBoot) {
-    Kernel.eval(FileSystem.getFileContent(OnBoot[Script].path).result);
+    Kernel.eval(FileSystem.getFileContent("/boot/"+OnBoot[Script].name).result);
     console.info(
-      "The script on the path " + OnBoot[Script].path + " is executed !"
+      "The script on the path '/boot/" + OnBoot[Script].name + " is executed !"
     );
   }
 }
@@ -314,19 +314,19 @@ document.querySelector("#Desktop").style.width = "100%" ;
 
 function ReloadDesktop(){
   document.querySelector("#Desktop").innerHTML = ""
-  for(ElementObject in FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result){
+  for(ElementObject in FileSystem.getDirContent("/home/"+Kernel.User["Name"]+"/desktop").result){
     var Button = document.createElement("button");
-    var Name = FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject].name
-    var Content = FileSystem.getFileContent("/home/"+Kernel.BootArguments["User"]+"/desktop"+ElementObject).result;
+    var Name = FileSystem.getDirContent("/home/"+Kernel.User["Name"]+"/desktop").result[ElementObject].name
+    var Content = FileSystem.getFileContent("/home/"+Kernel.User["Name"]+"/desktop"+ElementObject).result;
     Name = Name.replace(".link" , "");
     Button.innerHTML = `
 <p>${Name}</p>
     `
     Button.onclick = () => {
-      if(FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject].name.indexOf(".link") > -1){
-        Kernel.Process(FileSystem.getFileContent(FileSystem.getFullPath(FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject])).result);
+      if(FileSystem.getDirContent("/home/"+Kernel.User["Name"]+"/desktop").result[ElementObject].name.indexOf(".link") > -1){
+        Kernel.Process(FileSystem.getFileContent(FileSystem.getFullPath(FileSystem.getDirContent("/home/"+Kernel.User["Name"]+"/desktop").result[ElementObject])).result);
       }else{
-        Kernel.Process("nano "+FileSystem.getFullPath(FileSystem.getDirContent("/home/"+Kernel.BootArguments["User"]+"/desktop").result[ElementObject]));
+        Kernel.Process("nano "+FileSystem.getFullPath(FileSystem.getDirContent("/home/"+Kernel.User["Name"]+"/desktop").result[ElementObject]));
       }
     }
     document.querySelector("#Desktop").appendChild(Button);
@@ -334,7 +334,7 @@ function ReloadDesktop(){
 }
 
 function CreateDesktopLink(Name , Command){
-  FileSystem.writeFile("/home/"+Kernel.BootArguments["User"]+"/desktop/"+Name+".link" , Command);
+  FileSystem.writeFile("/home/"+Kernel.User["Name"]+"/desktop/"+Name+".link" , Command);
 }
 
 ReloadDesktop();

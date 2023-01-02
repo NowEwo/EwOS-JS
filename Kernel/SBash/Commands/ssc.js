@@ -52,15 +52,18 @@ switch(BashCommand["SubCommands"][0]){
         switch(BashCommand["SubCommands"][1]){
             case "reload":
                 Shell.ReloadDesktop();
+                break;
             case "mklink":
                 Shell.CreateDesktopLink(BashCommand["SubCommands"][2] , BashCommand["SubCommands"][3]);
                 if(BashCommand["Arguments"].indexOf("r") > -1){
                     Shell.ReloadDesktop();
                 }
+                break;
             case "rmlink":
-                FileSystem.delete("/home/"+Kernel.BootArguments["User"]+"/desktop/"+BashCommand["SubCommands"][2] , BashCommand["SubCommands"][3]);
+                FileSystem.delete("/home/"+Kernel.User["Name"]+"/desktop/"+BashCommand["SubCommands"][2]);
                 if(BashCommand["Arguments"].indexOf("r") > -1){
                     Shell.ReloadDesktop();
                 } 
+                break;
         }
 }
