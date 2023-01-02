@@ -98,7 +98,7 @@ function Process(CommandStringBase) {
                 if(http.responseText != "404: Not Found"){
                   FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1]+".map"  , http.responseText);
                   for(Line in http.responseText.split("\n")){
-                    if(http.responseText.split("\n")[Line].indexOf(" > ") > -1){
+                    if(http.responseText.split("\n")[Line].indexOf(">") == -1){
                       FileSystem.createDir("/" , http.responseText.split("\n")[Line]);
                     }else{
                       var FileContent = new XMLHttpRequest();
