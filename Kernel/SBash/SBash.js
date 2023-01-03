@@ -80,7 +80,7 @@ function Process(CommandStringBase) {
         }
         break;
       case "apt":
-        if(BashCommand["SubCommands"][0] == "install"){
+        if(BashCommand["SubCommands"][0] == "install" || BashCommand["SubCommands"][0] == "update"){
           for(Repository in FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")){
             if(FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository] != ""){
               var Version = ""
