@@ -109,6 +109,12 @@ function Process(CommandStringBase) {
                       }
                     }
                   }
+                  if(FileSystem.fileExists("/bin/"+BashCommand["SubCommands"][1]+".man") != true){
+                    var ManFile = new XMLHttpRequest();
+                    ManFile.open("GET" , "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/README.md" , false);
+                    ManFile.send();
+                    FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1]+".man" , ManFile.responseText);
+                  }
                 }else{
                   http.open(
                   "GET",
@@ -122,6 +128,13 @@ function Process(CommandStringBase) {
                   if(http.responseText != "404: Not Found"){
                     FileSystem.createDir("/bin/" , BashCommand["SubCommands"][1]+Version);
                     FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1]+Version+"/"+BashCommand["SubCommands"][1]+Version , http.responseText);
+                    http.open(
+                      "GET",
+                      "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/README.md",
+                      false
+                      );
+                    http.send();
+                    FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1]+".man" , http.responseText);
                     break;
                   }
                 }
@@ -168,6 +181,9 @@ function Process(CommandStringBase) {
         }else{
           FileSystem.writeFile("/etc/repositories.conf" , BashCommand["SubCommands"][0]+"\n" , true);
         }
+        break;
+      case "man":
+        return FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][0]+".man").result;
         break;
       case "cd":
         if (BashCommand["SubCommands"] != []) {
