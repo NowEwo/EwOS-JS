@@ -8,6 +8,7 @@ body{
     background-size: cover;
     overflow: hidden;
     padding: 0px;
+    height: 100%;
     margin: 0px;
 }
 
@@ -59,9 +60,12 @@ body{
     position: relative;
     color: white;
     border: none;
-    height: 100%;
+    height: calc(100% - 6px);
     width: 63px;
     top: 0px;
+    margin: 3px;
+    margin-left: 0px;
+    border-radius: 5px;
 }
 
 #TaskbarSoftwares button svg{
@@ -178,7 +182,7 @@ body{
 .Tile{
     border-radius: 13px;
     padding: 9px;
-    margin: 29px;
+    margin: 9px;
 }
 
 .Tile:hover{
@@ -187,14 +191,17 @@ body{
 
 .Tile .Title{
     font-weight: lighter;
-    font-size: xx-large;
+    font-size: 29px;
     color: white;
-    margin: 0px;
+    margin: 13px;
+    text-align: center;
 }
 
 .Tile .Subtitle{
     font-weight: lighter;
     color: white;
+    margin: 3px;
+    text-align: center;
 }
 
 #Username{
@@ -259,7 +266,32 @@ body{
 #Desktop button:hover{
     background-color: #0e0e133f;
 }
+#BottomContainer{
+    display: flex;
+    justify-content: center;
+}
+#PhoneGrab{
+    background-color: var(--TaskbarColor);
+    border-radius: 9px;
+    position: absolute;
+    bottom: 13px;
+    height: 5px;
+    width: 50%;
+}
+#Time{
+    text-align: center;
+    color: var(--TaskbarColor);
+}
+#ApplicationContainer{
+    background-color: transparent;
+    position: absolute;
+    height: 100%;
+    border: none;
+    z-index: -1;
+    width: 100%;
+    top: 0px;
+}
 *{
-    font-family: "metropolis" , sans-serif;
+    font-family: "Metropolis" , sans-serif;
     cursor: url("/System/Assets/Cursor.png") , default;
 }

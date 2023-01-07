@@ -97,7 +97,7 @@ body {
     border-radius: 20px;
     height: 80%;
     margin: 15px 10px;
-    background: var(--border-primary);
+    background: #ffffff20;
     -webkit-transition: all 0.2s ease;
     -o-transition: all 0.2s ease;
     transition: all 0.2s ease;
@@ -169,7 +169,7 @@ body {
     padding: 10px;
     width: 100%;
     border-radius: 999px;
-    color: var(--border-secondary);
+    color: #ffffff;
     background: var(--border-secondary);
 }
 
