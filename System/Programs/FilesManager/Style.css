@@ -1,0 +1,53 @@
+html , body{
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+}
+button , input{
+    background-color: rgb(26, 26, 32);
+    border-radius: 5px;
+    color: white;
+    border: none;
+    padding: 9px 15px 9px 15px;
+    margin: 3px;
+}
+button:hover , input:hover{
+    background-color: rgb(61, 61, 82);
+}
+.Right{
+    float: right;
+}
+#ManagerView{
+    position: absolute;
+    margin: 13px;
+    top: 39px;
+}
+#ManagerView button{
+    padding: 9px 39px 9px 39px;
+}
+#PathInput{
+    position: absolute;
+    right: 139px;
+    z-index: 0;
+    left: 3px;
+}
+#ContextMenuGlobal , #ContextMenuObject{
+    background-color: #212125;
+    position: absolute;
+    border-radius: 5px;
+    display: none;
+    padding: 5px;
+    width: 141px;
+    z-index: 13;
+}
+.CtxMenuElement{
+    background-color: #212125;
+    border-radius: 3px;
+    color: white;
+    border: none;
+    padding: 9px;
+    width: 139px;
+}
+.CtxMenuElement:hover{
+    background-color: #0E0E13;
+}

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Style/Style.css">
+    <script src="/Kernel/FileSystem.js"></script>
+    <title>TextEditor</title>
+</head>
+<body>
+    <div id="MenuBar">
+        <button class="MenuElement" onclick="Save();">Save</button>
+        <button class="MenuElement" onclick="SaveAs();">Save as</button>
+        <button class="MenuElement" onclick="document.getElementById('EditorArea').value = '';">New</button>
+    </div>
+    <textarea name="" id="EditorArea"></textarea>
+</body>
+<script src="Script/TextEditorScript.js"></script>
+</html>
