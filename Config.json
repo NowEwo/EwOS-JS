@@ -1,3 +1,4 @@
 {
-    "SuperUser" : ["127.0.0.1" , "localhost"]
+    "SuperUser" : ["127.0.0.1" , "localhost"],
+    "Blacklist" : ["127.0.0.1" , "localhost"]
 }
