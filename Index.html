@@ -33,12 +33,22 @@
         width: 100%;
       }
       iframe {
+        animation: ShowOpacity 0.3s;
         position: absolute;
         height: 100%;
         width: 100%;
         z-index: -3;
         left: 0px;
         top: 0px;
+      }
+      @keyframes ShowOpacity {
+       from {
+         opacity: 0;
+        }
+  
+       to {
+        opacity: initial;
+        }
       }
     </style>
   </head>

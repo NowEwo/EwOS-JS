@@ -1,4 +1,7 @@
 {
     "SuperUser" : ["127.0.0.1" , "localhost"],
-    "Blacklist" : []
+    "Blacklist" : [],
+    "Maintenance" : false,
+    "IP" : "127.0.0.1",
+    "Port" : 49350
 }

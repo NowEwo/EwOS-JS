@@ -106,6 +106,7 @@ function SetShell(Path) {
   document.getElementById("DE").src = "System/Programs/" + Path + "/Shell.html";
   console.info("New shell : " + Path);
   CurrentShellString = Path ;
+  document.getElementById("DE").animate(ShowOpacity);
 }
 function CreateMainApp(ApplicationName) {
   IFrame = document.createElement("iframe");

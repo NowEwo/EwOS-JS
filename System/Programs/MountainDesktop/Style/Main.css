@@ -13,7 +13,10 @@ body{
 }
 
 .Taskbar{
+    animation-name: ShowOpacity;
+    animation-direction: normal;
     background-color: #212125;
+    animation-duration: 0.5s;
     display: inline-block;
     position: absolute;
     height: 63px;
@@ -290,6 +293,15 @@ body{
     z-index: -1;
     width: 100%;
     top: 0px;
+}
+@keyframes ShowOpacity {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+      opacity: initial;
+    }
 }
 *{
     font-family: "Metropolis" , sans-serif;
