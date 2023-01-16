@@ -1,6 +1,13 @@
 from flask import *
+import requests
 import json
 import os
+
+print("Updating ...")
+
+CurrentVersion = open("Version.conf" , "r").read()
+
+print("Launching server ...")
 
 App = Flask(__name__)
 App.config.from_object(__name__)
