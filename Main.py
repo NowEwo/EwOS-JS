@@ -1,11 +1,9 @@
+from zipfile import ZipFile
 from flask import *
 import requests
+import shutil
 import json
 import os
-
-print("Updating ...")
-
-CurrentVersion = open("Version.conf" , "r").read()
 
 print("Launching server ...")
 
@@ -57,4 +55,4 @@ def API(Action):
                 ReloadConfig()
 
 if __name__ == '__main__' :
-    App.run(host=SelariaMRConfig["IP"] , port=SelariaMRConfig["Port"] , debug=True)
+    App.run(host=SelariaMRConfig["IP"] , port=SelariaMRConfig["Port"])
