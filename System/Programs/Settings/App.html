@@ -5,24 +5,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Settings</title>
     <link rel="stylesheet" href="Style/Style.css">
 </head>
 
 <body>
     <div id="Categories">
         <button class="TabButton" onclick="Tab('User')">Users and authorizations</button>
+        <button class="TabButton" onclick="Tab('Reset')">Reset to factory settings</button>
         <button class="TabButton" onclick="Tab('About')">About Selaria MountainRange</button>
     </div>
     <div id="Content">
     </div>
     <div class="Tab" id="User">
-        <h1>User</h1>
+        <h1>User and Authorizations</h1>
         <p>SuperUser : <JS>BooleanYesNo(Config.SuperUser)</JS></p>
         <p>Current user Name : <JS>Kernel.User.Name</JS></p>
         <p>Current IP : <JS>Config.RequestFrom</JS></p>
     </div>
-    <div class="Tab" id="About"><p style="color:white">About !</p></div>
+    <div class="Tab" id="About">
+        <h1>About this system</h1>
+        <img src="/System/Assets/Logo.png" alt="">
+        <p>Current version : <JS>Fetch("/Version.conf")</JS></p>
+        <p>Latest version : <a href="https://github.com/WolfyGreyWolf/SelariaMountainRange/archive/refs/heads/main.zip"><JS>Fetch("https://raw.githubusercontent.com/WolfyGreyWolf/SelariaMountainRange/main/Version.conf")</JS></a></p>
+    </div>
+    <div class="Tab" id="Reset">
+        <h1>Reset Selaria MountainRange</h1>
+        <p>This may affect all your local files ans your Selaria MountainRange configuration !</p>
+        <button onclick="if(this.innerHTML == 'Sure ?'){localStorage.clear();Kernel.Reload();}else{this.innerHTML = 'Sure ?'}" class="TabButton">Process anyways ?</button>
+    </div>
 </body>
 <script src="Script/Main.js"></script>
 </html>

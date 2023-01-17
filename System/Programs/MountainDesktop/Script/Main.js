@@ -82,12 +82,12 @@ function CreateWindow(Data) {
     Software[UID].Controller.document.location.href = "about:blank";
   };
   Software[UID].Controller.document.body.onload = function () {
-    if(Data.Title == undefined){
+    if (Data.Title == undefined) {
       Software[UID].setTitle(Software[UID].Controller.document.title);
     }
   };
   Software[UID].SetWorkspace = (Workspace) => {
-    Software[UID].Workspace = Workspace ;
+    Software[UID].Workspace = Workspace;
     ReloadWindows();
     ReloadTaskbar();
   }
@@ -103,10 +103,10 @@ function CreateWindow(Data) {
       WindowObject.restore();
     };
   };
-  Software[UID].ShowDialog = (Title , Text) => {
+  Software[UID].ShowDialog = (Title, Text) => {
     Software[UID].Dialog = new WinBox({
-      html : `<h1 style="color:white;text-align: center;width : 100%;">${Title}</h1><p style="color:white;text-align: center;width : 100%;">${Text}</p>`,
-      modal : true
+      html: `<h1 style="color:white;text-align: center;width : 100%;">${Title}</h1><p style="color:white;text-align: center;width : 100%;">${Text}</p>`,
+      modal: true
     });
   }
   if (Data.NoMenu == undefined) {
@@ -115,11 +115,11 @@ function CreateWindow(Data) {
   ReloadTaskbar();
   console.info(
     "New window : " +
-      Data.Name +
-      " as " +
-      Data.Title +
-      " ... Attributed Uid : " +
-      UID
+    Data.Name +
+    " as " +
+    Data.Title +
+    " ... Attributed Uid : " +
+    UID
   );
   return Software[UID];
 }
@@ -131,10 +131,10 @@ function CreateWindow(Data) {
   "Arguments" : ...
 }*/
 
-function ShowDialog(Title , Text , Parent){
+function ShowDialog(Title, Text, Parent) {
   Parent.Dialog = new WinBox({
-    html : `<h1 style="color:white;text-align: center;width : 100%;">${Title}</h1><p style="color:white;text-align: center;width : 100%;">${Text}</p>`,
-    modal : true
+    html: `<h1 style="color:white;text-align: center;width : 100%;">${Title}</h1><p style="color:white;text-align: center;width : 100%;">${Text}</p>`,
+    modal: true
   });
 }
 
@@ -274,7 +274,7 @@ document.getElementById("StartMenu").style.zIndex = "13";
 
 document.getElementById("Grab").addEventListener("click", function () {
   for (ID in Software) {
-    if(Software[ID].Workspace == Shell.Workspace){
+    if (Software[ID].Workspace == Shell.Workspace) {
       if (!Software[ID].hidden) {
         Software[ID].hide();
         Button[ID].setAttribute(
@@ -303,9 +303,9 @@ document.getElementById("Grab").addEventListener("contextmenu", (Event) => {
 });
 
 function BootScripts() {
-  var OnBoot = FileSystem.getDirContent("/boot").result ;
+  var OnBoot = FileSystem.getDirContent("/boot").result;
   for (Script in OnBoot) {
-    Kernel.eval(FileSystem.getFileContent("/boot/"+OnBoot[Script].name).result);
+    Kernel.eval(FileSystem.getFileContent("/boot/" + OnBoot[Script].name).result);
     console.info(
       "The script on the path '/boot/" + OnBoot[Script].name + " is executed !"
     );
@@ -323,31 +323,31 @@ function ReloadConfig() {
   }
 }
 
-document.querySelector("#Desktop").style.width = "100%" ;
+document.querySelector("#Desktop").style.width = "100%";
 
-function ReloadDesktop(){
+function ReloadDesktop() {
   document.querySelector("#Desktop").innerHTML = ""
-  for(ElementObject in FileSystem.getDirContent("/home/"+Kernel.User["Name"]+"/desktop").result){
+  for (ElementObject in FileSystem.getDirContent("/home/" + Kernel.User["Name"] + "/desktop").result) {
     var Button = document.createElement("button");
-    var Name = FileSystem.getDirContent("/home/"+Kernel.User["Name"]+"/desktop").result[ElementObject].name
-    var Content = FileSystem.getFileContent("/home/"+Kernel.User["Name"]+"/desktop"+ElementObject).result;
-    Name = Name.replace(".link" , "");
+    var Name = FileSystem.getDirContent("/home/" + Kernel.User["Name"] + "/desktop").result[ElementObject].name
+    var Content = FileSystem.getFileContent("/home/" + Kernel.User["Name"] + "/desktop" + ElementObject).result;
+    Name = Name.replace(".link", "");
     Button.innerHTML = `
 <p>${Name}</p>
     `
     Button.onclick = () => {
-      if(FileSystem.getDirContent("/home/"+Kernel.User["Name"]+"/desktop").result[ElementObject].name.indexOf(".link") > -1){
-        Kernel.Process(FileSystem.getFileContent(FileSystem.getFullPath(FileSystem.getDirContent("/home/"+Kernel.User["Name"]+"/desktop").result[ElementObject])).result);
-      }else{
-        Kernel.Process("nano "+FileSystem.getFullPath(FileSystem.getDirContent("/home/"+Kernel.User["Name"]+"/desktop").result[ElementObject]));
+      if (FileSystem.getDirContent("/home/" + Kernel.User["Name"] + "/desktop").result[ElementObject].name.indexOf(".link") > -1) {
+        Kernel.Process(FileSystem.getFileContent(FileSystem.getFullPath(FileSystem.getDirContent("/home/" + Kernel.User["Name"] + "/desktop").result[ElementObject])).result);
+      } else {
+        Kernel.Process("nano " + FileSystem.getFullPath(FileSystem.getDirContent("/home/" + Kernel.User["Name"] + "/desktop").result[ElementObject]));
       }
     }
     document.querySelector("#Desktop").appendChild(Button);
   }
 }
 
-function CreateDesktopLink(Name , Command){
-  FileSystem.writeFile("/home/"+Kernel.User["Name"]+"/desktop/"+Name+".link" , Command);
+function CreateDesktopLink(Name, Command) {
+  FileSystem.writeFile("/home/" + Kernel.User["Name"] + "/desktop/" + Name + ".link", Command);
 }
 
 ReloadDesktop();

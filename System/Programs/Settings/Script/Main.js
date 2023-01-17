@@ -19,8 +19,6 @@ for(ElementObject in document.getElementsByTagName("JS")){
     document.getElementsByTagName("JS")[ElementObject].innerHTML = eval(document.getElementsByTagName("JS")[ElementObject].innerHTML);
 }
 
-console.log(Config)
-
 function Tab(Name) {
     document.querySelector("#Content").innerHTML = document.getElementById(Name).innerHTML
 }
