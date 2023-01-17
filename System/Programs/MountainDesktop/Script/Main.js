@@ -103,6 +103,12 @@ function CreateWindow(Data) {
       WindowObject.restore();
     };
   };
+  Software[UID].ShowDialog = (Title , Text) => {
+    Software[UID].Dialog = new WinBox({
+      html : `<h1 style="color:white;text-align: center;width : 100%;">${Title}</h1><p style="color:white;text-align: center;width : 100%;">${Text}</p>`,
+      modal : true
+    });
+  }
   if (Data.NoMenu == undefined) {
     ToggleStartMenu();
   }
@@ -124,6 +130,13 @@ function CreateWindow(Data) {
   "Icon" : ... ,
   "Arguments" : ...
 }*/
+
+function ShowDialog(Title , Text , Parent){
+  Parent.Dialog = new WinBox({
+    html : `<h1 style="color:white;text-align: center;width : 100%;">${Title}</h1><p style="color:white;text-align: center;width : 100%;">${Text}</p>`,
+    modal : true
+  });
+}
 
 function ReloadWindows() {
   for (WindowObject in Software) {

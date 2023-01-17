@@ -1,0 +1,43 @@
+*{
+    font-family: "Metropolis" , sans-serif;
+    color: white;
+}
+@import url("https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/metropolis.min.css");
+html,
+body {
+    overflow: hidden;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+}
+#Categories {
+    margin: 9px;
+    width: 25%;
+}
+#Categories button {
+    width: 100%;
+    border: none;
+    padding: 19px;
+    margin: 3px;
+    border-radius: 9px;
+    background-color: #212125;
+    color: white;
+}
+#Categories button:hover {
+    background-color: #515153;
+}
+#Content {
+    position: absolute;
+    display: block;
+    bottom: 9px;
+    margin: 9px;
+    right: 9px;
+    left: 26%;
+    top: 9px;
+}
+#Content *{
+    text-align: center;
+}
+.Tab {
+    display: none;
+}

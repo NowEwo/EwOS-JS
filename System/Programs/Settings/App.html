@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="Style/Style.css">
+</head>
+
+<body>
+    <div id="Categories">
+        <button class="TabButton" onclick="Tab('User')">Users and authorizations</button>
+        <button class="TabButton" onclick="Tab('About')">About Selaria MountainRange</button>
+    </div>
+    <div id="Content">
+    </div>
+    <div class="Tab" id="User">
+        <h1>User</h1>
+        <p>SuperUser : <JS>BooleanYesNo(Config.SuperUser)</JS></p>
+        <p>Current user Name : <JS>Kernel.User.Name</JS></p>
+        <p>Current IP : <JS>Config.RequestFrom</JS></p>
+    </div>
+    <div class="Tab" id="About"><p style="color:white">About !</p></div>
+</body>
+<script src="Script/Main.js"></script>
+</html>

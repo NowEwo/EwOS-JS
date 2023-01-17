@@ -1,5 +1,6 @@
 from zipfile import ZipFile
 from flask import *
+import subprocess
 import requests
 import shutil
 import json
@@ -52,7 +53,7 @@ def API(Action):
         elif(Action == "block"):
             if(SuperUser):
                 SelariaMRConfig["Blacklist"].append(Request.get_json()["IP"])
-                ReloadConfig()
+                SaveConfig()
 
 if __name__ == '__main__' :
     App.run(host=SelariaMRConfig["IP"] , port=SelariaMRConfig["Port"])
