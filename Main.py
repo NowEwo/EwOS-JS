@@ -1,6 +1,8 @@
 from zipfile import ZipFile
 from flask import *
-import time
+import subprocess
+import requests
+import shutil
 import json
 import os
 
@@ -45,7 +47,6 @@ def API(Action):
                 "RequestFrom" : request.environ['REMOTE_ADDR'],
                 "SuperUser" : SuperUser,
                 "SelariaFolder" : os.getcwd(),
-                "Version" : open("Version.conf" , "r").read(),
                 "Config" : SelariaMRConfig
             })
             return Response(ResponseData , mimetype="application/json")
