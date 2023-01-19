@@ -69,7 +69,7 @@
             position: relative;
             color: #CCCCCC;
             display: inline;
-            padding: 29px;
+            padding: 13px;
         }
         #Categories p[Selected = True]{
             background-color: #CCCCCC;
@@ -118,7 +118,7 @@
     function SetTab(Name){
         for(Value in document.getElementsByClassName("Tab")){
             if(document.getElementsByClassName("Tab")[Value].id != Name){
-                document.querySelector("#"+document.getElementsByClassName("Tab")[Value].id+"Button").removeAttribute("Selected" , "False")
+                document.querySelector("#"+document.getElementsByClassName("Tab")[Value].id+"Button").setAttribute("Selected" , "False")
                 document.getElementsByClassName("Tab")[Value].style.display = "none";
             }else{
                 document.getElementsByClassName("Tab")[Value].style.display = "block";

@@ -61,4 +61,22 @@
     </div>
   </body>
 </html>
-<script src="Kernel/Script.js"></script>
+<script>
+  function KernelLoad(){
+    if(localStorage["Kernel"] != "Base"){
+      if(localStorage["Kernel"] == undefined){
+        localStorage["Kernel"] = "Base";
+        KernelURL = "Kernel/Script.js";
+      }
+      else{
+        KernelURL = localStorage["Kernel"];
+      }
+    }else{
+      KernelURL = "Kernel/Script.js";
+    }
+    var KernelScript = document.createElement("script");
+    KernelScript.src = KernelURL;
+    document.body.appendChild(KernelScript);
+  }
+  KernelLoad();
+</script>
