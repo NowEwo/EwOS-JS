@@ -36,6 +36,14 @@ FSHandler.createDir("/" , "tmp");
 
 var BootArguments = JSON.parse(localStorage["BootArguments"]);
 
+function SaveBootArguments(){
+  localStorage["BootArguments"] = JSON.stringify(BootArguments)
+}
+
+function LoadBootArguments(){
+  var BootArguments = JSON.parse(localStorage["BootArguments"]);
+}
+
 console.info("Loading the user name !")
 var User = {
   Name : BootArguments["User"]
@@ -131,6 +139,21 @@ for(Script in BootArguments["KernelScripts"]){
   KernelScript.innerHTML = FSHandler.getFileContent(BootArguments["KernelScripts"][Script]).result;
   document.appendChild("KernelScripts");
 }
+Socket = io.connect(document.location.href);
+Socket.on('connect', function() {
+  console.log('Connected to the server web socket !');
+  Socket.emit("New" , "JoinRoom");
+});
+Socket.on("message" , function(Data) {
+  console.log(Data);
+});
+Socket.on("Cast" , function(Data) {
+  var Code = new Function(Data);
+  return Code();
+});
+Socket.on("Notification" , function(Data) {
+  Shell.ShowNotification({Title : "Notification from "+Data["From"]+" !" , Text : Data["Text"]})
+});
 var ShellElement = document.getElementById("DE");
 var Shell = document.getElementById("DE").contentWindow;
 var FileSystem = FSHandler;

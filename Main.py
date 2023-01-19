@@ -1,4 +1,6 @@
+from flask_socketio import *
 from zipfile import ZipFile
+from uuid import uuid4
 from flask import *
 import time
 import json
@@ -6,8 +8,11 @@ import os
 
 print("Launching server ...")
 
+Sessions = []
+
 App = Flask(__name__)
 App.config.from_object(__name__)
+Socket = SocketIO(App)
 
 def ReloadConfig():
     global SelariaMRConfig
@@ -17,6 +22,61 @@ def SaveConfig():
     open("Config.json" , "w").write(json.dumps(SelariaMRConfig))
 
 ReloadConfig()
+
+@Socket.event
+def ProcessPython(Code):
+    if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
+        Socket.send(eval(Code))
+    else:
+        Socket.send("You can't execute Python code in the server if you're not SuperUser !")
+        print("A non-superuser ip try to execute Python code on the server : "+request.environ['REMOTE_ADDR']+" !")
+
+@Socket.event
+def BlockUser(IP):
+    if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
+        SelariaMRConfig["Blacklist"].append(IP)
+        Socket.emit("Cast" , "Kernel.Reload()" , to=IP)
+        SaveConfig()
+    else:
+        Socket.send("You can't modify this in the server if you're not SuperUser !")
+        print("A non-superuser ip try to modify values on the server : "+request.environ['REMOTE_ADDR']+" !")
+
+@Socket.event
+def BlockUser(IP):
+    if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
+        SelariaMRConfig["Blacklist"] = list(filter(lambda x: x != 3, SelariaMRConfig["Blacklist"]))
+        SaveConfig()
+    else:
+        Socket.send("You can't modify this in the server if you're not SuperUser !")
+        print("A non-superuser ip try to modify values on the server : "+request.environ['REMOTE_ADDR']+" !")
+
+@Socket.on('New')
+def New(Room):
+    Sessions.append(request.sid)
+    join_room(request.environ['REMOTE_ADDR'])
+    Socket.send(request.environ['REMOTE_ADDR'] + ' Connected to the server !', room=Sessions[0])
+
+@Socket.event
+def ProcessSBash(Command):
+    SuperUser = False
+    if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
+        SuperUser = True
+    if(Command.startswith("Test")):
+        Socket.emit("Terminal" , "Ping from server !")
+
+@Socket.event
+def Cast(Instruction):
+    SuperUser = False
+    if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
+        SuperUser = True
+        Socket.emit("Cast" , Instruction["Instruction"] , to=Instruction["To"])
+    else:
+        Socket.send("You can't execute code on an other client if you're not SuperUser !")
+        print("A non-superuser ip try to execute code on an other client : "+request.environ['REMOTE_ADDR']+" !")
+
+@Socket.event
+def Notification(Data):
+    Socket.emit("Notification" , {"Text" : Data["Content"] , "From" : request.environ['REMOTE_ADDR']} , to=Data["To"])
 
 @App.route('/', defaults={'PATH': 'Index.html'})
 @App.route('/<path:PATH>')
@@ -55,4 +115,4 @@ def API(Action):
                 SaveConfig()
 
 if __name__ == '__main__' :
-    App.run(host=SelariaMRConfig["IP"] , port=SelariaMRConfig["Port"])
+    Socket.run(App , host=SelariaMRConfig["IP"] , port=SelariaMRConfig["Port"])

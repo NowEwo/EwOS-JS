@@ -1,1 +1,14 @@
 flask
+flask_socketio
+Flask
+Flask-Login
+Flask-Session
+Flask_SocketIO
+itsdangerous
+Jinja2
+MarkupSafe
+python-engineio
+python-socketio
+six
+Werkzeug
+flask-sock
