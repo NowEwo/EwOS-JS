@@ -6,6 +6,7 @@ if (localStorage["BootArguments"] == undefined) {
   localStorage["BootArguments"] = JSON.stringify({
     Shell: "MountainDesktop",
     User : "Selaria" ,
+    KernelScripts : [],
   });
 }
 
@@ -125,6 +126,11 @@ function Reload() {
   document.location.href = "/";
 }
 
+for(Script in BootArguments["KernelScripts"]){
+  var KernelScript = document.createElement("script");
+  KernelScript.innerHTML = FSHandler.getFileContent(BootArguments["KernelScripts"][Script]).result;
+  document.appendChild("KernelScripts");
+}
 var ShellElement = document.getElementById("DE");
 var Shell = document.getElementById("DE").contentWindow;
 var FileSystem = FSHandler;
