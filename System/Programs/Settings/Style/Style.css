@@ -19,12 +19,13 @@ body {
 }
 
 .TabButton {
-    width: 100%;
-    border: none;
-    padding: 19px;
-    margin: 3px;
-    border-radius: 9px;
     background-color: #212125;
+    border-radius: 9px;
+    padding: 19px;
+    border: none;
+    margin: 3px;
+    width: 100%;
+    font-weight: lighter;
     color: white;
 }
 
@@ -33,15 +34,16 @@ body {
 }
 
 #Content {
+    background-color: #212125;
     justify-content: center;
     flex-direction: column;
     display: inline-flex;
     position: absolute;
-    bottom: 9px;
+    bottom: -9px;
     margin: 9px;
-    right: 9px;
+    right: -9px;
     left: 26%;
-    top: 9px;
+    top: -9px;
 }
 
 #Content img {
