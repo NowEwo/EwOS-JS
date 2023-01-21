@@ -42,7 +42,7 @@ def BlockUser(IP):
         print("A non-superuser ip try to modify values on the server : "+request.environ['REMOTE_ADDR']+" !")
 
 @Socket.event
-def BlockUser(IP):
+def UnBlockUser(IP):
     if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
         SelariaMRConfig["Blacklist"] = list(filter(lambda x: x != 3, SelariaMRConfig["Blacklist"]))
         SaveConfig()
@@ -52,7 +52,7 @@ def BlockUser(IP):
 
 @Socket.on('New')
 def New(Room):
-    Sessions.append(request.environ['REMOTE_ADDR'])
+    Sessions.append(request.sid)
     join_room(request.environ['REMOTE_ADDR'])
     Socket.send(request.environ['REMOTE_ADDR'] + ' Connected to the server !', room=Sessions[0])
 
