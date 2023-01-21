@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Style.css">
+    <title>OOBE Development preview</title>
+</head>
+<body>
+    <div id="Container">
+    </div>
+    <div id="Tab1" class="Tab">
+        <h3 style="font-family: 'Metropolis';font-size: xx-large;color: white;position: absolute;top: 51px;">Welcome to Selaria MountainRange !</h3>
+        <img src="Assets/Computer.png" alt="">
+        <button style="position: absolute;bottom: 29px;" onclick="Next();">Start</button>
+    </div>
+    <div id="Tab2" class="Tab">
+        <h3 style="font-family: 'Metropolis';font-size: xx-large;color: white;position: absolute;top: 51px;">How do you want us to call you ?</h3>
+        <img src="Assets/User.png" alt="">
+        <input type="text" placeholder="Username" onchange="Username = this.value">
+        <button style="position: absolute;bottom: 29px;" onclick="Next();">Continue</button>
+    </div>
+    <div id="Tab3" class="Tab">
+        <h3 style="font-family: 'Metropolis';font-size: xx-large;color: white;position: absolute;top: 51px;">Which taskbar do you prefer?</h3>
+        <button onclick="Dock = true;Next();">Dock</button>
+        <button onclick="Dock = false;Next();">Bar</button>
+    </div>
+    <div id="Tab4" class="Tab">
+        <h3 style="font-family: 'Metropolis';font-size: xx-large;color: white;">We put a few things in place for you !</h3>
+    </div>
+</body>
+<script src="Script.js"></script>
+</html>

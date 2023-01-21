@@ -1,14 +1,4 @@
-var InBIOS = false;
-
-console.info("Check if Boot arguments exists ...");
-if (localStorage["BootArguments"] == undefined) {
-  console.info("Not founded , creating Boot arguments !");
-  localStorage["BootArguments"] = JSON.stringify({
-    Shell: "MountainDesktop",
-    User : "Selaria" ,
-    KernelScripts : [],
-  });
-}
+SetShell(BootArguments["Shell"]);
 
 console.info("Loading the file system : SelariaHD ...");
 var FSHandler = new FFS("SelariaHD");
@@ -22,8 +12,8 @@ if (FSHandler.fileExists("/bin/#.fs") == false) {
   FSHandler.createDir("/", "boot");
   FSHandler.createDir("/", "etc");
   console.info("Writing '/etc/jsv.conf' ...");
-  FSHandler.writeFile("/etc/jsv.conf", JSON.stringify({'Config' : 'Loaded'}));
-  FSHandler.writeFile("/etc/repositories.conf" , "WolfyGreyWolf/SelariaMountainRange-Repository\n")
+  FSHandler.writeFile("/etc/jsv.conf", JSON.stringify({ 'Config': 'Loaded' }));
+  FSHandler.writeFile("/etc/repositories.conf", "WolfyGreyWolf/SelariaMountainRange-Repository\n")
   FSHandler.createDir("/", "home");
   FSHandler.createDir("/", "root");
   FSHandler.createDir("/", "tmp");
@@ -32,64 +22,47 @@ if (FSHandler.fileExists("/bin/#.fs") == false) {
 
 console.info("Removing content of the 'tmp' folder ...");
 FSHandler.delete("/tmp");
-FSHandler.createDir("/" , "tmp");
+FSHandler.createDir("/", "tmp");
 
 var BootArguments = JSON.parse(localStorage["BootArguments"]);
 
-function SaveBootArguments(){
+function SaveBootArguments() {
   localStorage["BootArguments"] = JSON.stringify(BootArguments)
 }
 
-function LoadBootArguments(){
+function LoadBootArguments() {
   var BootArguments = JSON.parse(localStorage["BootArguments"]);
 }
 
 console.info("Loading the user name !")
 var User = {
-  Name : BootArguments["User"]
+  Name: BootArguments["User"]
 };
 
-console.info("Checking if the '"+User["Name"]+"' home folder exist ...");
-if(!FSHandler.fileExists("/home/"+User["Name"])){
-  console.info("Creating the '/home/"+User["Name"]+"' folder ...");
-  FSHandler.createDir("/home" , User["Name"]);
-  FSHandler.createDir("/home/"+User["Name"] , "documents");
-  FSHandler.createDir("/home/"+User["Name"] , "desktop");
-  FSHandler.createDir("/home/"+User["Name"] , "public");
+console.info("Checking if the '" + User["Name"] + "' home folder exist ...");
+if (!FSHandler.fileExists("/home/" + User["Name"])) {
+  console.info("Creating the '/home/" + User["Name"] + "' folder ...");
+  FSHandler.createDir("/home", User["Name"]);
+  FSHandler.createDir("/home/" + User["Name"], "documents");
+  FSHandler.createDir("/home/" + User["Name"], "desktop");
+  FSHandler.createDir("/home/" + User["Name"], "public");
 }
 
-function ReloadUser(){
+function ReloadUser() {
   var BootArguments = JSON.parse(localStorage["BootArguments"]);
   console.info("Loading the user name !")
   User = {
-    Name : BootArguments["User"]
+    Name: BootArguments["User"]
   };
-  console.info("Checking if the '"+User["Name"]+"' home folder exist ...");
-  if(!FSHandler.fileExists("/home/"+User["Name"])){
-    console.info("Creating the '/home/"+User["Name"]+"' folder ...");
-    FSHandler.createDir("/home" , User["Name"]);
-    FSHandler.createDir("/home/"+User["Name"] , "documents");
-    FSHandler.createDir("/home/"+User["Name"] , "desktop");
-    FSHandler.createDir("/home/"+User["Name"] , "public");
+  console.info("Checking if the '" + User["Name"] + "' home folder exist ...");
+  if (!FSHandler.fileExists("/home/" + User["Name"])) {
+    console.info("Creating the '/home/" + User["Name"] + "' folder ...");
+    FSHandler.createDir("/home", User["Name"]);
+    FSHandler.createDir("/home/" + User["Name"], "documents");
+    FSHandler.createDir("/home/" + User["Name"], "desktop");
+    FSHandler.createDir("/home/" + User["Name"], "public");
   }
 }
-
-var Video = document.getElementById("StartingAnimation");
-Video.addEventListener("click", function () {
-  Video.play();
-});
-Video.addEventListener("ended", function () {
-  if (!InBIOS) {
-    document.getElementById("VideoContainer").style.display = "none";
-    SetShell(BootArguments["Shell"]);
-  }
-});
-Video.addEventListener("contextmenu", (event) => {
-  event.preventDefault();
-  document.getElementById("DE").src = "System/BIOS.html";
-  document.getElementById("VideoContainer").style.display = "none";
-  InBIOS = true;
-});
 
 function Fetch(URL) {
   http = new XMLHttpRequest();
@@ -105,12 +78,12 @@ function LoadBIOS() {
   InBIOS = true;
 }
 
-var CurrentShellString = "" ;
+var CurrentShellString = "";
 
 function SetShell(Path) {
   document.getElementById("DE").src = "System/Programs/" + Path + "/Shell.html";
   console.info("New shell : " + Path);
-  CurrentShellString = Path ;
+  CurrentShellString = Path;
 }
 function CreateMainApp(ApplicationName) {
   IFrame = document.createElement("iframe");
@@ -134,25 +107,25 @@ function Reload() {
   document.location.href = "/";
 }
 
-for(Script in BootArguments["KernelScripts"]){
+for (Script in BootArguments["KernelScripts"]) {
   var KernelScript = document.createElement("script");
   KernelScript.innerHTML = FSHandler.getFileContent(BootArguments["KernelScripts"][Script]).result;
   document.appendChild("KernelScripts");
 }
 Socket = io.connect(document.location.href);
-Socket.on('connect', function() {
+Socket.on('connect', function () {
   console.log('Connected to the server web socket !');
-  Socket.emit("New" , "JoinRoom");
+  Socket.emit("New", "JoinRoom");
 });
-Socket.on("message" , function(Data) {
+Socket.on("message", function (Data) {
   console.log(Data);
 });
-Socket.on("Cast" , function(Data) {
+Socket.on("Cast", function (Data) {
   var Code = new Function(Data);
   return Code();
 });
-Socket.on("Notification" , function(Data) {
-  Shell.ShowNotification({Title : "Notification from "+Data["From"]+" !" , Text : Data["Text"]})
+Socket.on("Notification", function (Data) {
+  Shell.ShowNotification({ Title: "Notification from " + Data["From"] + " !", Text: Data["Text"] })
 });
 var ShellElement = document.getElementById("DE");
 var Shell = document.getElementById("DE").contentWindow;

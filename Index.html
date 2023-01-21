@@ -1,83 +1,149 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
-    <script src="/Kernel/SBash/SBash.js"></script>
-    <script src="/Kernel/FileSystem.js"></script>
-    <script src="/Kernel/Registery.js"></script>
-    <script src="/Kernel/Zip.js"></script>
-    <title>Welcome to Selaria !</title>
-    <style>
-      html {
-        cursor: none;
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+  <script src="/Kernel/SBash/SBash.js"></script>
+  <script src="/Kernel/FileSystem.js"></script>
+  <script src="/Kernel/Registery.js"></script>
+  <script src="/Kernel/Zip.js"></script>
+  <title>Welcome to Selaria !</title>
+  <style>
+    html {
+      cursor: none;
+    }
+
+    body {
+      background-color: black;
+      overflow: hidden;
+      padding: 0px;
+      height: 100%;
+      margin: 0px;
+    }
+
+    #VideoContainer {
+      background-color: black;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      display: flex;
+      height: 100%;
+      width: 100%;
+      left: 0px;
+      top: 0px;
+    }
+
+    video {
+      height: 100%;
+      width: 100%;
+    }
+
+    iframe {
+      animation: ShowOpacity 0.3s;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      z-index: -3;
+      left: 0px;
+      top: 0px;
+    }
+
+    @keyframes ShowOpacity {
+      from {
+        opacity: 0;
       }
-      body {
-        background-color: black;
-        overflow: hidden;
-        padding: 0px;
-        height: 100%;
-        margin: 0px;
-      }
-      #VideoContainer {
-        background-color: black;
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        left: 0px;
-        top: 0px;
-      }
-      video {
-        height: 100%;
-        width: 100%;
-      }
-      iframe {
-        animation: ShowOpacity 0.3s;
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        z-index: -3;
-        left: 0px;
-        top: 0px;
-      }
-      @keyframes ShowOpacity {
-       from {
-         opacity: 0;
-        }
-  
-       to {
+
+      to {
         opacity: initial;
-        }
       }
-    </style>
-  </head>
-  <body>
-    <iframe src="" frameborder="0" id="DE" title="DE"></iframe>
-    <div id="VideoContainer">
-      <video id="StartingAnimation">
-        <source src="System/Assets/StartingAnimation.mp4" type="video/mp4" />
-      </video>
-    </div>
-  </body>
+    }
+
+    @font-face {
+      font-family: "VGA";
+      src: url('/System/Assets/VGA.ttf') format('truetype');
+    }
+  </style>
+</head>
+
+<body>
+  <iframe src="" frameborder="0" id="DE" title="DE"></iframe>
+  <div id="VideoContainer">
+    <img id="StartingAnimation" src="/System/Assets/Logo.png" alt="" style="visibility: hidden;">
+    <p
+      style="position: absolute;width: 100%;text-align: center; bottom: 9px;color: white;font-family: 'VGA';font-size: large;" id="BiosClickText">
+      Right click : BIOS</p>
+  </div>
+</body>
+
 </html>
 <script>
-  function KernelLoad(){
-    if(localStorage["Kernel"] != "Base"){
-      if(localStorage["Kernel"] == undefined){
-        localStorage["Kernel"] = "Base";
+  var KernelURL = "";
+  var ShellElement = document.getElementById("DE");
+  var Shell = document.getElementById("DE").contentWindow;
+  var FSHandler = new FFS("SelariaHD");
+  var FileSystem = FSHandler;
+  var Kernel = this;
+  function KernelLoad() {
+    if (KernelURL == "") {
+      if (localStorage["Kernel"] != "Base") {
+        if (localStorage["Kernel"] == undefined) {
+          localStorage["KernelType"] = "OSFS";
+          localStorage["Kernel"] = "Base";
+          KernelURL = "Kernel/Script.js";
+        }
+        else {
+          KernelURL = localStorage["Kernel"];
+        }
+      } else {
         KernelURL = "Kernel/Script.js";
       }
-      else{
-        KernelURL = localStorage["Kernel"];
-      }
-    }else{
-      KernelURL = "Kernel/Script.js";
     }
-    var KernelScript = document.createElement("script");
-    KernelScript.src = KernelURL;
-    document.body.appendChild(KernelScript);
+    if(localStorage["KernelType"] == "OSFS"){
+      var KernelScript = document.createElement("script");
+      KernelScript.src = KernelURL;
+      document.body.appendChild(KernelScript);
+    }else{
+      var KernelScript = document.createElement("script");
+      KernelScript.innerHTML = FSHandler.getFileContent(KernelURL).
+      document.body.appendChild(KernelScript);
+    }
   }
-  KernelLoad();
+  if (localStorage["BootArguments"] == undefined) {
+    console.info("Not founded , creating Boot arguments !");
+    localStorage["BootArguments"] = JSON.stringify({
+      Shell: "MountainDesktop",
+      User: "Selaria",
+      KernelScripts: [],
+    });
+  }
+  if(localStorage["BootImage"] != undefined && localStorage["BootImage"] != ""){
+    document.getElementsByTagName("img")[0].src = localStorage["BootImage"];
+  }
+  var BootArguments = JSON.parse(localStorage["BootArguments"]);
+  function SetShell(Path) {
+    document.getElementById("DE").src = "System/Programs/" + Path + "/Shell.html";
+    console.info("New shell : " + Path);
+    CurrentShellString = Path;
+  }
+  var InBIOS = false;
+  var Video = document.getElementById("StartingAnimation");
+  var VideoContainer = document.getElementById("VideoContainer");
+  setTimeout(async function () {
+    Video.style.visibility = "visible";
+  }, 509);
+  setTimeout(async function () {
+    if (!InBIOS) {
+      await KernelLoad();
+      document.getElementById("VideoContainer").style.display = "none";
+    }
+  }, 3001);
+  VideoContainer.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+    document.getElementById("DE").src = "System/BIOS.html";
+    document.getElementById("VideoContainer").style.display = "none";
+    InBIOS = true;
+  });
 </script>

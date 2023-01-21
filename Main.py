@@ -52,7 +52,7 @@ def BlockUser(IP):
 
 @Socket.on('New')
 def New(Room):
-    Sessions.append(request.sid)
+    Sessions.append(request.environ['REMOTE_ADDR'])
     join_room(request.environ['REMOTE_ADDR'])
     Socket.send(request.environ['REMOTE_ADDR'] + ' Connected to the server !', room=Sessions[0])
 
@@ -65,14 +65,8 @@ def ProcessSBash(Command):
         Socket.emit("Terminal" , "Ping from server !")
 
 @Socket.event
-def Cast(Instruction):
-    SuperUser = False
-    if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
-        SuperUser = True
-        Socket.emit("Cast" , Instruction["Instruction"] , to=Instruction["To"])
-    else:
-        Socket.send("You can't execute code on an other client if you're not SuperUser !")
-        print("A non-superuser ip try to execute code on an other client : "+request.environ['REMOTE_ADDR']+" !")
+def GetClients():
+    Socket.send(str(Sessions))
 
 @Socket.event
 def Notification(Data):

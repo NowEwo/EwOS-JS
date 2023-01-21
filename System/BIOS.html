@@ -15,7 +15,7 @@
             padding: 0px;
             height: 100%;
             width: 100%;
-            margin: 0px;
+            margin: 0px; 
         }
         .Title{
             font-weight: bolder;
@@ -91,18 +91,30 @@
         <p class="Title" style="color: #CCCCCC;">Selaria BIOS Utility</p>
         <div id="Categories">
             <p id="ShellButton" onclick="SetTab('Shell')">Shell</p>
+            <p id="KernelButton" onclick="SetTab('Kernel')">Kernel</p>
             <p id="LocalStorageRegisteryButton" onclick="SetTab('LocalStorageRegistery')">LocalStorage and registery</p>
+            <p id="BiosBootButton" onclick="SetTab('BiosBoot')">BIOS and BootScreen</p>
             <p id="QuitButton" onclick="SetTab('Quit')">Quit</p>
         </div>
     </div>
     <div id="Content">
         <div id="Shell" class="Tab">
-            <input type="text" name="" id="Shell" placeholder="[Set the shell name]">
+            <input type="text" name="" id="ShellInput" placeholder="[Set the shell name]">
             <button onclick="UpdateShell();">[Update shell]</button>
         </div>
-        <br>
+        <div id="Kernel" class="Tab">
+            <input type="text" name="" id="KernelInput" placeholder="[Set the kernel path]">
+            <br>
+            <button onclick="if(this.innerHTML == '[Load kernel from Selaria FileSystem]'){this.innerHTML = '[Are you sure ? this can make your operating system unusable !]'}else{UpdateKernel('Selaria');}">[Load kernel from Selaria FileSystem]</button>
+            <br>
+            <button onclick="if(this.innerHTML == '[Load kernel from Local FileSystem]'){this.innerHTML = '[Are you sure ? this can make your operating system unusable !]'}else{UpdateKernel('Local');}">[Load kernel from Local FileSystem]</button>
+        </div>
         <div id="LocalStorageRegistery" class="Tab">
             <button onclick="localStorage.clear();">[Reinitialize]</button>
+        </div>
+        <div id="BiosBoot" class="Tab">
+            <input type="text" name="" id="BootImageInput" placeholder="[Boot image path]">
+            <button onclick="localStorage['BootImage'] = document.getElementById('BootImageInput').value;">[Update BootImage]</button>
         </div>
         <br>
         <div id="Quit" class="Tab">
@@ -128,13 +140,21 @@
     }
     function UpdateShell(){
         localStorage["BootArguments"] = JSON.stringify({
-            "Shell": document.getElementById("Shell").value
+            "Shell": document.getElementById("ShellInput").value
         });
+    }
+    function UpdateKernel(Type){
+        if(Type = "Local"){
+            localStorage["KernelType"] = "OSFS";
+        }else{
+            localStorage["KernelType"] = "SSMRFS";
+        }
+        localStorage["Kernel"] = document.getElementById("KernelInput").value;
     }
     function GoToDefaultShell(){
         var BootArguments = JSON.parse(localStorage["BootArguments"]);
         parent.SetShell(BootArguments["Shell"]);
     }
-    SetTab("Shell")
+    SetTab("Shell");
 </script>
 </html>
