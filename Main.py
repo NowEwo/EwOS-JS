@@ -44,7 +44,7 @@ def BlockUser(IP):
 @Socket.event
 def UnBlockUser(IP):
     if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
-        SelariaMRConfig["Blacklist"] = list(filter(lambda x: x != 3, SelariaMRConfig["Blacklist"]))
+        SelariaMRConfig["Blacklist"] = list(filter(lambda x: x != IP, SelariaMRConfig["Blacklist"]))
         SaveConfig()
     else:
         Socket.send("You can't modify this in the server if you're not SuperUser !")
