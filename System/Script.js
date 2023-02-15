@@ -12,7 +12,7 @@ if (FSHandler.fileExists("/bin/#.fs") == false) {
   FSHandler.createDir("/", "boot");
   FSHandler.createDir("/", "etc");
   console.info("Writing '/etc/jsv.conf' ...");
-  FSHandler.writeFile("/etc/jsv.conf", JSON.stringify({ 'Config': 'Loaded' , 'OOBE' : false }));
+  FSHandler.writeFile("/etc/jsv.conf", JSON.stringify({ 'Config': 'Loaded' , 'OOBE' : false , "APILEVEL" : 1}));
   FSHandler.writeFile("/etc/repositories.conf", "WolfyGreyWolf/SelariaMountainRange-Repository\n")
   FSHandler.createDir("/", "home");
   FSHandler.createDir("/", "root");
