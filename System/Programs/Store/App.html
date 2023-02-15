@@ -52,9 +52,13 @@
         transition: background-color 0.3s;
       }
 
-      .button:hover {
+      .button:hover , .button:disabled{
         background-color: white;
         color: var(--bouttons);
+      }
+
+      .button:disabled {
+        background-color: #8f87c0;
       }
 
       /* Ajouter un menu en bas avec des icones material */
@@ -108,6 +112,7 @@
   </body>
   <script>
     // Créer une fonction pour créer une carte à partir d'un objet application
+    var APILEVEL = Kernel.Fetch("/APILEVEL.conf");
     function createCard(app) {
       // Créer un élément div avec la classe card
       let card = document.createElement("div");
@@ -134,13 +139,12 @@
           Kernel.Process(button.PackageName);
         };
       });
-
-      if(app.API != undefined){
-        if(Kernel.Jsv["APILEVEL"] < app.API){
+    if(app.API != undefined){
+        if(APILEVEL < parseInt(app.API)){
             button.innerText = "Incompatible";
             button.disabled = true;
         }
-      }
+    }
 
       // Ajouter le titre, la description et le bouton à la carte
       card.appendChild(title);
