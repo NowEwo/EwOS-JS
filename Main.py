@@ -91,8 +91,7 @@ def Flash(Data):
 
 @Socket.event
 def Update():
-    ZipFile = requests.get("https://github.com/WolfyGreyWolf/SelariaMountainRange/archive/refs/heads/main.zip")
-    open("../Updater.zip" , "w").write(ZipFile.text)
+    exec(open("Updater.py" , "r").read())
 
 @App.route('/', defaults={'PATH': 'Index.html'})
 @App.route('/<path:PATH>')
