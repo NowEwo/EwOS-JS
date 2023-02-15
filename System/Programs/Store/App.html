@@ -52,7 +52,8 @@
         transition: background-color 0.3s;
       }
 
-      .button:hover , .button:disabled{
+      .button:hover,
+      .button:disabled {
         background-color: white;
         color: var(--bouttons);
       }
@@ -107,7 +108,7 @@
     </div>
     <!-- Ajouter le menu en bas avec des icones material -->
     <div class="menu">
-      <a href="#"><i class="material-icons">home</i></a>
+      <a onclick="LoadRepositories()" href="#Refresh"><i class="material-icons">home</i></a>
     </div>
   </body>
   <script>
@@ -132,19 +133,51 @@
       button.textContent = "Download";
       button.PackageName = app.PackageName;
 
+      var Installed = false;
+
       button.addEventListener("click", () => {
-        Kernel.Process("apt install " + app.PackageName);
+        Kernel.Process("apt install " + button.PackageName);
         button.textContent = "Open";
         button.onclick = () => {
           Kernel.Process(button.PackageName);
         };
+        let buttonUninstall = document.createElement("button");
+        buttonUninstall.className = "button";
+        buttonUninstall.textContent = "Uninstall";
+        buttonUninstall.PackageName = app.PackageName;
+        buttonUninstall.onclick = () => {
+          Kernel.Process("apt remove " + app.PackageName);
+          card.removeChild(buttonUninstall);
+          card.removeChild(button);
+        };
+        buttonUninstall.style.backgroundColor = "#c08787";
+        card.appendChild(buttonUninstall);
       });
-    if(app.API != undefined){
-        if(APILEVEL < parseInt(app.API)){
-            button.innerText = "Incompatible";
-            button.disabled = true;
+
+      if (app.API != undefined) {
+        if (APILEVEL < parseInt(app.API)) {
+          button.innerText = "Incompatible";
+          button.disabled = true;
         }
-    }
+      }
+
+      if (Shell.FileSystem.fileExists("/bin/" + button.PackageName)) {
+        button.textContent = "Open";
+        button.onclick = () => {
+          Kernel.Process(button.PackageName);
+        };
+        let buttonUninstall = document.createElement("button");
+        buttonUninstall.className = "button";
+        buttonUninstall.textContent = "Uninstall";
+        buttonUninstall.PackageName = app.PackageName;
+        buttonUninstall.onclick = () => {
+          Kernel.Process("apt remove " + app.PackageName);
+          card.removeChild(buttonUninstall);
+          card.removeChild(button);
+        };
+        buttonUninstall.style.backgroundColor = "#c08787";
+        card.appendChild(buttonUninstall);
+      }
 
       // Ajouter le titre, la description et le bouton à la carte
       card.appendChild(title);
@@ -203,16 +236,20 @@
 
     let container = document.querySelector(".container");
 
-    container.innerHTML = "";
+    function LoadRepositories() {
+      container.innerHTML = "";
 
-    for (Element in Repos) {
-      if (Repos[Element] != "") {
-        loadApps(
-          "https://raw.githubusercontent.com/" +
-            Repos[Element] +
-            "/main/Content.json"
-        );
+      for (Element in Repos) {
+        if (Repos[Element] != "") {
+          loadApps(
+            "https://raw.githubusercontent.com/" +
+              Repos[Element] +
+              "/main/Content.json"
+          );
+        }
       }
     }
+
+    LoadRepositories();
   </script>
 </html>
