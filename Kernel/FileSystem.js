@@ -3,7 +3,6 @@
  * https://github.com/SkwalExe/FakeFileSystem.js
  * LICENSE: MIT
  */
-
 /**
  * @type Class
  */

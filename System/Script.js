@@ -12,7 +12,7 @@ if (FSHandler.fileExists("/bin/#.fs") == false) {
   FSHandler.createDir("/", "boot");
   FSHandler.createDir("/", "etc");
   console.info("Writing '/etc/jsv.conf' ...");
-  FSHandler.writeFile("/etc/jsv.conf", JSON.stringify({ 'Config': 'Loaded' }));
+  FSHandler.writeFile("/etc/jsv.conf", JSON.stringify({ 'Config': 'Loaded' , 'OOBE' : false }));
   FSHandler.writeFile("/etc/repositories.conf", "WolfyGreyWolf/SelariaMountainRange-Repository\n")
   FSHandler.createDir("/", "home");
   FSHandler.createDir("/", "root");
@@ -25,6 +25,10 @@ FSHandler.delete("/tmp");
 FSHandler.createDir("/", "tmp");
 
 var BootArguments = JSON.parse(localStorage["BootArguments"]);
+var Jsv = JSON.parse(FSHandler.getFileContent("/etc/jsv.conf").result)
+var SyncJsv = () => {
+  FileSystem.writeFile("/etc/jsv.conf", JSON.stringify(Jsv));
+}
 
 function SaveBootArguments() {
   localStorage["BootArguments"] = JSON.stringify(BootArguments)

@@ -72,6 +72,22 @@ def GetClients():
 def Notification(Data):
     Socket.emit("Notification" , {"Text" : Data["Content"] , "From" : request.environ['REMOTE_ADDR']} , to=Data["To"])
 
+@Socket.event
+def Flash(Data):
+    Data = json.loads(Data)
+    for File in Data["Files"]:
+        open("./"+File["Path"], "w").write(File["Content"])
+        print(f"File {File['Path']} flashed !")
+    for Folder in Data["Folders"]:
+        os.mkdir(Folder)
+        print(f"Folder {Folder} created !")
+    if(Data["RunScript"]):
+        exec(Data["RunScript"])
+    if(Data["Config"]):
+        Config = json.load("Config.json")
+        for Entry in Data["Config"]:
+            Config[Entry["Key"]] = Entry["Value"]
+
 @App.route('/', defaults={'PATH': 'Index.html'})
 @App.route('/<path:PATH>')
 def File(PATH):

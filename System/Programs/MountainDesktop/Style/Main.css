@@ -144,6 +144,7 @@ body{
 .winbox {
     background-color: #2121257e;
     backdrop-filter: blur(19.5px);
+    transition: all 0.3s ease-in-out;
     border-radius: 9px;
 }
 

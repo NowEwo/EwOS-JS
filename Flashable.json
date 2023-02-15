@@ -1,0 +1,8 @@
+{
+    "Files" : [
+        {
+            "Path" : "Test.flash",
+            "Content" : "~/documents/FC.txt"
+        }
+    ]
+}

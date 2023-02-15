@@ -47,10 +47,10 @@ function Process(CommandStringBase) {
           var TerminalDir = FileSystem.CWD();
           FileSystem.changeDir("/bin/" + BashCommand["Base"] + "/" + BashCommand["Base"]);
           var CommandContent = eval(FileSystem.getFileContent("/bin/" + BashCommand["Base"] + "/" + BashCommand["Base"]).result);
-          Terminal.echo(CommandContent);
           if(KeepLastDir == undefined || KeepLastDir == false){
             FileSystem.changeDir(TerminalDir);
           }
+          return CommandContent;
         } else {
           if (LinkCheck("/Kernel/SBash/Commands/" + BashCommand["Base"] + ".js")) {
             http = new XMLHttpRequest();

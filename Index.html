@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+  <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
   <script src="/Kernel/SBash/SBash.js"></script>
   <script src="/Kernel/FileSystem.js"></script>
   <script src="/Kernel/Registery.js"></script>
@@ -73,8 +74,8 @@
   <div id="VideoContainer">
     <img id="StartingAnimation" src="/System/Assets/Logo.png" alt="" style="visibility: hidden;">
     <p
-      style="position: absolute;width: 100%;text-align: center; bottom: 9px;color: white;font-family: 'VGA';font-size: large;" id="BiosClickText">
-      Right click : BIOS</p>
+    style="position: absolute;width: 100%;text-align: center; bottom: 9px;color: white;font-family: 'VGA';font-size: large;" id="BiosClickText">
+    Right click : BIOS</p>
   </div>
 </body>
 
@@ -92,13 +93,13 @@
         if (localStorage["Kernel"] == undefined) {
           localStorage["KernelType"] = "OSFS";
           localStorage["Kernel"] = "Base";
-          KernelURL = "Kernel/Script.js";
+          KernelURL = "System/Script.js";
         }
         else {
           KernelURL = localStorage["Kernel"];
         }
       } else {
-        KernelURL = "Kernel/Script.js";
+        KernelURL = "System/Script.js";
       }
     }
     if(localStorage["KernelType"] == "OSFS"){
@@ -142,7 +143,7 @@
   }, 3001);
   VideoContainer.addEventListener("contextmenu", (event) => {
     event.preventDefault();
-    document.getElementById("DE").src = "System/BIOS.html";
+    document.getElementById("DE").src = "BIOS.html";
     document.getElementById("VideoContainer").style.display = "none";
     InBIOS = true;
   });
