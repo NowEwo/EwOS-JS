@@ -10,9 +10,9 @@ open("../Updater.zip" , "wb").write(ZipFile.content)
 
 SMRDIR = os.getcwd().split("\\")[-1]
 
-with ZipFile("../Updater.zip", 'r') as Zip:
+print('Extracting all the files ...')
 
-    print('Extracting all the files ...')
+with ZipFile("../Updater.zip", 'r') as Zip:
     Zip.extractall()
 
 print("Moving into the Selaria MountainRange Directory !")
