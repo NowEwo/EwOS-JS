@@ -138,9 +138,10 @@
       button.addEventListener("click", () => {
         Kernel.Process("apt install " + button.PackageName);
         button.textContent = "Open";
-        button.onclick = () => {
+        button.addEventListener("click" , () => {
           Kernel.Process(button.PackageName);
-        };
+          card.removeChild(buttonUninstall);
+        });
         let buttonUninstall = document.createElement("button");
         buttonUninstall.className = "button";
         buttonUninstall.textContent = "Uninstall";
