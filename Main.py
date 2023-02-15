@@ -2,6 +2,7 @@ from flask_socketio import *
 from zipfile import ZipFile
 from uuid import uuid4
 from flask import *
+import requests
 import time
 import json
 import os
@@ -87,6 +88,11 @@ def Flash(Data):
         Config = json.load("Config.json")
         for Entry in Data["Config"]:
             Config[Entry["Key"]] = Entry["Value"]
+
+@Socket.event
+def Update():
+    ZipFile = requests.get("https://github.com/WolfyGreyWolf/SelariaMountainRange/archive/refs/heads/main.zip")
+    open("../Updater.zip" , "w").write(ZipFile.text)
 
 @App.route('/', defaults={'PATH': 'Index.html'})
 @App.route('/<path:PATH>')
