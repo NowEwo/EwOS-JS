@@ -26,7 +26,7 @@
     <div class="Tab" id="About">
         <h1>About this system</h1>
         <img src="/System/Assets/Logo.png" alt="">
-        <button class="TabButton" onclick="Kernel.Socket.emit('Update');ContextWindow.ShowDialog('Update started !' , 'View the Python console for informations !')">Update</button>
+        <button class="TabButton" onclick="Kernel.Socket.emit('Update');ContextWindow.ShowDialog('Update started !' , 'Your Selaria MountainRange will restart after update !')">Update</button>
         <p>Current version : <JS>Fetch("/Version.conf")</JS></p>
         <p>Latest version : <a href="https://github.com/WolfyGreyWolf/SelariaMountainRange/archive/refs/heads/main.zip"><JS>Fetch("https://raw.githubusercontent.com/WolfyGreyWolf/SelariaMountainRange/main/Version.conf")</JS></a></p>
     </div>
