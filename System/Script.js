@@ -9,6 +9,8 @@ if (FSHandler.fileExists("/bin/#.fs") == false) {
   FSHandler.delete("/");
   FSHandler.createDir("/", "bin");
   FSHandler.writeFile("/bin/#.fs", "");
+  FSHandler.createDir("/bin", "MountainDesktop");
+  FSHandler.createDir("/bin/MountainDesktop", "StartMenu");
   FSHandler.createDir("/", "boot");
   FSHandler.createDir("/", "etc");
   console.info("Writing '/etc/jsv.conf' ...");

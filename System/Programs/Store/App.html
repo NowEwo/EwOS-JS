@@ -133,10 +133,18 @@
       button.textContent = "Download";
       button.PackageName = app.PackageName;
 
+      if(app.StartMenuEntry != undefined){
+        button.StartMenuEntry = app.StartMenuEntry;
+      }
+      
       var Installed = false;
-
+      
       button.addEventListener("click", () => {
         Kernel.Process("apt install " + button.PackageName);
+        if(button.StartMenuEntry != undefined){
+          Shell.FileSystem.writeFile("/bin/MountainDesktop/StartMenu/"+button.PackageName+".json" , JSON.stringify(button.StartMenuEntry));
+          Shell.ReloadStartMenu();
+        }
         button.textContent = "Open";
         button.addEventListener("click" , () => {
           Kernel.Process(button.PackageName);
@@ -147,9 +155,11 @@
         buttonUninstall.textContent = "Uninstall";
         buttonUninstall.PackageName = app.PackageName;
         buttonUninstall.onclick = () => {
+          Shell.FileSystem.delete("/bin/MountainDesktop/StartMenu/"+button.PackageName+".json");
           Kernel.Process("apt remove " + app.PackageName);
           card.removeChild(buttonUninstall);
           card.removeChild(button);
+          Shell.ReloadStartMenu();
         };
         buttonUninstall.style.backgroundColor = "#c08787";
         card.appendChild(buttonUninstall);
@@ -172,9 +182,11 @@
         buttonUninstall.textContent = "Uninstall";
         buttonUninstall.PackageName = app.PackageName;
         buttonUninstall.onclick = () => {
+          Shell.FileSystem.delete("/bin/MountainDesktop/StartMenu/"+button.PackageName+".json");
           Kernel.Process("apt remove " + app.PackageName);
           card.removeChild(buttonUninstall);
           card.removeChild(button);
+          Shell.ReloadStartMenu();
         };
         buttonUninstall.style.backgroundColor = "#c08787";
         card.appendChild(buttonUninstall);
