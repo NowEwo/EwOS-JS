@@ -66,21 +66,4 @@ switch(BashCommand["SubCommands"][0]){
                 } 
                 break;
         }
-    case "partitions":
-        switch(BashCommand["SubCommands"][1]){
-            case "create":
-                var FileSystemCreator = new FFS(BashCommand["SubCommands"][2]);
-                FileSystemCreator.createFile("#.fs");
-                break;
-            case "delete":
-                localStorage.removeItem("FileSystem_"+BashCommand["SubCommands"][2]);
-                break;
-            case "list":
-                for(Partition in localStorage){
-                if(Partition.slice(0 , 11) == "FileSystem_"){
-                    Terminal.echo(Partition.replace("FileSystem_" , ""));
-                }
-                break;
-            }
-        }
 }
