@@ -170,6 +170,14 @@
         document
         .getElementById("DE")
         .contentWindow.document.body.appendChild(RecoveryScript);
+    } else if(FSHandler.fileExists("/Recovery.js")) {
+      document.getElementById("DE").contentWindow.eval("var Firmware = parent");
+      var RecoveryScript = document.createElement("script");
+      RecoveryScript.innerHTML =
+        FSHandler.getFileContent("Recovery.js").result;
+        document
+        .getElementById("DE")
+        .contentWindow.document.body.appendChild(RecoveryScript);
     } else {
       LoadBIOS();
     }
