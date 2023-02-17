@@ -292,6 +292,8 @@ function Process(CommandStringBase) {
             break;
         }
         break;
+      case "RemovePartition":
+        localStorage.removeItem("FileSystem_"+BashCommand["SubCommand"][0]);
     }
   }
 }

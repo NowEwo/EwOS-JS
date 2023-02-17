@@ -108,7 +108,7 @@
       document.body.appendChild(KernelScript);
     }else{
       var KernelScript = document.createElement("script");
-      KernelScript.innerHTML = FSHandler.getFileContent(KernelURL).
+      KernelScript.innerHTML = FSHandler.getFileContent(KernelURL).result;
       document.body.appendChild(KernelScript);
     }
   }
@@ -143,7 +143,19 @@
   }, 3001);
   VideoContainer.addEventListener("contextmenu", (event) => {
     event.preventDefault();
-    document.getElementById("DE").src = "BIOS.html";
+    if(localStorage["FileSystem_Recovery"] != undefined){
+      var RecoveryFileSystem = new FFS("Recovery");
+      document.getElementById("DE").src = "about:blank";
+      var RecoveryScriptInjection = document.createElement("script");
+      RecoveryScriptInjection.innerHTML = "var Firmware = parent;";
+      document.getElementById("DE").contentWindow.document.body.appendChild(RecoveryScriptInjection);
+      var RecoveryScript = document.createElement("script");
+      RecoveryScript.innerHTML = RecoveryFileSystem.getFileContent("Recovery.js").result;
+      document.getElementById("DE").contentWindow.document.body.appendChild(RecoveryScript);
+    }
+    else{
+      document.getElementById("DE").src = "BIOS.html";
+    }
     document.getElementById("VideoContainer").style.display = "none";
     InBIOS = true;
   });
