@@ -13,6 +13,7 @@
     <div id="Categories">
         <button class="TabButton" onclick="Tab('User')">Users and authorizations</button>
         <button class="TabButton" onclick="Tab('Reset')">Reset to factory settings</button>
+        <button class="TabButton" onclick="Tab('Disks')">Storage and disks</button>
         <button class="TabButton" onclick="Tab('Developper')">Developper settings</button>
         <button class="TabButton" onclick="Tab('About')">About Selaria MountainRange</button>
     </div>
@@ -35,6 +36,13 @@
         <h1>Reset Selaria MountainRange</h1>
         <p>This may affect all your local files ans your Selaria MountainRange configuration !</p>
         <button onclick="if(this.innerHTML == 'Sure ?'){localStorage.clear();Kernel.Reload();}else{this.innerHTML = 'Sure ?'}" class="TabButton">Process anyways ?</button>
+    </div>
+    <div class="Tab" id="Disks">
+        <h1>Disks and storage</h1>
+        <p>List of the detected partitions :</p>
+        <div id="DiskPartitions">
+            
+        </div>
     </div>
     <div class="Tab" id="Developper">
         <h1>Settings for developper</h1>

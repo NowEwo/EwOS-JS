@@ -22,3 +22,12 @@ for(ElementObject in document.getElementsByTagName("JS")){
 function Tab(Name) {
     document.querySelector("#Content").innerHTML = document.getElementById(Name).innerHTML
 }
+
+for(Partition in localStorage){
+    if(Partition.slice(0 , 11) == "FileSystem_"){
+        var PartitionName = Partition.replace("FileSystem_" , "");
+        var Partition = document.createElement("p");
+        Partition.innerHTML = PartitionName;
+        document.getElementById("DiskPartitions").appendChild(Partition);
+    }
+}
