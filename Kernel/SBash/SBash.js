@@ -107,6 +107,10 @@ function Process(CommandStringBase) {
                         FileContent.send();
                         FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1] , "");
                         FileSystem.writeFile(http.responseText.split("\n")[Line].replace("FILE " , "").split(" ")[1] , FileContent.responseText);
+                      }else{
+                        if(http.responseText.split("\n")[Line].indexOf("PARTITION ") > -1){
+                          FileSystem = new FFS(http.responseText.split("\n")[Line].replace("FILE " , ""));
+                        }
                       }
                     }
                   }
@@ -160,6 +164,10 @@ function Process(CommandStringBase) {
                   }else{
                     if(FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][1]+Version+".map").result.split("\n")[Line].indexOf("FILE ") > -1){
                       FileSystem.delete(FileSystem.getFileContent("/bin/"+BashCommand["SubCommands"][1]+Version+".map").result.split("\n")[Line].split(" ")[1]);
+                    }else{
+                      if(http.responseText.split("\n")[Line].indexOf("PARTITION ") > -1){
+                        FileSystem = new FFS(http.responseText.split("\n")[Line].replace("FILE " , ""));
+                      }
                     }
                   }
                 }
@@ -169,8 +177,9 @@ function Process(CommandStringBase) {
             FileSystem.delete("/bin/"+BashCommand["SubCommands"][1]);
           }
         }
+        FileSystem = new FFS("SelariaHD");
         break;
-      case "add-apt-repository":
+        case "add-apt-repository":
         if(BashCommand["Arguments"].indexOf("-remove") > -1){
           var Repositories = FileSystem.getFileContent("/etc/repositories.conf").result.split("\n");
           for(Line in Repositories){
