@@ -13,9 +13,9 @@ body{
 }
 
 .Taskbar{
+    background-color: #212125;
     animation-name: ShowOpacity;
     animation-direction: normal;
-    background-color: #212125;
     animation-duration: 0.5s;
     display: inline-block;
     position: absolute;
@@ -145,6 +145,7 @@ body{
     background-color: #2121257e;
     backdrop-filter: blur(19.5px);
     border-radius: 9px;
+    box-shadow: none;
 }
 
 .winbox.min {

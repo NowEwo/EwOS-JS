@@ -8,6 +8,7 @@ var Shell = this;
 
 function ToggleStartMenu() {
   var StartMenu = document.getElementById("StartMenu");
+  StartMenu.style.zIndex = "999999999";
   if (StartMenu.style.visibility == "hidden") {
     StartMenu.style.visibility = "visible";
   } else {

@@ -5,6 +5,7 @@ html , body{
 }
 button , input{
     background-color: rgb(26, 26, 32);
+    transition: transform 0.3s ease-in-out;
     border-radius: 5px;
     color: white;
     border: none;
@@ -13,6 +14,9 @@ button , input{
 }
 button:hover , input:hover{
     background-color: rgb(61, 61, 82);
+}
+button:hover{
+    transform: scale(1.1);
 }
 .Right{
     float: right;
