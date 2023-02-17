@@ -13,7 +13,6 @@
     <div id="Categories">
         <button class="TabButton" onclick="Tab('User')">Users and authorizations</button>
         <button class="TabButton" onclick="Tab('Reset')">Reset to factory settings</button>
-        <button class="TabButton" onclick="Tab('Developper')">Developper settings</button>
         <button class="TabButton" onclick="Tab('About')">About Selaria MountainRange</button>
     </div>
     <div id="Content">
@@ -30,15 +29,6 @@
         <button class="TabButton" onclick="Kernel.Socket.emit('Update');ContextWindow.ShowDialog('Update started !' , 'Your Selaria MountainRange will restart after update !')">Update</button>
         <p>Current version : <JS>Fetch("/Version.conf")</JS></p>
         <p>Latest version : <a href="https://github.com/WolfyGreyWolf/SelariaMountainRange/archive/refs/heads/main.zip"><JS>Fetch("https://raw.githubusercontent.com/WolfyGreyWolf/SelariaMountainRange/main/Version.conf")</JS></a></p>
-    </div>
-    <div class="Tab" id="Reset">
-        <h1>Reset Selaria MountainRange</h1>
-        <p>This may affect all your local files ans your Selaria MountainRange configuration !</p>
-        <button onclick="if(this.innerHTML == 'Sure ?'){localStorage.clear();Kernel.Reload();}else{this.innerHTML = 'Sure ?'}" class="TabButton">Process anyways ?</button>
-    </div>
-    <div class="Tab" id="Developper">
-        <h1>Settings for developper</h1>
-        <p>Modify this if you know what you do !</p>
     </div>
     <div class="Tab" id="Reset">
         <h1>Reset Selaria MountainRange</h1>

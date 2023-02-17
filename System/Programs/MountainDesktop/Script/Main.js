@@ -350,31 +350,6 @@ function CreateDesktopLink(Name, Command) {
   FileSystem.writeFile("/home/" + Kernel.User["Name"] + "/desktop/" + Name + ".link", Command);
 }
 
-function ReloadStartMenu(){
-  document.getElementById("MoreSoftwares").innerHTML = "";
-  FileSystem.CWD("/bin/MountainDesktop/StartMenu");
-  var FolderContent = FileSystem.getDirContent("/bin/MountainDesktop/StartMenu").result;
-  for(Entry in FolderContent){
-    var Entry = JSON.parse(FileSystem.getFileContent(FileSystem.getFullPath(FolderContent[Entry])).result)
-    var StartMenuEntry = document.createElement("div");
-    StartMenuEntry.PackageName = Entry.PackageName;
-    StartMenuEntry.Description = Entry.Description;
-    StartMenuEntry.Title = Entry.Name;
-    StartMenuEntry.innerHTML = `
-<div class="Tile">
-    <p class="Title">${StartMenuEntry.Title}</p>
-    <p class="Subtitle">${StartMenuEntry.Description}</p>
-</div>
-    `
-    StartMenuEntry.onclick = () => {
-      Kernel.Process(StartMenuEntry.PackageName);
-    }
-    document.getElementById("MoreSoftwares").appendChild(StartMenuEntry);
-  }
-  FileSystem.CWD("/")
-}
-
-ReloadStartMenu();
 ReloadDesktop();
 ReloadConfig();
 BootScripts();

@@ -105,7 +105,6 @@ function Process(CommandStringBase) {
                         var FileContent = new XMLHttpRequest();
                         FileContent.open("GET" , "https://raw.githubusercontent.com/"+FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository]+"/main/Packages/"+BashCommand["SubCommands"][1] + Version +"/" + http.responseText.split("\n")[Line].replace("FILE " , "").split(" ")[0] , false);
                         FileContent.send();
-                        FileSystem.writeFile("/bin/"+BashCommand["SubCommands"][1] , "");
                         FileSystem.writeFile(http.responseText.split("\n")[Line].replace("FILE " , "").split(" ")[1] , FileContent.responseText);
                       }
                     }
@@ -166,7 +165,6 @@ function Process(CommandStringBase) {
                 FileSystem.delete("/bin/"+BashCommand["SubCommands"][1]+Version+".map");
               }
             }
-            FileSystem.delete("/bin/"+BashCommand["SubCommands"][1]);
           }
         }
         break;
