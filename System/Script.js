@@ -9,13 +9,15 @@ if (FSHandler.fileExists("/bin/#.fs") == false) {
   FSHandler.delete("/");
   FSHandler.createDir("/", "bin");
   FSHandler.writeFile("/bin/#.fs", "");
+  FSHandler.createDir("/bin", "MountainDesktop");
+  FSHandler.createDir("/bin/MountainDesktop", "StartMenu");
   FSHandler.createDir("/", "boot");
   FSHandler.createDir("/", "etc");
   console.info("Writing '/etc/jsv.conf' ...");
-  FSHandler.writeFile("/etc/jsv.conf", JSON.stringify({ 'Config': 'Loaded' , 'OOBE' : false }));
+  FSHandler.writeFile("/etc/jsv.conf", JSON.stringify({ 'Config': 'Loaded' , 'OOBE' : false}));
   FSHandler.writeFile("/etc/repositories.conf", "WolfyGreyWolf/SelariaMountainRange-Repository\n")
-  FSHandler.createDir("/", "home");
   FSHandler.createDir("/", "root");
+  FSHandler.createDir("/", "home");
   FSHandler.createDir("/", "tmp");
   FSHandler.createDir("/", "usr");
 }
@@ -25,7 +27,7 @@ FSHandler.delete("/tmp");
 FSHandler.createDir("/", "tmp");
 
 var BootArguments = JSON.parse(localStorage["BootArguments"]);
-var Jsv = JSON.parse(FSHandler.getFileContent("/etc/jsv.conf").result)
+var Jsv = JSON.parse(FSHandler.getFileContent("/etc/jsv.conf").result);
 var SyncJsv = () => {
   FileSystem.writeFile("/etc/jsv.conf", JSON.stringify(Jsv));
 }

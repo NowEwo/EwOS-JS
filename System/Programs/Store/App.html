@@ -1,0 +1,268 @@
+<html>
+  <head>
+    <title>Store</title>
+    <style>
+      :root {
+        --fond: #212125;
+        --cartes: #18181d;
+        --bouttons: #47416d;
+      }
+
+      body {
+        color: white;
+        font-family: "Metropolis", sans-serif;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px;
+      }
+
+      .card {
+        background-color: var(--cartes);
+        width: 300px;
+        height: 300px;
+        margin: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s;
+      }
+
+      .card p {
+        text-align: center;
+      }
+
+      .card:hover {
+        transform: scale(1.1);
+      }
+
+      .button {
+        background-color: var(--bouttons);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .button:hover,
+      .button:disabled {
+        background-color: white;
+        color: var(--bouttons);
+      }
+
+      .button:disabled {
+        background-color: #8f87c0;
+      }
+
+      /* Ajouter un menu en bas avec des icones material */
+      .menu {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 50px;
+        background-color: var(--cartes);
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+      }
+
+      .menu a {
+        color: white;
+        text-decoration: none;
+        font-size: 20px;
+      }
+    </style>
+    <!-- Ajouter le lien vers les icones material -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Enlever les sous-titres -->
+      <div class="card">
+        <h2>Application 1</h2>
+        <p>Description de l'application 1</p>
+        <button class="button">Télécharger</button>
+      </div>
+      <div class="card">
+        <h2>Application 2</h2>
+        <p>Description de l'application 2</p>
+        <button class="button">Télécharger</button>
+      </div>
+      <div class="card">
+        <h2>Application 3</h2>
+        <p>Description de l'application 3</p>
+        <button class="button">Télécharger</button>
+      </div>
+    </div>
+    <!-- Ajouter le menu en bas avec des icones material -->
+    <div class="menu">
+      <a onclick="LoadRepositories()" href="#Refresh"><i class="material-icons">home</i></a>
+    </div>
+  </body>
+  <script>
+    // Créer une fonction pour créer une carte à partir d'un objet application
+    var APILEVEL = Kernel.Fetch("/APILEVEL.conf");
+    function createCard(app) {
+      // Créer un élément div avec la classe card
+      let card = document.createElement("div");
+      card.className = "card";
+
+      // Créer un élément h2 avec le nom de l'application
+      let title = document.createElement("h2");
+      title.textContent = app.Name;
+
+      // Créer un élément p avec la description de l'application
+      let description = document.createElement("p");
+      description.textContent = app.Description;
+
+      // Créer un élément button avec le texte Télécharger
+      let button = document.createElement("button");
+      button.className = "button";
+      button.textContent = "Download";
+      button.PackageName = app.PackageName;
+
+      if(app.StartMenuEntry != undefined){
+        button.StartMenuEntry = app.StartMenuEntry;
+      }
+      
+      var Installed = false;
+      
+      button.addEventListener("click", () => {
+        Kernel.Process("apt install " + button.PackageName);
+        if(button.StartMenuEntry != undefined){
+          Shell.FileSystem.writeFile("/bin/MountainDesktop/StartMenu/"+button.PackageName+".json" , JSON.stringify(button.StartMenuEntry));
+          Shell.ReloadStartMenu();
+        }
+        button.textContent = "Open";
+        button.addEventListener("click" , () => {
+          Kernel.Process(button.PackageName);
+          card.removeChild(buttonUninstall);
+        });
+        let buttonUninstall = document.createElement("button");
+        buttonUninstall.className = "button";
+        buttonUninstall.textContent = "Uninstall";
+        buttonUninstall.PackageName = app.PackageName;
+        buttonUninstall.onclick = () => {
+          Shell.FileSystem.delete("/bin/MountainDesktop/StartMenu/"+button.PackageName+".json");
+          Kernel.Process("apt remove " + app.PackageName);
+          card.removeChild(buttonUninstall);
+          card.removeChild(button);
+          Shell.ReloadStartMenu();
+        };
+        buttonUninstall.style.backgroundColor = "#c08787";
+        card.appendChild(buttonUninstall);
+      });
+
+      if (app.API != undefined) {
+        if (APILEVEL < parseInt(app.API)) {
+          button.innerText = "Incompatible";
+          button.disabled = true;
+        }
+      }
+
+      if (Shell.FileSystem.fileExists("/bin/" + button.PackageName)) {
+        button.textContent = "Open";
+        button.onclick = () => {
+          Kernel.Process(button.PackageName);
+        };
+        let buttonUninstall = document.createElement("button");
+        buttonUninstall.className = "button";
+        buttonUninstall.textContent = "Uninstall";
+        buttonUninstall.PackageName = app.PackageName;
+        buttonUninstall.onclick = () => {
+          Shell.FileSystem.delete("/bin/MountainDesktop/StartMenu/"+button.PackageName+".json");
+          Kernel.Process("apt remove " + app.PackageName);
+          card.removeChild(buttonUninstall);
+          card.removeChild(button);
+          Shell.ReloadStartMenu();
+        };
+        buttonUninstall.style.backgroundColor = "#c08787";
+        card.appendChild(buttonUninstall);
+      }
+
+      // Ajouter le titre, la description et le bouton à la carte
+      card.appendChild(title);
+      card.appendChild(description);
+      card.appendChild(button);
+
+      // Retourner la carte
+      return card;
+    }
+
+    // Créer une fonction pour charger les applications à partir d'un fichier JSON à une URL
+    function loadApps(url) {
+      // Créer une requête HTTP
+      let xhr = new XMLHttpRequest();
+
+      // Ouvrir la requête avec la méthode GET et l'URL
+      xhr.open("GET", url);
+
+      // Définir le type de réponse attendu comme JSON
+      xhr.responseType = "json";
+
+      // Ajouter un écouteur d'événement pour le chargement de la réponse
+      xhr.addEventListener("load", function () {
+        // Vérifier si le statut de la requête est 200 (OK)
+        if (xhr.status === 200) {
+          // Récupérer la réponse JSON
+          let apps = xhr.response;
+
+          // Sélectionner le conteneur des cartes
+          let container = document.querySelector(".container");
+          // Vider le conteneur
+
+          // Parcourir le tableau des applications
+          for (let app of apps) {
+            // Créer une carte pour chaque application
+            let card = createCard(app);
+
+            // Ajouter la carte au conteneur
+            container.appendChild(card);
+          }
+        } else {
+          // Afficher un message d'erreur
+          alert("Erreur: " + xhr.status);
+        }
+      });
+
+      // Envoyer la requête
+      xhr.send();
+    }
+
+    // Appeler la fonction loadApps avec l'URL du fichier JSON
+
+    var Repos = Shell.FileSystem.getFileContent(
+      "/etc/repositories.conf"
+    ).result.split("\n");
+
+    let container = document.querySelector(".container");
+
+    function LoadRepositories() {
+      container.innerHTML = "";
+
+      for (Element in Repos) {
+        if (Repos[Element] != "") {
+          loadApps(
+            "https://raw.githubusercontent.com/" +
+              Repos[Element] +
+              "/main/Content.json"
+          );
+        }
+      }
+    }
+
+    LoadRepositories();
+  </script>
+</html>
