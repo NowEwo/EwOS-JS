@@ -9,10 +9,10 @@ var Shell = this;
 function ToggleStartMenu() {
   var StartMenu = document.getElementById("StartMenu");
   StartMenu.style.zIndex = "999999999";
-  if (StartMenu.style.visibility == "hidden") {
-    StartMenu.style.visibility = "visible";
+  if (StartMenu.style.display == "none") {
+    StartMenu.style.display = "block";
   } else {
-    StartMenu.style.visibility = "hidden";
+    StartMenu.style.display = "none";
   }
   return true;
 }
@@ -28,9 +28,10 @@ function GenerateUniqueId() {
 
 function ChangeWorkspace(Number) {
   console.info("Workspace Changed : " + Number + " !");
+  var LastWorkspace = Shell.Workspace;
   Shell.Workspace = Number;
-  ReloadWindows();
   ReloadTaskbar();
+  ReloadWindows();
 }
 
 function CreateWindow(Data) {
@@ -250,12 +251,12 @@ function ShowNotification(Data) {
   document.getElementById("Notification").style.textAlign = "center";
   document.getElementById("NotificationTitle").style.fontWeight = "bold";
   document.getElementById("NotificationTitle").innerHTML = Data.Title;
-  document.getElementById("Notification").style.visibility = "visible";
   document.getElementById("NotificationMessage").style.fontWeight = "normal";
   document.getElementById("NotificationMessage").innerHTML = Data.Text;
+  document.getElementById("Notification").style.display = "block";
   setTimeout(function () {
-    document.getElementById("Notification").style.visibility = "hidden";
     document.getElementById("Notification").style.textAlign = "left";
+    document.getElementById("Notification").style.display = "none";
   }, 5000);
 }
 

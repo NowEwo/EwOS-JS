@@ -42,8 +42,9 @@
       }
 
       iframe {
-        animation: ShowOpacity 0.3s;
+        animation: ZoomIn 0.3s;
         position: absolute;
+        display: none;
         height: 100%;
         width: 100%;
         z-index: -3;
@@ -51,13 +52,14 @@
         top: 0px;
       }
 
-      @keyframes ShowOpacity {
+      @keyframes ZoomIn {
         from {
+          transform: scale(0.91);
           opacity: 0;
         }
-
         to {
-          opacity: initial;
+          transform: scale(1);
+          opacity: 1;
         }
       }
 
@@ -143,7 +145,7 @@
   var BootArguments = JSON.parse(localStorage["BootArguments"]);
   function SetShell(Path) {
     document.getElementById("DE").src =
-      "System/Programs/" + Path + "/Shell.html";
+    "System/Programs/" + Path + "/Shell.html";
     console.info("New shell : " + Path);
     CurrentShellString = Path;
   }
@@ -157,6 +159,7 @@
     if (!InBIOS) {
       await KernelLoad();
       document.getElementById("VideoContainer").style.display = "none";
+      document.getElementById("DE").style.display = "block";
     }
   }, 3001);
   VideoContainer.addEventListener("contextmenu", (event) => {
@@ -167,15 +170,14 @@
       var RecoveryScript = document.createElement("script");
       RecoveryScript.innerHTML =
         RecoveryFileSystem.getFileContent("Recovery.js").result;
-        document
+      document
         .getElementById("DE")
         .contentWindow.document.body.appendChild(RecoveryScript);
-    } else if(FSHandler.fileExists("/Recovery.js")) {
+    } else if (FSHandler.fileExists("/Recovery.js")) {
       document.getElementById("DE").contentWindow.eval("var Firmware = parent");
       var RecoveryScript = document.createElement("script");
-      RecoveryScript.innerHTML =
-        FSHandler.getFileContent("Recovery.js").result;
-        document
+      RecoveryScript.innerHTML = FSHandler.getFileContent("Recovery.js").result;
+      document
         .getElementById("DE")
         .contentWindow.document.body.appendChild(RecoveryScript);
     } else {
