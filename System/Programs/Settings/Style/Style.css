@@ -34,7 +34,6 @@ body {
 }
 
 #Content {
-    background-color: #212125;
     justify-content: center;
     flex-direction: column;
     display: inline-flex;
@@ -53,6 +52,16 @@ body {
 
 #Content * {
     text-align: center;
+}
+
+#Content .TabButton{
+    background-color: transparent;
+    margin: 0px;
+}
+
+#Content .TabButton:hover{
+    background-color: rgba(0, 0, 0, 0.419);
+    margin: 0px;
 }
 
 .Tab {

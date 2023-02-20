@@ -7,12 +7,25 @@ var Software = {};
 var Shell = this;
 
 function ToggleStartMenu() {
+  document.getElementById("SecondMenu").style.display = "none";
   var StartMenu = document.getElementById("StartMenu");
   StartMenu.style.zIndex = "999999999";
   if (StartMenu.style.display == "none") {
     StartMenu.style.display = "block";
   } else {
     StartMenu.style.display = "none";
+  }
+  return true;
+}
+
+function ToggleSecondMenu() {
+  document.getElementById("StartMenu").style.display = "none";
+  var SecondMenu = document.getElementById("SecondMenu");
+  SecondMenu.style.zIndex = "999999999";
+  if (SecondMenu.style.display == "none") {
+    SecondMenu.style.display = "block";
+  } else {
+    SecondMenu.style.display = "none";
   }
   return true;
 }
