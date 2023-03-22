@@ -66,4 +66,6 @@ switch(BashCommand["SubCommands"][0]){
                 } 
                 break;
         }
+    case "send":
+        Kernel.Socket.emit("Cast", BashCommand["SubCommands"][1] , CommandString.replace(BashCommand["SubCommands"][1] , "").replace("ssc send " , ""));
 }

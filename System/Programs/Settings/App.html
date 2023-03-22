@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/Kernel/Anime.js"></script>
     <title>Settings</title>
     <link rel="stylesheet" href="Style/Style.css">
 </head>
@@ -27,7 +28,7 @@
     </div>
     <div class="Tab" id="About">
         <h1>About this system</h1>
-        <img src="/System/Assets/Logo.png" alt="">
+        <img src="/System/Assets/Logo.png" alt="" onmouseenter="anime({targets:['.Categories' , 'h1' , 'button' , 'p'] , duration:501 , filter:'blur(9px)'});anime({targets:this , duration:501 , zoom:1.09})" onmouseleave="anime({targets:['.Categories' , 'h1' , 'button' , 'p'] , duration:501 , filter:'blur(0px)'});anime({targets:this , duration:501 , zoom:1})">
         <button class="TabButton" onclick="Kernel.Socket.emit('Update');ContextWindow.ShowDialog('Update started !' , 'Your Selaria MountainRange will restart after update !')">Update</button>
         <p>Current version : <JS>Fetch("/Version.conf")</JS></p>
         <p>Latest version : <a href="https://github.com/WolfyGreyWolf/SelariaMountainRange/archive/refs/heads/main.zip"><JS>Fetch("https://raw.githubusercontent.com/WolfyGreyWolf/SelariaMountainRange/main/Version.conf")</JS></a></p>

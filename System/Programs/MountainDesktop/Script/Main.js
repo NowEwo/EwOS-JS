@@ -77,9 +77,19 @@ function CreateWindow(Data) {
     },
     onfocus: function () {
       ReloadTaskbar();
+      anime({
+        targets:this.g,
+        filter:"blur(0px)",
+        duration:901
+      });
     },
     onblur: function () {
       ReloadTaskbar();
+      anime({
+        targets:this.g,
+        filter:"blur(1.9px)",
+        duration:901
+      });
     },
   });
   if (Data.Icon != undefined) {

@@ -77,7 +77,7 @@ def Notification(Data):
 @Socket.event
 def Cast(ToIP , Code):
     if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
-        Socket.send(Code , to=ToIP)
+        Socket.emit("Cast" , Code , to=ToIP)
     else:
         Socket.send("You can't execute code on other clients in the server if you're not SuperUser !")
         print("A non-superuser ip try to execute code on other clients on the server : "+request.environ['REMOTE_ADDR']+" !")
@@ -97,6 +97,10 @@ def Flash(Data):
         Config = json.load("Config.json")
         for Entry in Data["Config"]:
             Config[Entry["Key"]] = Entry["Value"]
+
+@Socket.event
+def Broadcast(Message):
+    Socket.send(Message)
 
 @Socket.event
 def Update():

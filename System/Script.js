@@ -1,6 +1,7 @@
 SetShell(BootArguments["Shell"]);
 
 console.info("Loading the file system : SelariaHD ...");
+var SystemPartition = new FFS("System");
 var FSHandler = new FFS("SelariaHD");
 
 console.info("Checking if the file system is functionnal ...");
