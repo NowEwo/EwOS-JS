@@ -143,6 +143,7 @@ body{
 }
 
 .winbox {
+    border: 1.9px solid #34343d49;
     background-color: #2121257e;
     backdrop-filter: blur(19.5px);
     animation-duration: 0.3s;
@@ -170,16 +171,47 @@ body{
     background-color: transparent;
 }
 
+.wb-control *{
+    transition: all 0.1s ease-in-out;
+    margin-right: 0.9px;
+}
+
 .wb-min {
     background-image: url("/System/Assets/Window/Minimize.svg");
+    background-position: center;
+    background-size: contain;
 }
 
 .wb-max {
     background-image: url("/System/Assets/Window/Maximize.svg");
+    background-position: center;
+    background-size: contain;
 }
 
 .wb-close {
     background-image: url("/System/Assets/Window/Close.svg");
+    background-position: center;
+    background-size: contain;
+    margin-right: 3px;
+}    
+
+.wb-menu{
+    background-image: url("/System/Assets/Window/Menu.svg");
+    background-position: center;
+    background-size: contain;
+    margin-right: 3px;
+}
+
+.wb-package{
+    background-image: url("/System/Assets/Window/Package.svg");
+    background-position: center;
+    background-size: contain;
+    margin-right: 3px;
+}
+
+
+.wb-control *:hover{
+    transform: scale(1.09);
 }
 
 .wb-full {

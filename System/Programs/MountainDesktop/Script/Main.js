@@ -6,6 +6,8 @@ var Workspace = 1;
 var Software = {};
 var Shell = this;
 
+var DesktopConfiguration = JSON.parse(FileSystem.getFileContent("/bin/MountainDesktop/Config.conf").result);
+
 function ToggleStartMenu() {
   document.getElementById("SecondMenu").style.display = "none";
   var StartMenu = document.getElementById("StartMenu");
@@ -77,19 +79,9 @@ function CreateWindow(Data) {
     },
     onfocus: function () {
       ReloadTaskbar();
-      anime({
-        targets:this.g,
-        filter:"blur(0px)",
-        duration:901
-      });
     },
     onblur: function () {
       ReloadTaskbar();
-      anime({
-        targets:this.g,
-        filter:"blur(1.9px)",
-        duration:901
-      });
     },
   });
   if (Data.Icon != undefined) {
@@ -115,6 +107,24 @@ function CreateWindow(Data) {
     Software[UID].Workspace = Workspace;
     ReloadWindows();
     ReloadTaskbar();
+  }
+  Software[UID].EnableMenu = () => {
+    Software[UID].addControl({
+      index: 0,
+      class: "wb-menu",
+      click: function(event, winbox){
+          Software[UID].Controller.ShellMenuEvent();
+      }
+    });
+  }
+  Software[UID].EnablePackage = () => {
+    Software[UID].addControl({
+      index: 0,
+      class: "wb-package",
+      click: function(event, winbox){
+          Software[UID].Controller.ShellPackageEvent();
+      }
+    });
   }
   Software[UID].Controller.ContextWindow = Shell.Software[UID];
   Software[UID].Controller.Kernel = Kernel;
@@ -211,6 +221,11 @@ function ReloadTaskbar() {
     });
     if (Shell.Software[this.Process].Workspace == Shell.Workspace) {
       document.getElementById("TaskbarSoftwares").appendChild(Button[Process]);
+    }
+    if(DesktopConfiguration.Style.Taskbar.CompactTaskbar == true){
+      document.querySelector("#TaskbarSoftwares").querySelectorAll("button").forEach((Item) => {Item.querySelector("img").style.height = "19px";});
+      document.querySelector("#TaskbarSoftwares").querySelectorAll("button").forEach((Item) => {Item.querySelector("img").style.width = "19px";});
+      document.querySelector("#TaskbarSoftwares").querySelectorAll("button").forEach((Item) => {Item.style.width = "19px";Item.style.marginLeft = "5px";});
     }
   }
 }
@@ -403,5 +418,32 @@ ReloadStartMenu();
 ReloadDesktop();
 ReloadConfig();
 BootScripts();
+
+if(DesktopConfiguration.Style.Taskbar.TaskbarOnTop == true){
+  document.querySelector("#Notification").style.bottom = "auto";
+  document.querySelector("#Notification").style.top = "71px";
+  document.querySelector("#StartMenu").style.bottom = "auto";
+  document.querySelector("#StartMenu").style.top = "71px";
+  document.querySelector(".Taskbar").style.top = "0px";
+}
+
+if(DesktopConfiguration.Style.Taskbar.CompactTaskbar == true){
+  document.querySelector(".Taskbar").style.height = "25px";
+  document.querySelector(".RightButtons").querySelectorAll("button").forEach((Item)=>{
+    Item.style.height = "19px";
+    Item.style.width = "19px";
+  })
+  document.querySelector(".StartButton").querySelector("svg").style.height = "19px";
+  document.querySelector(".StartButton").querySelector("svg").style.width = "19px";
+  document.querySelector("#WorkspaceNumber").style.height = "19px";
+  document.querySelector("#WorkspaceNumber").style.width = "19px";
+  document.querySelector(".StartButton").style.padding = "2.5px";
+  document.querySelector(".StartButton").style.top = "0.19px";
+  document.querySelector(".RightButtons").style.top = "1.9px";
+  document.querySelector("#Notification").style.top = "35px";
+  document.querySelector("#StartMenu").style.top = "35px";
+  document.querySelector("#Grab").style.height = "19px";
+  document.querySelector("#Grab").style.bottom = "3px";
+}
 
 Shell.document.title = Shell.document.location.href;
