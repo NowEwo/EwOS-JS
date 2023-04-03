@@ -1,14 +1,8 @@
-# SelariaMountainChain
+# AODOS
+Another Online Desktop
 
-The next generation WebOS !
+![Background](https://user-images.githubusercontent.com/77587065/229579834-17c509c2-7b02-4c9b-8d62-85ad11b12a7a.png)
 
-New image !
-![image](https://user-images.githubusercontent.com/77587065/229364169-5d10477a-8814-482e-b743-7e65283e815a.png)
+Screenshot :
 
-Older image !
-
-![image](https://user-images.githubusercontent.com/77587065/212923935-9b56af31-b8ae-4a1d-9de5-bdb4c5fd4aef.png)
-
-![image](https://user-images.githubusercontent.com/77587065/209402655-97f66b95-b783-48ba-9dc0-7b01c727c9ae.png)
-
-![image](https://user-images.githubusercontent.com/77587065/208265799-32d8b70c-a7eb-4a31-ba00-fbb1121a1e32.png)
+![image](https://user-images.githubusercontent.com/77587065/229579903-9f14221d-8e71-4535-b1b4-7aedc3023499.png)
