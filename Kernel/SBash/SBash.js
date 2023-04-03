@@ -177,7 +177,7 @@ function Process(CommandStringBase) {
             FileSystem.delete("/bin/"+BashCommand["SubCommands"][1]);
           }
         }
-        FileSystem = new FFS("SelariaHD");
+        FileSystem = new FFS("AODOS");
         break;
         case "add-apt-repository":
         if(BashCommand["Arguments"].indexOf("-remove") > -1){
@@ -291,7 +291,7 @@ function Process(CommandStringBase) {
       case "selaria":
         switch (BashCommand["SubCommands"][0]) {
           case "test":
-            return "Selaria MountainRange Test !";
+            return "AODOS Test !";
             break;
           case "conf":
             switch (BashCommand["SubCommands"][1]) {

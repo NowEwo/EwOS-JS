@@ -112,7 +112,7 @@ def Update():
     print('Extracting all the files ...')
     with ZipFile("../Updater.zip", 'r') as ExtractableZip:
         ExtractableZip.extractall()
-    print("Moving into the Selaria MountainRange Directory ...")
+    print("Moving into the AODOS Directory ...")
     def merge(scr_path, dir_path):
       files = next(os.walk(scr_path))[2]
       folders = next(os.walk(scr_path))[1]

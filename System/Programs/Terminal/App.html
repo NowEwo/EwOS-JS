@@ -28,7 +28,7 @@
   <script>
     var Kernel = parent.parent;
     var Shell = parent;
-    var FileSystem = new FFS("SelariaHD");
+    var FileSystem = new FFS("AODOS");
     if (ContextWindow.Prompt == undefined) {
       ContextWindow.Prompt =
         Kernel.User["Name"]+"@" +
@@ -56,7 +56,7 @@
         );
       },
       {
-        greetings: "Selaria MountainRange : SBash !",
+        greetings: "AODOS : SBash !",
         prompt: ContextWindow.Prompt,
         color: "White",
       }

@@ -14,7 +14,7 @@ body{
 
 .Taskbar{
     animation-name: TaskbarAnimation;
-    background-color: #212125;
+    background-color: #101026;
     animation-duration: 0.9s;
     display: inline-block;
     position: absolute;
@@ -33,12 +33,12 @@ body{
 }
 
 .StartButton:hover{
-    background-color: #0e0e13;
+    background-color: rgba(0, 0, 0, 0.309);
 }
 
 #StartMenu , #SecondMenu{
     animation-name: ZoomInStartMenu;
-    background-color: #212125;
+    background-color: #101026;
     animation-duration: 0.3s;
     border-radius: 13px;
     position: absolute;
@@ -87,11 +87,11 @@ body{
 }
 
 #TaskbarSoftwares button[Focused = "true"]{
-    background-color: #252531;
+    background-color: #14143091;
 }
 
 #TaskbarSoftwares button:hover{
-    background-color: #0e0e13;
+    background-color: #13134291;
 }
 
 #TaskbarSoftwares button img{
@@ -101,7 +101,7 @@ body{
 }
 
 #Grab{
-    background: #39364B;
+    background: #2F2DA7;
     border-radius: 3px;
     position: absolute;
     bottom: 10.9px;
@@ -112,7 +112,7 @@ body{
 }
 
 #Grab:hover{
-    background: #635b92;
+    background: #201f80;
 }
 
 .RightButtons{
@@ -122,7 +122,7 @@ body{
 }
 
 .RightButtons button , .RightButtons input{
-    background: #39364B;
+    background: #1b1b51;
     position: relative;
     text-align: center;
     border-radius: 3px;
@@ -135,16 +135,15 @@ body{
 }
 
 .RightButtons input[Number]{
-    background-color: #252531;
+    background-color: #1a1a5e;
 }
 
 .RightButtons button:hover , .RightButtons input:hover{
-    background: #635b92;
+    background: #2e2e74;
 }
 
 .winbox {
-    border: 1.9px solid #34343d49;
-    background-color: #2121257e;
+    background-color: #10102657;
     backdrop-filter: blur(19.5px);
     animation-duration: 0.3s;
     animation-name: ZoomIn;
@@ -153,7 +152,7 @@ body{
 }
 
 .winbox.min {
-    background-color: #212125;
+    background-color: #101026;
     backdrop-filter: blur(0px);
     border-radius: 0px;
     position: absolute;
@@ -225,7 +224,7 @@ body{
 }
 
 .Tile:hover{
-    background-color: #2E2E38;
+    background-color: #09091a;
 }
 
 .Tile .Title{
@@ -250,7 +249,7 @@ body{
 }
 
 #ContextMenu{
-    background-color: #212125;
+    background-color: #101026;
     animation-duration: 0.3s;
     animation-name: ZoomIn;
     position: absolute;
@@ -261,7 +260,7 @@ body{
     z-index: 13;
 }
 .CtxMenuElement{
-    background-color: #212125;
+    background-color: #101026;
     border-radius: 3px;
     color: white;
     border: none;
@@ -269,12 +268,12 @@ body{
     width: 139px;
 }
 .CtxMenuElement:hover{
-    background-color: #0E0E13;
+    background-color: #1b1b50;
 }
 #Notification{
     animation-name: NotificationAnimation;
     padding: 13px 25px 13px 25px;
-    background-color: #212125;
+    background-color: #101026;
     animation-duration: 0.59s;
     position: absolute;
     color: white;
@@ -307,7 +306,7 @@ body{
     width: 103px;
 }
 #Desktop button:hover{
-    background-color: #0e0e133f;
+    background-color: #10102679;
 }
 #BottomContainer{
     display: flex;

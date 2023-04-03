@@ -1,8 +1,8 @@
 SetShell(BootArguments["Shell"]);
 
-console.info("Loading the file system : SelariaHD ...");
+console.info("Loading the file system : AODOS ...");
 var SystemPartition = new FFS("System");
-var FSHandler = new FFS("SelariaHD");
+var FSHandler = new FFS("AODOS");
 
 console.info("Checking if the file system is functionnal ...");
 if (FSHandler.fileExists("/bin/#.fs") == false) {

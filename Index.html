@@ -100,7 +100,7 @@
   var KernelURL = "";
   var ShellElement = document.getElementById("DE");
   var Shell = document.getElementById("DE").contentWindow;
-  var FSHandler = new FFS("SelariaHD");
+  var FSHandler = new FFS("AODOS");
   var FileSystem = FSHandler;
   var Firmware = this;
   var Kernel = this;
@@ -132,7 +132,7 @@
     console.info("Not founded , creating Boot arguments !");
     localStorage["BootArguments"] = JSON.stringify({
       Shell: "MountainDesktop",
-      User: "Selaria",
+      User: "AODUSER",
       KernelScripts: [],
     });
   }

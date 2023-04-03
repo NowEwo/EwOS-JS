@@ -1,5 +1,5 @@
 var ContextMenu = document.getElementById("ContextMenu");
-var FileSystem = new FFS("SelariaHD");
+var FileSystem = new FFS("AODOS");
 var WindowsManager = document.querySelector("#WindowsManager");
 var Kernel = parent;
 var Workspace = 1;

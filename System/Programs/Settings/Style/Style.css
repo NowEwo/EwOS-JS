@@ -19,7 +19,7 @@ body {
 }
 
 .TabButton {
-    background-color: #212125;
+    background-color: #1b1b51;
     border-radius: 9px;
     padding: 19px;
     border: none;
@@ -30,7 +30,7 @@ body {
 }
 
 .TabButton:hover {
-    background-color: #515153;
+    background-color: #08082b;
 }
 
 #Content {
@@ -60,7 +60,7 @@ body {
 }
 
 #Content .TabButton:hover{
-    background-color: rgba(0, 0, 0, 0.419);
+    background-color: #08082b39;
     margin: 0px;
 }
 
