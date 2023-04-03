@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selaria BIOS Utility</title>
+    <title>AODOS BIOS Utility</title>
     <style>
         @font-face {
           font-family: "VGA";
@@ -88,7 +88,7 @@
 </head>
 <body>
     <div id="TopBar">
-        <p class="Title" style="color: #CCCCCC;">Selaria BIOS Utility</p>
+        <p class="Title" style="color: #CCCCCC;">AODOS BIOS Utility</p>
         <div id="Categories">
             <p id="ShellButton" onclick="SetTab('Shell')">Shell</p>
             <p id="KernelButton" onclick="SetTab('Kernel')">Kernel</p>
@@ -105,7 +105,7 @@
         <div id="Kernel" class="Tab">
             <input type="text" name="" id="KernelInput" placeholder="[Set the kernel path]">
             <br>
-            <button onclick="if(this.innerHTML == '[Load kernel from Selaria FileSystem]'){this.innerHTML = '[Are you sure ? this can make your operating system unusable !]'}else{UpdateKernel('Selaria');}">[Load kernel from Selaria FileSystem]</button>
+            <button onclick="if(this.innerHTML == '[Load kernel from AODOS FileSystem]'){this.innerHTML = '[Are you sure ? this can make your operating system unusable !]'}else{UpdateKernel('AODOS');}">[Load kernel from AODOS FileSystem]</button>
             <br>
             <button onclick="if(this.innerHTML == '[Load kernel from Local FileSystem]'){this.innerHTML = '[Are you sure ? this can make your operating system unusable !]'}else{UpdateKernel('Local');}">[Load kernel from Local FileSystem]</button>
         </div>

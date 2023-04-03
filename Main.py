@@ -17,17 +17,17 @@ App.config.from_object(__name__)
 Socket = SocketIO(App)
 
 def ReloadConfig():
-    global SelariaMRConfig
-    SelariaMRConfig = json.loads(open("Config.json" , "r").read())
+    global AODOSMRConfig
+    AODOSMRConfig = json.loads(open("Config.json" , "r").read())
 
 def SaveConfig():
-    open("Config.json" , "w").write(json.dumps(SelariaMRConfig))
+    open("Config.json" , "w").write(json.dumps(AODOSMRConfig))
 
 ReloadConfig()
 
 @Socket.event
 def ProcessPython(Code):
-    if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
+    if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["SuperUser"]):
         Socket.send(eval(Code))
     else:
         Socket.send("You can't execute Python code in the server if you're not SuperUser !")
@@ -35,8 +35,8 @@ def ProcessPython(Code):
 
 @Socket.event
 def BlockUser(IP):
-    if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
-        SelariaMRConfig["Blacklist"].append(IP)
+    if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["SuperUser"]):
+        AODOSMRConfig["Blacklist"].append(IP)
         Socket.emit("Cast" , "Kernel.Reload()" , to=IP)
         SaveConfig()
     else:
@@ -45,8 +45,8 @@ def BlockUser(IP):
 
 @Socket.event
 def UnBlockUser(IP):
-    if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
-        SelariaMRConfig["Blacklist"] = list(filter(lambda x: x != IP, SelariaMRConfig["Blacklist"]))
+    if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["SuperUser"]):
+        AODOSMRConfig["Blacklist"] = list(filter(lambda x: x != IP, AODOSMRConfig["Blacklist"]))
         SaveConfig()
     else:
         Socket.send("You can't modify this in the server if you're not SuperUser !")
@@ -61,7 +61,7 @@ def New(Room):
 @Socket.event
 def ProcessSBash(Command):
     SuperUser = False
-    if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
+    if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["SuperUser"]):
         SuperUser = True
     if(Command.startswith("Test")):
         Socket.emit("Terminal" , "Ping from server !")
@@ -76,7 +76,7 @@ def Notification(Data):
 
 @Socket.event
 def Cast(ToIP , Code):
-    if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
+    if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["SuperUser"]):
         Socket.emit("Cast" , Code , to=ToIP)
     else:
         Socket.send("You can't execute code on other clients in the server if you're not SuperUser !")
@@ -105,7 +105,7 @@ def Broadcast(Message):
 @Socket.event
 def Update():
     print("Downloading latest release ...")
-    Release = requests.get("https://github.com/WolfyGreyWolf/SelariaMountainRange/archive/refs/heads/main.zip")
+    Release = requests.get("https://github.com/WolfyGreyWolf/AODOSMountainRange/archive/refs/heads/main.zip")
     print("Writing into ZIP file ...")
     open("../Updater.zip" , "wb").write(Release.content)
     SMRDIR = os.path.basename(os.getcwd())
@@ -128,9 +128,9 @@ def Update():
         if not os.path.exists(dir_folder): # Create the subdirectories if dont already exist
           os.mkdir(dir_folder)
         merge(scr_folder, dir_folder)
-    merge("SelariaMountainRange-main" , "../"+SMRDIR)
+    merge("AODOSMountainRange-main" , "../"+SMRDIR)
     print("Cleaning ...")
-    shutil.rmtree("SelariaMountainRange-main")
+    shutil.rmtree("AODOSMountainRange-main")
     os.remove("../Updater.zip")
     print("Updated !")
     Socket.emit("Cast" , "Kernel.Reload()" , to=request.environ['REMOTE_ADDR'])
@@ -138,9 +138,9 @@ def Update():
 @App.route('/', defaults={'PATH': 'Index.html'})
 @App.route('/<path:PATH>')
 def File(PATH):
-    if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["Blacklist"]):
+    if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["Blacklist"]):
         return send_from_directory('.', "Blacklisted.html")
-    elif(SelariaMRConfig["Maintenance"] == True):
+    elif(AODOSMRConfig["Maintenance"] == True):
         return send_from_directory('.', "Maintenance.html")
     else:
         return send_from_directory('.', PATH.split("?")[0])
@@ -148,28 +148,28 @@ def File(PATH):
 @App.route('/api/', defaults={'Action': 'infos'})
 @App.route('/api/<path:Action>')
 def API(Action):
-    if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["Blacklist"]):
+    if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["Blacklist"]):
         return send_from_directory('.', "Blacklisted.html")
-    elif(SelariaMRConfig["Maintenance"] == True):
+    elif(AODOSMRConfig["Maintenance"] == True):
         return send_from_directory('.', "Maintenance.html")
     else:
         SuperUser = False
-        if(request.environ['REMOTE_ADDR'] in SelariaMRConfig["SuperUser"]):
+        if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["SuperUser"]):
             SuperUser = True
         if(Action == "infos"):
             ResponseData = json.dumps({
                 "Started" : True,
                 "RequestFrom" : request.environ['REMOTE_ADDR'],
                 "SuperUser" : SuperUser,
-                "SelariaFolder" : os.getcwd(),
+                "AODOSFolder" : os.getcwd(),
                 "Version" : open("Version.conf" , "r").read(),
-                "Config" : SelariaMRConfig
+                "Config" : AODOSMRConfig
             })
             return Response(ResponseData , mimetype="application/json")
         elif(Action == "block"):
             if(SuperUser):
-                SelariaMRConfig["Blacklist"].append(Request.get_json()["IP"])
+                AODOSMRConfig["Blacklist"].append(Request.get_json()["IP"])
                 SaveConfig()
 
 if __name__ == '__main__' :
-    Socket.run(App , host=SelariaMRConfig["IP"] , port=SelariaMRConfig["Port"])
+    Socket.run(App , host=AODOSMRConfig["IP"] , port=AODOSMRConfig["Port"])

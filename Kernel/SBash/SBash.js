@@ -287,8 +287,8 @@ function Process(CommandStringBase) {
         Kernel.document.querySelector("#DE").src = "about:blank";
         Kernel.document.querySelector("#DE").getElementsByClassName.display = "none";
         break;
-      // Selaria commands !
-      case "selaria":
+      // AODOS commands !
+      case "AODOS":
         switch (BashCommand["SubCommands"][0]) {
           case "test":
             return "AODOS Test !";

@@ -33,7 +33,7 @@ class Border {
   #tabId = [];
   #browserBody;
 
-  version = "1.10 Selaria MountainChain";
+  version = "1.10 AODOS MountainChain";
 
   keybinds = [
     {

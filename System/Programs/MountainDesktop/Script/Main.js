@@ -248,7 +248,7 @@ function SetContextMenuContent(Content) {
 [
     {
         "Text" : "Example element !",
-        "Event" : "parent.SetShell('SelariaDesktop');"
+        "Event" : "parent.SetShell('AODOSDesktop');"
     },    
     {
         "Text" : "Other element !",
