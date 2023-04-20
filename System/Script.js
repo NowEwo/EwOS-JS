@@ -17,7 +17,7 @@ if (FSHandler.fileExists("/bin/#.fs") == false) {
   FSHandler.createDir("/", "etc");
   console.info("Writing '/etc/jsv.conf' ...");
   FSHandler.writeFile("/etc/jsv.conf", JSON.stringify({ 'Config': 'Loaded' , 'OOBE' : false}));
-  FSHandler.writeFile("/etc/repositories.conf", "WolfyGreyWolf/AODOSMountainRange-Repository\n")
+  FSHandler.writeFile("/etc/repositories.conf", "WolfyGreyWolf/SelariaMountainRange-Repository\n")
   FSHandler.createDir("/", "root");
   FSHandler.createDir("/", "home");
   FSHandler.createDir("/", "tmp");
