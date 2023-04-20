@@ -212,6 +212,13 @@ function Process(CommandStringBase) {
           Terminal.echo(Process(Script[CommandScript]));
         }
         break;
+      case "sh-loop":
+        var Script = FileSystem.getFileContent(CommandString.replace("sh-loop " , "")).result.split("\n");
+        setInterval(() => {
+          for(CommandScript in Script){
+            Terminal.echo(Process(Script[CommandScript]));
+          }
+        } , 109);
       case "home":
         FileSystem.changeDir("/home/"+Kernel.User["Name"]);
         break;
