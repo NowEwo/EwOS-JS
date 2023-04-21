@@ -23,6 +23,10 @@ function Tab(Name) {
     document.querySelector("#Content").innerHTML = document.getElementById(Name).innerHTML
 }
 
+document.addEventListener("contextmenu" , (Event) => {
+    Event.preventDefault();
+})
+
 for(Partition in localStorage){
     if(Partition.slice(0 , 11) == "FileSystem_"){
         var PartitionName = Partition.replace("FileSystem_" , "");

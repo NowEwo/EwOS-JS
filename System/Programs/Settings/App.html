@@ -31,7 +31,7 @@
         <img src="/System/Assets/Logo.png" alt="" onmouseenter="anime({targets:['.Categories' , 'h1' , 'button' , 'p'] , duration:501 , filter:'blur(9px)'});anime({targets:this , duration:501 , zoom:1.09})" onmouseleave="anime({targets:['.Categories' , 'h1' , 'button' , 'p'] , duration:501 , filter:'blur(0px)'});anime({targets:this , duration:501 , zoom:1})">
         <button class="TabButton" onclick="Kernel.Socket.emit('Update');ContextWindow.ShowDialog('Update started !' , 'Your AODOS will restart after update !')">Update</button>
         <p>Current version : <JS>Fetch("/Version.conf")</JS></p>
-        <p>Latest version : <a href="https://github.com/WolfyGreyWolf/AODOSMountainRange/archive/refs/heads/main.zip"><JS>Fetch("https://raw.githubusercontent.com/WolfyGreyWolf/AODOSMountainRange/main/Version.conf")</JS></a></p>
+        <p>Latest version : <a href="https://github.com/WolfyGreyWolf/AODOS/archive/refs/heads/main.zip"><JS>Kernel.Fetch("https://raw.githubusercontent.com/WolfyGreyWolf/AODOS/main/Version.conf")</JS></a></p>
     </div>
     <div class="Tab" id="Reset">
         <h1>Reset AODOS</h1>
