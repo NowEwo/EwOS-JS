@@ -1,1 +1,1 @@
-{"SuperUser": ["127.0.0.1", "localhost", "192.168.1.83"], "Blacklist": [], "Maintenance": false, "IP": "192.168.1.83", "Port": 501, "Block": {"192.168.1.49": ["System/BIOS.html"]}}
+{"SuperUser": ["127.0.0.1", "localhost"], "Blacklist": [], "Maintenance": false, "IP": "0.0.0.0", "Port": 501, "Block": {"Example": ["System/BIOS.html"]}}
