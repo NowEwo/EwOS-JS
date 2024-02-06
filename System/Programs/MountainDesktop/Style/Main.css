@@ -1,4 +1,4 @@
-@import url("https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/Metropolis.min.css");
+@import url("https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/metropolis.min.css");
 
 body{
     background-image: url("/System/Assets/Background.png");
@@ -162,7 +162,7 @@ body{
 }
 
 .wb-title {
-    font-family: "Metropolis" , sans-serif;
+    font-family: "metropolis" , sans-serif;
 }
 
 .wb-body {
@@ -403,7 +403,7 @@ body{
 }
 *{
     cursor: url("/System/Assets/Cursor.png") , default;
-    font-family: "Metropolis" , sans-serif;
+    font-family: "metropolis" , sans-serif;
     cursor: none;
 }
 *:hover{

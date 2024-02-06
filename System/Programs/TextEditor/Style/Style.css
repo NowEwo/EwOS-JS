@@ -1,4 +1,4 @@
-@import url("https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/Metropolis.min.css");
+@import url("https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/metropolis.min.css");
 
 html , body{
     overflow: hidden;
@@ -29,5 +29,5 @@ textarea{
     top: 35px;
 }
 *{
-    font-family : "Metropolis" , sans-serif ;
+    font-family : "metropolis" , sans-serif ;
 }
