@@ -11,6 +11,7 @@
     <title>MountainDesktop !</title>
 </head>
 <body>
+    <div class="circle"></div>
     <div class="Taskbar">
         <div class="StartButton" onclick="ToggleStartMenu();" onmousewheel="ToggleSecondMenu();">
             <svg width="33" height="30" viewBox="0 0 33 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,27 +30,27 @@
     <div id="StartMenu">
         <div class="Tile" onclick="CreateWindow({'Name' : 'Terminal' , 'Title' : 'Terminal'})">
             <p class="Title">Terminal</p>
-            <p class="Subtitle">Official AODOS terminal !</p>
+            <p class="Subtitle">Terminal emulator for AODOS</p>
         </div>
         <div class="Tile" onclick="CreateWindow({'Name' : 'Border' , 'Title' : 'Border'})">
             <p class="Title">Border</p>
-            <p class="Subtitle">A useful iframe web browser !</p>
+            <p class="Subtitle">Useful web browser</p>
         </div>
         <div class="Tile" onclick="CreateWindow({'Name' : 'FilesManager' , 'Title' : 'Files'})">
             <p class="Title">File Manager</p>
-            <p class="Subtitle">The most advanced file manager for AODOS !</p>
+            <p class="Subtitle">Simple file manager</p>
         </div>
         <div class="Tile" onclick="CreateWindow({'Name' : 'TextEditor' , 'title' : 'Text editor : /'})">
             <p class="Title">Text editor</p>
-            <p class="Subtitle">A simple text and code editor for AODOS !</p>
+            <p class="Subtitle">Text editor for AODOS</p>
         </div>
         <div class="Tile" onclick="CreateWindow({'Name' : 'Store' , 'title' : 'Store'})">
             <p class="Title">Software Store</p>
-            <p class="Subtitle">The place to install your software without Terminal !</p>
+            <p class="Subtitle">Install third party applications</p>
         </div>
         <div class="Tile" onclick="CreateWindow({'Name' : 'Settings'})">
             <p class="Title">Settings</p>
-            <p class="Subtitle">Get and modify informations in AODOS !</p>
+            <p class="Subtitle">System settings of AODOS</p>
         </div>
         <div id="MoreSoftwares">
         </div>

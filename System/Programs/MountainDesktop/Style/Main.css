@@ -1,4 +1,4 @@
-@import url("https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/metropolis.min.css");
+@import url("https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/Metropolis.min.css");
 
 body{
     background-image: url("/System/Assets/Background.png");
@@ -16,8 +16,8 @@ body{
     animation-name: TaskbarAnimation;
     background-color: #101026;
     animation-duration: 0.9s;
-    display: inline-block;
     position: absolute;
+    display: flex;
     height: 63px;
     bottom: 0px;
     width: 100%;
@@ -333,6 +333,18 @@ body{
     width: 100%;
     top: 0px;
 }
+.circle {
+    z-index: 9999999999999999999999999999999;
+    --circle-size: 25px;
+    position: fixed;
+    height: var(--circle-size);
+    width: var(--circle-size);
+    background-color: #FFFFFF31;
+    border-radius: 100%;
+    top: calc(var(--circle-size) / 2 * -1);
+    left: calc(var(--circle-size) / 2 * -1);
+    pointer-events: none;
+}
 @keyframes TaskbarAnimation{
     0%{
       transform : scale(0.91) translateY(63px);
@@ -390,6 +402,10 @@ body{
     }
 }
 *{
-    font-family: "Metropolis" , sans-serif;
     cursor: url("/System/Assets/Cursor.png") , default;
+    font-family: "Metropolis" , sans-serif;
+    cursor: none;
+}
+*:hover{
+    cursor: none;
 }
