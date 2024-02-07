@@ -1,4 +1,4 @@
-var FileSystem = new FFS("AODOS");
+var FileSystem = new FFS("EwOS");
 
 var Buttons = [];
 

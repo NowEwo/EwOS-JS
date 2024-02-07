@@ -1,5 +1,5 @@
 Terminal.echo(`
-AODOS !
+EwOS !
 Version : ${Kernel.Fetch("Version.conf")}
 User name : ${Kernel.User["Name"]}
 Super user : ${JSON.parse(Kernel.Fetch("/api"))["SuperUser"]}

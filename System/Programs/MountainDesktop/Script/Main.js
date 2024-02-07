@@ -1,5 +1,5 @@
 var ContextMenu = document.getElementById("ContextMenu");
-var FileSystem = new FFS("AODOS");
+var FileSystem = new FFS("EwOS");
 var WindowsManager = document.querySelector("#WindowsManager");
 var Kernel = parent;
 var Workspace = 1;
@@ -329,7 +329,7 @@ document.addEventListener("mouseenter", function () {
 [
     {
         "Text" : "Example element !",
-        "Event" : "parent.SetShell('AODOSDesktop');"
+        "Event" : "parent.SetShell('EwOSDesktop');"
     },    
     {
         "Text" : "Other element !",

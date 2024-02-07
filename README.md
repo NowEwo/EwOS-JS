@@ -1,4 +1,4 @@
-# AODOS
+# EwOS
 Another Online Desktop
 
 ![Background](https://user-images.githubusercontent.com/77587065/229579834-17c509c2-7b02-4c9b-8d62-85ad11b12a7a.png)

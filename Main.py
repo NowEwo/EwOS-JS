@@ -17,17 +17,17 @@ App.config.from_object(__name__)
 Socket = SocketIO(App)
 
 def ReloadConfig():
-    global AODOSMRConfig
-    AODOSMRConfig = json.loads(open("Config.json" , "r").read())
+    global EwOSMRConfig
+    EwOSMRConfig = json.loads(open("Config.json" , "r").read())
 
 def SaveConfig():
-    open("Config.json" , "w").write(json.dumps(AODOSMRConfig))
+    open("Config.json" , "w").write(json.dumps(EwOSMRConfig))
 
 ReloadConfig()
 
 @Socket.event
 def ProcessPython(Code):
-    if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["SuperUser"]):
+    if(request.environ['REMOTE_ADDR'] in EwOSMRConfig["SuperUser"]):
         Socket.send(eval(Code))
     else:
         Socket.send("You can't execute Python code in the server if you're not SuperUser !")
@@ -35,8 +35,8 @@ def ProcessPython(Code):
 
 @Socket.event
 def BlockUser(IP):
-    if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["SuperUser"]):
-        AODOSMRConfig["Blacklist"].append(IP)
+    if(request.environ['REMOTE_ADDR'] in EwOSMRConfig["SuperUser"]):
+        EwOSMRConfig["Blacklist"].append(IP)
         Socket.emit("Cast" , "Kernel.Reload()" , to=IP)
         SaveConfig()
     else:
@@ -45,8 +45,8 @@ def BlockUser(IP):
 
 @Socket.event
 def UnBlockUser(IP):
-    if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["SuperUser"]):
-        AODOSMRConfig["Blacklist"] = list(filter(lambda x: x != IP, AODOSMRConfig["Blacklist"]))
+    if(request.environ['REMOTE_ADDR'] in EwOSMRConfig["SuperUser"]):
+        EwOSMRConfig["Blacklist"] = list(filter(lambda x: x != IP, EwOSMRConfig["Blacklist"]))
         SaveConfig()
     else:
         Socket.send("You can't modify this in the server if you're not SuperUser !")
@@ -61,7 +61,7 @@ def New(Room):
 @Socket.event
 def ProcessSBash(Command):
     SuperUser = False
-    if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["SuperUser"]):
+    if(request.environ['REMOTE_ADDR'] in EwOSMRConfig["SuperUser"]):
         SuperUser = True
     if(Command.startswith("Test")):
         Socket.emit("Terminal" , "Ping from server !")
@@ -76,7 +76,7 @@ def Notification(Data):
 
 @Socket.event
 def Cast(ToIP , Code):
-    if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["SuperUser"]):
+    if(request.environ['REMOTE_ADDR'] in EwOSMRConfig["SuperUser"]):
         Socket.emit("Cast" , Code , to=ToIP)
     else:
         Socket.send("You can't execute code on other clients in the server if you're not SuperUser !")
@@ -105,14 +105,14 @@ def Broadcast(Message):
 @Socket.event
 def Update():
     print("Downloading latest release ...")
-    Release = requests.get("https://github.com/WolfyGreyWolf/AODOSMountainRange/archive/refs/heads/main.zip")
+    Release = requests.get("https://github.com/NowEwo/EwOSMountainRange/archive/refs/heads/main.zip")
     print("Writing into ZIP file ...")
     open("../Updater.zip" , "wb").write(Release.content)
     SMRDIR = os.path.basename(os.getcwd())
     print('Extracting all the files ...')
     with ZipFile("../Updater.zip", 'r') as ExtractableZip:
         ExtractableZip.extractall()
-    print("Moving into the AODOS Directory ...")
+    print("Moving into the EwOS Directory ...")
     def merge(scr_path, dir_path):
       files = next(os.walk(scr_path))[2]
       folders = next(os.walk(scr_path))[1]
@@ -128,9 +128,9 @@ def Update():
         if not os.path.exists(dir_folder): # Create the subdirectories if dont already exist
           os.mkdir(dir_folder)
         merge(scr_folder, dir_folder)
-    merge("AODOSMountainRange-main" , "../"+SMRDIR)
+    merge("EwOSMountainRange-main" , "../"+SMRDIR)
     print("Cleaning ...")
-    shutil.rmtree("AODOSMountainRange-main")
+    shutil.rmtree("EwOSMountainRange-main")
     os.remove("../Updater.zip")
     print("Updated !")
     Socket.emit("Cast" , "Kernel.Reload()" , to=request.environ['REMOTE_ADDR'])
@@ -138,9 +138,9 @@ def Update():
 @App.route('/', defaults={'PATH': 'Index.html'})
 @App.route('/<path:PATH>')
 def File(PATH):
-    if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["Blacklist"]):
+    if(request.environ['REMOTE_ADDR'] in EwOSMRConfig["Blacklist"]):
         return send_from_directory('.', "Blacklisted.html")
-    elif(AODOSMRConfig["Maintenance"] == True):
+    elif(EwOSMRConfig["Maintenance"] == True):
         return send_from_directory('.', "Maintenance.html")
     else:
         return send_from_directory('.', PATH.split("?")[0])
@@ -148,28 +148,28 @@ def File(PATH):
 @App.route('/api/', defaults={'Action': 'infos'})
 @App.route('/api/<path:Action>')
 def API(Action):
-    if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["Blacklist"]):
+    if(request.environ['REMOTE_ADDR'] in EwOSMRConfig["Blacklist"]):
         return send_from_directory('.', "Blacklisted.html")
-    elif(AODOSMRConfig["Maintenance"] == True):
+    elif(EwOSMRConfig["Maintenance"] == True):
         return send_from_directory('.', "Maintenance.html")
     else:
         SuperUser = False
-        if(request.environ['REMOTE_ADDR'] in AODOSMRConfig["SuperUser"]):
+        if(request.environ['REMOTE_ADDR'] in EwOSMRConfig["SuperUser"]):
             SuperUser = True
         if(Action == "infos"):
             ResponseData = json.dumps({
                 "Started" : True,
                 "RequestFrom" : request.environ['REMOTE_ADDR'],
                 "SuperUser" : SuperUser,
-                "AODOSFolder" : os.getcwd(),
+                "EwOSFolder" : os.getcwd(),
                 "Version" : open("Version.conf" , "r").read(),
-                "Config" : AODOSMRConfig
+                "Config" : EwOSMRConfig
             })
             return Response(ResponseData , mimetype="application/json")
         elif(Action == "block"):
             if(SuperUser):
-                AODOSMRConfig["Blacklist"].append(Request.get_json()["IP"])
+                EwOSMRConfig["Blacklist"].append(Request.get_json()["IP"])
                 SaveConfig()
 
 if __name__ == '__main__' :
-    Socket.run(App , host=AODOSMRConfig["IP"] , port=AODOSMRConfig["Port"])
+    Socket.run(App , host=EwOSMRConfig["IP"] , port=EwOSMRConfig["Port"])

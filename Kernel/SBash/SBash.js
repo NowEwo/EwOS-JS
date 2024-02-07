@@ -177,7 +177,7 @@ function Process(CommandStringBase) {
             FileSystem.delete("/bin/"+BashCommand["SubCommands"][1]);
           }
         }
-        FileSystem = new FFS("AODOS");
+        FileSystem = new FFS("EwOS");
         break;
         case "add-apt-repository":
         if(BashCommand["Arguments"].indexOf("-remove") > -1){
@@ -294,11 +294,11 @@ function Process(CommandStringBase) {
         Kernel.document.querySelector("#DE").src = "about:blank";
         Kernel.document.querySelector("#DE").getElementsByClassName.display = "none";
         break;
-      // AODOS commands !
-      case "AODOS":
+      // EwOS commands !
+      case "EwOS":
         switch (BashCommand["SubCommands"][0]) {
           case "test":
-            return "AODOS Test !";
+            return "EwOS Test !";
             break;
           case "conf":
             switch (BashCommand["SubCommands"][1]) {

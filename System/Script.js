@@ -1,8 +1,8 @@
 SetShell(BootArguments["Shell"]);
 
-console.info("Loading the file system : AODOS ...");
+console.info("Loading the file system : EwOS ...");
 var SystemPartition = new FFS("System");
-var FSHandler = new FFS("AODOS");
+var FSHandler = new FFS("EwOS");
 
 console.info("Checking if the file system is functionnal ...");
 if (FSHandler.fileExists("/bin/#.fs") == false) {
@@ -17,7 +17,7 @@ if (FSHandler.fileExists("/bin/#.fs") == false) {
   FSHandler.createDir("/", "etc");
   console.info("Writing '/etc/jsv.conf' ...");
   FSHandler.writeFile("/etc/jsv.conf", JSON.stringify({ 'Config': 'Loaded' , 'OOBE' : false}));
-  FSHandler.writeFile("/etc/repositories.conf", "WolfyGreyWolf/SelariaMountainRange-Repository\n")
+  FSHandler.writeFile("/etc/repositories.conf", "NowEwo/SelariaMountainRange-Repository\n")
   FSHandler.createDir("/", "root");
   FSHandler.createDir("/", "home");
   FSHandler.createDir("/", "tmp");
