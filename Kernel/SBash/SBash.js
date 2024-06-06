@@ -79,7 +79,7 @@ function Process(CommandStringBase) {
           }
         }
         break;
-      case "apt":
+      case "app":
         if(BashCommand["SubCommands"][0] == "install" || BashCommand["SubCommands"][0] == "update"){
           for(Repository in FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")){
             if(FileSystem.getFileContent("/etc/repositories.conf").result.split("\n")[Repository] != ""){
@@ -149,7 +149,7 @@ function Process(CommandStringBase) {
             }
           }
         }else{
-          if(BashCommand["SubCommands"][0] == "remove"){
+          if(BashCommand["SubCommands"][0] == "uninstall"){
             var Version = "";
             if(BashCommand["Arguments"].indexOf("v") > -1){
               Version = "-" + BashCommand["SubCommands"][2];
@@ -259,6 +259,9 @@ function Process(CommandStringBase) {
           BashCommand["SubCommands"][0],
           ""
         );
+        break;
+      case "uname":
+        return "moutainrange";
         break;
       case "cp":
         FileSystem.copy(BashCommand["SubCommands"][0] , BashCommand["SubCommands"][1]);
