@@ -1,8 +1,13 @@
+> [!IMPORTANT]  
+> The codebase is being rewrited and some amazing features are being added. Get ready to view major changes here
+
 # EwOS
-Another Online Desktop
+### Transform your low-end PC into a high-performance desktop experience, accessible from any device with our powerful web-based tool
 
-![Background](https://user-images.githubusercontent.com/77587065/229579834-17c509c2-7b02-4c9b-8d62-85ad11b12a7a.png)
+## Roadmap
+- [x] Online desktop accessible from another computer with multitask functionnalities
+- [x] Basic inter-devices communication system with centralised web-socket
+- [ ] Syncronisation of devices and filesystem from host
+- [ ] Communication with other hosts (P2P)
 
-Screenshot :
-
-![image](https://user-images.githubusercontent.com/77587065/229579903-9f14221d-8e71-4535-b1b4-7aedc3023499.png)
+### Made with <3 by Ewo since 2021
