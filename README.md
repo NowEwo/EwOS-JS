@@ -7,7 +7,7 @@
 ## Roadmap
 - [x] Online desktop accessible from another computer with multitasking functionnalities
 - [x] Basic inter-devices communication system with centralised web-socket
-- [ ] Syncronisation of devices and filesystem from host
+- [ ] Synchronisation of devices and filesystem from host
 - [ ] Communication with other hosts (P2P)
 
 ### Made with <3 by Ewo since 2021
